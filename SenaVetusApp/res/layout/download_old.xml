@@ -1,0 +1,115 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"  
+    tools:context="._Download" >
+	
+     <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+	    <Button
+	         android:id="@+id/button1"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="download"
+	         android:text="@string/button_download" />
+	     <Button
+	         android:id="@+id/buttonA"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="play"
+	         android:text="@string/button_play" />
+
+	     <Button
+	         android:id="@+id/button4"
+	         style="?android:attr/buttonStyleSmall"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:text="I Like" 
+	         android:onClick="like"/>
+
+	     <EditText android:id="@+id/edit_message1"
+	        android:layout_weight="1"
+	        android:layout_width="0dip"
+	        android:layout_height="1dip"     
+	        android:text="@string/edit_message_1"      
+	        android:hint="@string/edit_message" />
+      </TableRow>
+      
+     <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >	    
+	    <Button
+	         android:id="@+id/button2"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="download"
+	         android:text="@string/button_download" />
+	     <Button
+	         android:id="@+id/buttonB"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="play"
+	         android:text="@string/button_play" />
+
+	     <Button
+	         android:id="@+id/button5"
+	         style="?android:attr/buttonStyleSmall"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:text="I Like" 
+	         android:onClick="like"/>
+
+
+	     <EditText android:id="@+id/edit_message2"
+	        android:layout_weight="1"
+	        android:layout_width="0dip"
+	        android:layout_height="1dip"     
+	        android:text="@string/edit_message_2"     
+	        android:hint="@string/edit_message" />
+      </TableRow>
+
+        <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+	    <Button
+	         android:id="@+id/button3"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="download"
+	         android:text="@string/button_download" />
+	     <Button
+	         android:id="@+id/buttonC"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:onClick="play"
+	         android:text="@string/button_play" />
+
+	     <Button
+	         android:id="@+id/button6"
+	         style="?android:attr/buttonStyleSmall"
+	         android:layout_width="wrap_content"
+	         android:layout_height="wrap_content"
+	         android:text="I Like" 
+	         android:onClick="like"/>
+
+	     <EditText 
+	     	android:id="@+id/edit_message3"
+	        android:layout_weight="1"
+	        android:layout_width="0dip"
+	        android:layout_height="1dip"     
+	        android:text="@string/edit_message_3"     
+	        android:hint="@string/edit_message" />
+      </TableRow>
+
+</TableLayout>
+
+
