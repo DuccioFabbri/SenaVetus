@@ -1,0 +1,32 @@
+
+Seguite istruzioni in: https://console.developers.google.com/start/appengine
+Il passo 4.3 mi autentica con ilmio utente google e mi redirige su https://developers.google.com/cloud/sdk/auth_success
+Al passo 5.3 ho scompattato lo zip in C:\GitHub\appengine-try-java
+
+
+Installato MAven in: C:\Program Files\Apache Software Foundation\apache-maven-3.2.2 seguendo istruzioni in http://maven.apache.org/run-maven/index.html
+configurato come descritto in http://maven.apache.org/download.cgi
+Ho eseguito solo le impostazioni:
+Windows
+
+Unzip the distribution archive, i.e. apache-maven-3.2.2-bin.zip to the directory you wish to install Maven 3.2.2. These instructions assume you chose C:\Program Files\Apache Software Foundation. The subdirectory apache-maven-3.2.2 will be created from the archive.
+Add the M2_HOME environment variable by opening up the system properties (WinKey + Pause), selecting the "Advanced" tab, and the "Environment Variables" button, then adding the M2_HOME variable in the user variables with the value C:\Program Files\Apache Software Foundation\apache-maven-3.2.2. Be sure to omit any quotation marks around the path even if it contains spaces. Note: For Maven 2.0.9, also be sure that the M2_HOME doesn't have a '\' as last character.
+In the same dialog, add the M2 environment variable in the user variables with the value %M2_HOME%\bin.
+Optional: In the same dialog, add the MAVEN_OPTS environment variable in the user variables to specify JVM properties, e.g. the value -Xms256m -Xmx512m. This environment variable can be used to supply extra options to Maven.
+In the same dialog, update/create the Path environment variable in the user variables and prepend the value %M2% to add Maven available in the command line.
+In the same dialog, make sure that JAVA_HOME exists in your user variables or in the system variables and it is set to the location of your JDK, e.g. C:\Program Files\Java\jdk1.7.0_51 and that %JAVA_HOME%\bin is in your Path environment variable.
+Open a new command prompt (Winkey + R then type cmd) and run mvn --version to verify that it is correctly installed.
+
+Non ho fato altre modifiche ai file di configurazione e sono passato al passo 5.3 della guida Google.
+
+La compilazione conMAVEN richiede circa 11 minuti, ma tutto è andato bene :) !
+
+Prima di passare al punto 5.4, ho dovuto installare il war su tomcat come descritto qui: http://tomcat.apache.org/tomcat-8.0-doc/appdev/deployment.html
+Ho dovuto anche modificare il file C:\apache-tomcat-8.0.9\webapps\appengine-try-java-1.0\WEB-INF\web.xml togliendo la prima riga di commento.
+Ho dovuto inoltre modificare il file C:\apache-tomcat-8.0.9\webapps\appengine-try-java-1.0\index.html alla riga 12:
+  $.getJSON('./demo', function(data) {
+  al posto di 
+  $.getJSON('/demo', function(data) {
+  
+  Le modifiche ai file le ho riportate anche nei rispettivi file in C:\GitHub\appengine-try-java\src\main\webapp ed ho rieseguito la build
+  
