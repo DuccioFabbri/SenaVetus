@@ -57,6 +57,7 @@ Per raccogliere i feedback deveo avere installato MySql, deve essere accedibile 
 Attualmente ho tuto suuna unica istanza di MySql (Local MySQL), che fa sia da sviluppo e da produzione.
 Ho creato una nuova DbConnection dal nome SenaVetus, user: root/root, Host: 127.0.0.1:3306 Schema di default: SenaVetus
 
+Su TomCat occorre creare un site in SenaVetus in webapps. Nella root di SenaVetus mettiamo SenaVetus.kml e la Cartella Audio dove mettiamo i brani .mp3.
 
 Pubblicazione su Google Play:
 http://developer.android.com/distribute/googleplay/publish/register.html+-7.

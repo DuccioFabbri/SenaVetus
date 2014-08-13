@@ -138,10 +138,11 @@ public class Download extends Activity {
 		 String lang = "";
 		 String jpgPath = url.replace(".mp3", ".jpg");
 		 String[] tokens = jpgPath.split(File.separator);
-		tokens[tokens.length-2]="pics";
+		tokens[tokens.length-3]="pics";
+		System.arraycopy(tokens,tokens.length-1,tokens,tokens.length-2,1);
 		//tokens[tokens.length-1]=getPicName(url).replace(".mp3", ".jpg");
 		String res = "";
-		 for (int i=0; i < tokens.length; i++)
+		 for (int i=0; i < tokens.length-1; i++)
 		 {
 			 res = res +tokens[i]+File.separator;
 		 }

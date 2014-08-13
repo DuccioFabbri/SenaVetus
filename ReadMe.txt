@@ -55,6 +55,11 @@ L'applicazione è composta da 2 progetti:
         password="root"
         driverClassName="com.mysql.jdbc.Driver"
         url="jdbc:mysql://localhost:3306/SenaVetus"/>
+
+	Per accedere al Tomcat sul mio pc, occorre configurare il router e il pc con le opportuneregole di firewall.
+	Per il router occorre andare sulla MyFastPage: http://www.fastweb.it/myfastpage/abbonamento/#mConfig
+	cliccare su "Configura router" e poi su "modifica". A questo punto si fa un port mapping sull'IP della macchina con Tomcat sulla porta 8080.
+Poi occorre creare una regola di ingresso e una di uscita sul firewall del pc, consentendo il traffico sulla porta 8080.
 		
 	Ho seguito questi tutorial:
 	http://theopentutorials.com/examples/java-ee/servlet/how-to-create-a-servlet-with-eclipse-and-tomcat/

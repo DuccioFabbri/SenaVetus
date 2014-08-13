@@ -58,17 +58,18 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 	private ArrayList<AudioGuide> _guides = new ArrayList<AudioGuide>();
 	
 	private String _language = "ITA";
-	private TextView textLanguage;	
-	//private String id_audioSD;
-	private String point;	
+	private TextView textLanguage;			
 	public static boolean checkConn = false;		
 	
-	public String _urlDownloads = "http://2.227.2.94:8080/audio/downloads.xml";
+	//public String _urlDownloads = "http://2.227.2.94:8080/audio/downloads.xml";
+	public String _urlDownloads = Utilities.getUrlDownloads();
 	public String _filePath = Utilities.getTempSDFld();
 	public String _downloadsFileName = "downloads.xml";
 	public String _downloadsSDPath = Utilities.getDownloadsSDPath();
 	
-	public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
+	//public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
+	//public String _urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
+	public String _urlKml = Utilities.getUrlKml();
 	public String _kmlFileName = "SenaVetus.kml";
 	public String _kmlSDPath = Utilities.getKMLSDPath();
 	

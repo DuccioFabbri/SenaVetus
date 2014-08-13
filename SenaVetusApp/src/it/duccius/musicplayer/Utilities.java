@@ -17,6 +17,8 @@ import android.util.Log;
 
 
 public class Utilities {
+	private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
+	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
 	
 	public static boolean downloadFile(String url, String filePath, String nomeFile,
 			int timeoutSec) throws MalformedURLException, IOException {
@@ -179,4 +181,12 @@ public class Utilities {
 		  }
 		  return obj;
 		}
+	public static String getUrlDownloads() {
+		return urlDownloads;
+	}
+	public static String getUrlKml() {
+		return urlKml;
+	}
+	
+	
 }
