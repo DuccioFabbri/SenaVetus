@@ -456,13 +456,16 @@ containing a value of this type.
         public static final int TextView02=0x7f070016;
         public static final int TextView03=0x7f070018;
         public static final int TextView04=0x7f070019;
-        public static final int action_settings=0x7f07004f;
+        public static final int action_settings=0x7f070054;
         public static final int book_now=0x7f070010;
         public static final int btnBackward=0x7f07003d;
         public static final int btnDownload=0x7f07001d;
         public static final int btnForward=0x7f07003e;
         public static final int btnMap=0x7f070047;
         public static final int btnNext=0x7f07003f;
+        public static final int btnPOIdownload=0x7f070050;
+        public static final int btnPOIinfo=0x7f070052;
+        public static final int btnPOIplay=0x7f070051;
         public static final int btnPlay=0x7f07001c;
         public static final int btnPlaylist=0x7f070039;
         public static final int btnPrevious=0x7f07003c;
@@ -481,7 +484,7 @@ containing a value of this type.
         public static final int buy_now=0x7f07000f;
         public static final int buy_with_google=0x7f07000e;
         public static final int classic=0x7f070011;
-        public static final int description=0x7f07004d;
+        public static final int description=0x7f07004e;
         public static final int downloadAudio=0x7f07002f;
         public static final int downloadUrl=0x7f070030;
         public static final int edit_message1=0x7f070022;
@@ -491,7 +494,7 @@ containing a value of this type.
         public static final int holo_dark=0x7f070005;
         public static final int holo_light=0x7f070006;
         public static final int hybrid=0x7f070004;
-        public static final int id_audioSD=0x7f07004c;
+        public static final int id_audioSD=0x7f07004d;
         public static final int image=0x7f07002e;
         public static final int imageButton1=0x7f070048;
         public static final int imageList=0x7f07001a;
@@ -503,9 +506,10 @@ containing a value of this type.
         public static final int monochrome=0x7f070013;
         public static final int none=0x7f070000;
         public static final int normal=0x7f070001;
-        public static final int outputList=0x7f07004b;
+        public static final int outputList=0x7f07004c;
         public static final int player_footer_bg=0x7f07003b;
         public static final int player_header_bg=0x7f070037;
+        public static final int poi_menu=0x7f07004f;
         public static final int production=0x7f070007;
         public static final int sandbox=0x7f070008;
         public static final int satellite=0x7f070002;
@@ -528,16 +532,17 @@ containing a value of this type.
         public static final int timerDisplay=0x7f070041;
         public static final int title=0x7f07002d;
         public static final int titolo=0x7f070036;
+        public static final int txtlist=0x7f07004a;
         public static final int updateAudio=0x7f070049;
-        public static final int url=0x7f07004a;
-        public static final int webView1=0x7f07004e;
+        public static final int url=0x7f07004b;
+        public static final int webView1=0x7f070053;
         public static final int wrap_content=0x7f07000d;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f080000;
     }
     public static final class layout {
-        public static final int activity_geo=0x7f030000;
+        public static final int activity_geo_old=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_show_map=0x7f030002;
         public static final int bg_player_footer=0x7f030003;
@@ -553,7 +558,8 @@ containing a value of this type.
         public static final int result=0x7f03000d;
         public static final int rounded_corner=0x7f03000e;
         public static final int sd_row=0x7f03000f;
-        public static final int webview=0x7f030010;
+        public static final int sena=0x7f030010;
+        public static final int webview=0x7f030011;
     }
     public static final class menu {
         public static final int geo=0x7f0b0000;

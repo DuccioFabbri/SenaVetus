@@ -46,7 +46,12 @@
             android:label="@string/result_activity" 
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name="it.duccius.musicplayer.AudioPlayerActivity" 
+       <activity
+            android:name="it.duccius.download.AudioPlayerActivity"
+            android:label="@string/result_activity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="it.duccius.musicplayer.MapNavigation" 
         android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

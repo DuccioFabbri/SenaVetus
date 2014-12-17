@@ -1,16 +1,34 @@
 package it.duccius.musicplayer;
 
+import it.duccius.musicplayer.R;
+import it.duccius.musicplayer.R.drawable;
+import it.duccius.musicplayer.R.id;
+import it.duccius.musicplayer.R.layout;
+
+import it.duccius.maps.MapService;
+import it.duccius.maps.NavigationDataSet;
+import it.duccius.maps.Placemark;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
@@ -25,8 +43,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AudioPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class MapNavigation extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
+	GoogleMap mMap;
+	
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
 	private ImageButton btnBackward;
@@ -79,6 +99,9 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 	ArrayList<AudioGuide> _audioGuideListLang = new ArrayList<AudioGuide>();
 	ArrayList<AudioGuide> _audioToDownloadLang = new ArrayList<AudioGuide>();
 	
+	NavigationDataSet _nDs = new NavigationDataSet();
+	String _currentPOIcoords = "";
+	
 	public boolean downloadMapItemes ()
 	{
 		//String url = "http://2.227.2.94:8080/audio/SenaVetus.kml";
@@ -127,26 +150,30 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 		
 		getViewElwments();		
 						
-		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  
-		SharedPreferences.Editor editor = settings.edit();
+		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
-	    songManager = new SongsManager(_language);
-		
+	    songManager = new SongsManager(_language);		
 	  
 		//###############################
 		
 		// Recupero SenaVetus.kml
-		if (!getMapPlacemarkList())
-		{			
-			btnMap.setClickable(false);
-			return;
+	    if (!getMapPlacemarkList())
+		{							
+	    	// Il bottone non c'è più
+	    	//btnMap.setClickable(false);
+	    	return;
 		}
 		
 		// Recupero downloads.xml
 		if (!getAudioGuideList())
-		{		
-			btnMap.setClickable(false);
+		{	
+			// Il bottone non c'è più
+			//btnMap.setClickable(false);
 			return;
+		}
+		File f = new File(_kmlSDPath);
+		if(f.exists()) {  
+			_nDs = MapService.getNavigationDataSet("file://"+_kmlSDPath);			
 		}
 		// Aggiorna:
 		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
@@ -154,6 +181,15 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
 		checkForUpdates();
 	    
+		
+		//############################################################################
+		
+		Location currentLocation = getCurrentLocation();
+		LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+		 //LatLng from =  new LatLng(-44, 113);
+		LatLng to = from;
+		setUpMapIfNeeded(from, to);	
+		//############################################################################
 		//_playList = refreshPlayList();
 		_playList = _localAudioGuideListLang;
 		checkEmptyAGList();
@@ -304,23 +340,25 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 		/**
 		 * Button Click event for Play list click event
 		 * Launches list activity which displays list of songs
+		 * Per semplificare l'interfaccia ho tolto la possibilità di scegliere i brani dalla playlist
 		 * */
-		btnPlaylist.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
-				
-				//startActivity(i);
-				Bundle b = new Bundle();
-		        b.putSerializable("_playList", _playList);		       		        
-		        b.putString("language", _language);		 
-		        // Add the bundle to the intent.
-		        i.putExtras(b);
-				startActivityForResult(i, 100);	
-				//finish();
-			}
-		});
+//		btnPlaylist.setOnClickListener(new View.OnClickListener() 
+//		{
+//			
+//			@Override
+//			public void onClick(View arg0) {
+//				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
+//				
+//				//startActivity(i);
+//				Bundle b = new Bundle();
+//		        b.putSerializable("_playList", _playList);		       		        
+//		        b.putString("language", _language);		 
+//		        // Add the bundle to the intent.
+//		        i.putExtras(b);
+//				startActivityForResult(i, 100);	
+//				//finish();
+//			}
+//		});
 		
 	}
 	// Provo a scaricare una nuova versione del file,
@@ -340,6 +378,59 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 		
 		return true;
 	}
+	private void setUpMapIfNeeded(LatLng from, LatLng to) {
+	    // Do a null check to confirm that we have not already instantiated the map.
+	    if (mMap == null) {
+	        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+	                            .getMap();
+	        // Check if we were successful in obtaining the map.
+	        if (mMap != null) {
+	            // The Map is verified. It is now safe to manipulate the map.
+	        	//https://developers.google.com/maps/documentation/android/views
+	        	// Move the camera instantly to Sydney with a zoom of 15.
+//	        	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SYDNEY, 15));
+//
+//	        	// Zoom in, animating the camera.
+//	        	mMap.animateCamera(CameraUpdateFactory.zoomIn());
+//
+//	        	// Zoom out to zoom level 10, animating with a duration of 2 seconds.
+//	        	mMap.animateCamera(CameraUpdateFactory.zoomTo(10), 2000, null);
+
+	        	// Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
+	        	CameraPosition cameraPosition = new CameraPosition.Builder()
+	        	    .target(from)      // Sets the center of the map to Mountain View
+	        	    .zoom(19)                   // Sets the zoom
+	        	    .bearing(90)                // Sets the orientation of the camera to east
+	        	    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+	        	    .build();                   // Creates a CameraPosition from the builder
+	        	mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+	        	
+	        	mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(to, 19));
+//	        	Marker melbourne = mMap.addMarker(new MarkerOptions()
+//                .position(to)
+//                .title("Melbourne")
+//                .snippet("Population: 4,137,400"));
+	        	
+	        	mMap.setMyLocationEnabled(true);
+	        	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+	        }
+	    }
+	}
+	private Location getCurrentLocation() {
+		// Getting LocationManager object from System Service LOCATION_SERVICE
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+		// Creating a criteria object to retrieve provider
+		Criteria criteria = new Criteria();
+
+		// Getting the name of the best provider
+		String provider = locationManager.getBestProvider(criteria, true);
+
+		// Getting Current Location
+		Location location = locationManager.getLastKnownLocation(provider);
+		return location;
+	}
+	
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
@@ -462,11 +553,12 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 			mp.prepare();
 			mp.start();
 			// Displaying Song title
-			String songTitle = _playList.get(songIndex).getName();
+			String songTitle = _playList.get(songIndex).getTitle();
         	songTitleLabel.setText(songTitle);
         	
-        	
-        	setupAudioThumbnail(songTitle);
+        	// Dovrebbe mostrare delle foto del POI in ascolto
+        	// Per il momento trascurao
+//        	setupAudioThumbnail(songTitle);
         	// Changing Button Image to pause image
 			btnPlay.setImageResource(R.drawable.btn_pause);
 			
@@ -475,7 +567,15 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 			songProgressBar.setMax(100);
 			
 			// Updating progress bar
-			updateProgressBar();			
+			updateProgressBar();	
+			
+			_currentPOIcoords = _nDs.getCoordFromTitle(songTitle);
+			String lat = _currentPOIcoords.split(",")[1];
+			String lng = _currentPOIcoords.split(",")[0];
+			LatLng poiLatLong = new LatLng(Double.parseDouble(lat),Double.parseDouble(lng));
+			
+			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(poiLatLong, 19));
+			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
@@ -578,26 +678,6 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 		}
 	}
 		
-	 public void openMap(final View view)
-	 {
-// http://asnsblues.blogspot.it/2011/11/google-maps-query-string-parameters.html
-		
-		 Intent i = new Intent(this, ShowMap.class);
-		 //startActivity(i);
-			Bundle b = new Bundle();
-	        b.putSerializable("playList", _playList);
-	        b.putSerializable("allGuides", _guides);	
-	        b.putSerializable("localAudioGuideListLang", _localAudioGuideListLang);
-	        b.putSerializable("audioToDownloadLang", _audioToDownloadLang);	        
-	        	        
-	        b.putString("language", _language);		
-	        b.putInt("currentSongIndex", currentSongIndex);
-	        // Add the bundle to the intent.
-	        i.putExtras(b);
-	       
-			startActivityForResult(i, 200);	
-		 
-	 }
 	@Override
 	 public void onDestroy(){
 	 super.onDestroy();

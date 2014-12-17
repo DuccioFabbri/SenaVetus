@@ -1,5 +1,6 @@
 Sena Vetus
 
+- Attivare modo debug su S4: https://www.youtube.com/watch?v=lFg0tJ52Hhs
 L'applicazione è composta da 2 progetti:
 - client Android (AndroidBuildingMusicPlayer):
 	Sono presenti 2 activities, la primo PlayListActivity è ilplayer vero e proprio che gestisce la riproduzione dei brani.
