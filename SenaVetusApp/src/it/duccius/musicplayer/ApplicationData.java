@@ -6,8 +6,14 @@ import java.util.HashMap;
 public class ApplicationData {
 	private static final String appName = "SenaVetus";
 	//private static final String download_path = "http://2.227.2.94:8080/audio/";
-	private static final String download_path = "http://2.227.2.94:8080/SenaVetus/Audio/";
-	private static final String feedbackRemoteUrl = "http://2.227.2.94:8080/SenaVetus/Contatti?";
+	
+	// SIENA
+	//	private static final String download_path = "http://2.227.2.94:8080/SenaVetus/Audio/";
+	//	private static final String feedbackRemoteUrl = "http://2.227.2.94:8080/SenaVetus/Contatti?";
+	//Lugano 77.57.63.163
+	private static final String download_path = "http://77.57.63.163:8080/SenaVetus/Audio/";
+	private static final String feedbackRemoteUrl = "http://77.57.63.163:8080/SenaVetus/Contatti?";
+	
 	private static final String picFolder = "SenaVetus/pics";
 	// Tre lettere per ogni lingua
 	private static final String[] languages = {"ITA","ENG","DEU","FRA"};

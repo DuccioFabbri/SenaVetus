@@ -32,7 +32,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import it.duccius.musicplayer.AudioPlayerActivity;
+import it.duccius.musicplayer._AudioPlayerActivity;
 import it.duccius.musicplayer._PlayListActivity;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer._Audio;

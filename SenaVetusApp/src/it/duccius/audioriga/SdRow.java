@@ -23,7 +23,7 @@ THE SOFTWARE.
 package it.duccius.audioriga;
 
 import it.duccius.musicplayer._Audio;
-import it.duccius.musicplayer.AudioPlayerActivity;
+import it.duccius.musicplayer._AudioPlayerActivity;
 import it.duccius.musicplayer._PlayListActivity;
 import it.duccius.musicplayer.R;
 import android.content.Context;

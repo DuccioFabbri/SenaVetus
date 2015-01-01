@@ -1,8 +1,10 @@
 package it.duccius.musicplayer;
 
+import it.duccius.maps.Placemark;
+
 import java.io.Serializable;
 
-public class AudioGuide implements Serializable{
+public class AudioGuide implements Serializable, Comparable{
 	
 	
 	/**
@@ -17,7 +19,31 @@ public class AudioGuide implements Serializable{
 	private Integer sdPosition;
 	private boolean toBeDownloaded = false;
 	private String geoPoint;
+	private String lat;
+	private String lng;
+	private String h = "0.0";
 	
+	public String getCoordinates() {
+        return this.lat.concat(this.lng.concat(this.h));
+    }
+	public void setCoordinates(String coordinates) {
+		String[] coords = coordinates.split(",");
+		this.lat = coords[0];
+		this.lng = coords[1];
+		this.h = coords[2];
+    }
+	public void setLat(String lat) {
+		this.lat = lat;
+    }
+	public String getLat() {
+        return this.lat;
+    }
+	public void setLng(String lng) {
+		this.lng = lng;
+    }
+	public String getLng() {
+        return this.lng;
+    }
 	public String getName() {
         return this.name;
     }
@@ -62,7 +88,36 @@ public class AudioGuide implements Serializable{
 	    }
 	 public void setGeoPoint(String geoPoint) {
 	        this.geoPoint = geoPoint;
-	    }	 
+	    }
+	@Override
+	public int compareTo(Object another) {
+		// TODO Auto-generated method stub
+		try{
+		 return this.getName().compareTo(((AudioGuide)another).getName());
+		}
+		catch(Exception e )
+		{
+			return 0;
+		}
+	}	 
+    public AudioGuide clone(AudioGuide origin)
+    {
+    	AudioGuide copia = new AudioGuide();
+		copia.title = this.title;
+		copia.name = this.name;
+		copia.path = this.path;
+		copia.imageId = this.imageId;
+		copia.lang = this.lang;    	
+		copia.sdPosition = this.sdPosition;
+		copia.toBeDownloaded= this.toBeDownloaded;
+		copia.geoPoint=this.geoPoint;
+		copia.lat = this.lat;
+		copia.lng = this.lng;
+		copia.h=this.h;
+     	
+    	return copia;
+    }
     
+   
 }
 

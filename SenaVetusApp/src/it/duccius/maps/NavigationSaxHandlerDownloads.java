@@ -73,6 +73,7 @@ public class NavigationSaxHandlerDownloads extends DefaultHandler{
 				song.setName(atts.getValue("name") );
 				song.setPath(atts.getValue("audioBaseUrl")+atts.getValue("name")+".mp3");
 				song.setLang(atts.getValue("lang"));
+				song.setCoordinates(atts.getValue("coordinates"));
 				//song.setGeoPoint(ApplicationData.getPoints().get(i-1));
 				// Adding each song to SongList
 				_guides.add(song);				 

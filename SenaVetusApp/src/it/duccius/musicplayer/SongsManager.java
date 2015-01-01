@@ -5,14 +5,24 @@ import it.duccius.maps.MapService;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import android.os.Environment;
 import android.util.Log;
 
+/**
+ * @author Duccio
+ *
+ */
+/**
+ * @author Duccio
+ *
+ */
 public class SongsManager {
 	// SDCard Path
 	//final String MEDIA_PATH = new String("/sdcard/");
@@ -68,6 +78,14 @@ public class SongsManager {
 		// return songs list array
 		return songsList;
 	}
+	
+	
+	/**
+	 * @return Accede alla cartella _langMediPath e ne controlla il contenuto.
+	 * Per ogni file .mpe trovato si genera un elemento <AudioGuide>.
+	 * Ogni nuovo elemento ha valorizzato: nome, path, posizione nel folder.
+	 * L'array ottenuto ha lo stesso ordinamento dei file trovati nella cartella.
+	 */
 	public ArrayList<AudioGuide> getSdAudioList(){
 		ArrayList<AudioGuide> songsList = new ArrayList<AudioGuide>();
 		File home = new File(_langMediPath);
@@ -78,7 +96,9 @@ public class SongsManager {
 			try{
 			if (home.listFiles(new FileExtensionFilter()).length > 0) {
 				int i=0 ;
-				for (File file : home.listFiles(new FileExtensionFilter())) {
+				File[] files=home.listFiles(new FileExtensionFilter());
+				Arrays.sort(files);
+				for (File file : files) {
 					AudioGuide song = new AudioGuide();
 					song.setName(file.getName().substring(0, (file.getName().length() - 4)));
 					song.setPath(file.getPath());
@@ -93,6 +113,7 @@ public class SongsManager {
 					// Adding each song to SongList
 					songsList.add(song);
 				}
+				
 			}
 		}
 		catch(Exception e)
@@ -126,6 +147,7 @@ public class SongsManager {
 						if(ag.getName().equals(song.getName()))
 						{
 							song.setTitle(ag.getTitle());
+							break;
 						}
 					}
 					// recupero il title
@@ -153,6 +175,8 @@ public class SongsManager {
 			
 			//String xmlFile = Utilities.getTempSDFld()+ File.separator+ "downloads.xml";
 			String xmlFile = Utilities.getDownloadsSDPath();
+//			String xmlFile = Utilities.getKMLSDPath();
+			
 			String UrlXmlFile = "file://"+xmlFile;
 			File f = new File(xmlFile);
 			if(f.exists()) {  
@@ -177,33 +201,54 @@ public class SongsManager {
 		
 		return langGuides;
 	}
-	public ArrayList<AudioGuide> getAudioToDownload(ArrayList<AudioGuide> sdAudios,
-			ArrayList<AudioGuide> audioDisponibiliServer) {
+	public boolean getAudioToDownload(ArrayList<AudioGuide> sdAudios,
+			ArrayList<AudioGuide> audioDisponibiliServer) {				
+		boolean newMp3 = false;
+		boolean res = false;
 		
-		ArrayList<AudioGuide> audioToDownload = new ArrayList<AudioGuide>();
+		for (AudioGuide disponibileSuServer :audioDisponibiliServer) {
+			res = newMp3 && res;			
+			//for (Audio audioInSD: songsListData )
+			for (AudioGuide audioInSD: sdAudios )
+			{			
+				newMp3 = true;
+				if( audioInSD.getName().equals(disponibileSuServer.getName())){
+					
+					disponibileSuServer.setToBeDownloaded(false);
+					disponibileSuServer.setSdPosition(audioInSD.getSdPosition());	
+					//audioInSD.setTitle(disponibileSuServer.getTitle());
+					//sdAudios.get(i).setTitle(disponibileSuServer.getTitle());
+					newMp3 = false;
+					break;}				
+			}			
+		}	
+		return res;
+	}
+	public AudioGuideList getAudioToDownload(AudioGuideList sdAudios,
+			AudioGuideList audioDisponibiliServer) {				
+		
+		AudioGuideList toBeDownloaded = new AudioGuideList();
 		
 		for (AudioGuide disponibileSuServer :audioDisponibiliServer) {
 						
-			// creating new HashMap
-			boolean presente = false;
-			int i=0;
 			//for (Audio audioInSD: songsListData )
-			for (AudioGuide audioInSD: sdAudios )
-			{
-				
-				if( audioInSD.getName().equals(disponibileSuServer.getName())){
-					presente=true;	
-					disponibileSuServer.setToBeDownloaded(true);
-					disponibileSuServer.setSdPosition(audioInSD.getSdPosition());	
-					//audioInSD.setTitle(disponibileSuServer.getTitle());
-					sdAudios.get(i).setTitle(disponibileSuServer.getTitle());
-					break;}
-				i++;
-			}
-			if (!presente)
-				audioToDownload.add(disponibileSuServer);
-		}
-		return audioToDownload;
+			AudioGuide newAudioGuide = sdAudios.getFromName(disponibileSuServer.getName());
+			if (newAudioGuide == null)
+				toBeDownloaded.add(disponibileSuServer);
+//			for (AudioGuide audioInSD: sdAudios )
+//			{							
+//				if( audioInSD.getName().equals(disponibileSuServer.getName())){
+//					
+//					disponibileSuServer.setToBeDownloaded(false);
+//					disponibileSuServer.setSdPosition(audioInSD.getSdPosition());
+//					toBeDownloaded.add(disponibileSuServer);
+//					//audioInSD.setTitle(disponibileSuServer.getTitle());
+//					//sdAudios.get(i).setTitle(disponibileSuServer.getTitle());
+//					
+//					break;}				
+//			}			
+		}	
+		return toBeDownloaded;
 	}
 	public ArrayList<String> getSdAudioStrings(ArrayList<AudioGuide> sdAudios) {
 		ArrayList<String> sdAudiosStrings = new ArrayList<String>();

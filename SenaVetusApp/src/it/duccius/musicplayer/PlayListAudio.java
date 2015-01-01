@@ -197,7 +197,7 @@ OnClickListener{
         }
  
         Intent intent = new Intent(getApplicationContext(),
-        		AudioPlayerActivity.class);
+        		_AudioPlayerActivity.class);
  
         // Create a bundle object
         Bundle b = new Bundle();

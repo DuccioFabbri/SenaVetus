@@ -156,7 +156,7 @@ public class _Download extends Activity {
 		 };	 
 		 
 		 public void play(View view) {
-			    Intent intent = new Intent(this, AudioPlayerActivity.class);			   			   			   
+			    Intent intent = new Intent(this, _AudioPlayerActivity.class);			   			   			   
 			    startActivity(intent);
 			}
 

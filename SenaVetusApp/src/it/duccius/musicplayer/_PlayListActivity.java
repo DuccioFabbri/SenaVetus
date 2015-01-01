@@ -195,7 +195,7 @@ public class _PlayListActivity extends ListActivity {
 	@Override
 	public void onBackPressed( ) {
 		Intent in = new Intent(getApplicationContext(),
-				AudioPlayerActivity.class);
+				_AudioPlayerActivity.class);
 		in.putExtra("language", getSelectedLang());
 //		setResult(100, in);
 		startActivity(in);
@@ -214,7 +214,7 @@ public class _PlayListActivity extends ListActivity {
 	{
 		// Starting new intent
 		Intent in = new Intent(this,
-				AudioPlayerActivity.class);
+				_AudioPlayerActivity.class);
 		
 		// Sending songIndex to PlayerActivity
 		in.putExtra("id_audioSD", id_audioSD);

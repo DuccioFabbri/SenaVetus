@@ -84,8 +84,8 @@ public class DownloadSelection extends Activity implements
 		sm.loadGuideList(_guides);
 		
 		ArrayList<AudioGuide> audioDisponibiliServer= sm.guideListByLang(_guides);
-		
-		_audioToDownload = sm.getAudioToDownload(sdAudios, audioDisponibiliServer);
+		sm.getAudioToDownload(sdAudios, audioDisponibiliServer);
+		_audioToDownload = audioDisponibiliServer;
 		
 		ArrayList<String> sdAudiosStrings  = sm.getSdAudioStrings(_audioToDownload);
 		return sdAudiosStrings;

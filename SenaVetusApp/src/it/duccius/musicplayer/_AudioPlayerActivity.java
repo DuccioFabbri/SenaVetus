@@ -25,7 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AudioPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class _AudioPlayerActivity extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
 
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
@@ -381,18 +381,18 @@ public class AudioPlayerActivity extends Activity implements OnCompletionListene
 	
 	private boolean checkForUpdates() {
 		boolean res = false;
-		if(songManager.loadGuideList(_guides))
-		{
-			_localAudioGuideListLang = songManager.getSdAudioList(_audioGuideListLang);
-			_audioGuideListLang = songManager.guideListByLang(_guides);
-			
-			_audioToDownloadLang = songManager.getAudioToDownload(_localAudioGuideListLang, _audioGuideListLang);
-			if (!_audioToDownloadLang.isEmpty())
-			{
-				Toast.makeText(getApplicationContext(), "Sono disponibili nuove audiogide\n. Accedi alla sezione 'Aggiornamenti' e clicca su 'Download'.", Toast.LENGTH_SHORT).show();
-			}
-			res = true;
-		}
+//		if(songManager.loadGuideList(_guides))
+//		{
+//			_localAudioGuideListLang = songManager.getSdAudioList(_audioGuideListLang);
+//			_audioGuideListLang = songManager.guideListByLang(_guides);
+//			
+//			_audioToDownloadLang = songManager.getAudioToDownload(_localAudioGuideListLang, _audioGuideListLang);
+//			if (!_audioToDownloadLang.isEmpty())
+//			{
+//				Toast.makeText(getApplicationContext(), "Sono disponibili nuove audiogide\n. Accedi alla sezione 'Aggiornamenti' e clicca su 'Download'.", Toast.LENGTH_SHORT).show();
+//			}
+//			res = true;
+//		}
 		return res;
 	}
 

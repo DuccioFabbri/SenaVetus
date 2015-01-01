@@ -4,6 +4,15 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+/*
+Questa classe analizza una stream xml e ne estrae i valori.
+Questa classe è stata copiata e modificata da un esempio per leggere un file .kml
+rispetto all'esempio ho tolto alcune cose e ho aggiunto la parte che analizza gli attributi del tag audio.
+Questo l'ho fatto perchè non vorrei usare file kml, ma un formato xml che mi sono inventato e che uso per gestire gli audio.
+In un primo momento usavo 2 file distinti: uno per i file mp3 e un altro per i POI da caricare sulla mappa.
+Alla fine mi è sembrato meglio usare un solo file, quello degli audio, che racchiude ance le info sulle coordinate.
+*/
+
 
 public class NavigationSaxHandler extends DefaultHandler{ 
 
@@ -19,8 +28,16 @@ public class NavigationSaxHandler extends DefaultHandler{
  private boolean in_linestringtag = false;
  private boolean in_pointtag = false;
  private boolean in_coordinatestag = false;
+ 
+ private boolean in_audio = false;
 
  private StringBuffer buffer;
+ 
+ private String _coordinates;
+ private String _title;
+ private String _description;
+ private String _address;
+ ;
 
  private NavigationDataSet navigationDataSet = new NavigationDataSet(); 
 
@@ -29,7 +46,7 @@ public class NavigationSaxHandler extends DefaultHandler{
  // =========================================================== 
 
  public NavigationDataSet getParsedData() {
-      navigationDataSet.getCurrentPlacemark().setCoordinates(buffer.toString().trim());
+      //navigationDataSet.getCurrentPlacemark().setCoordinates(buffer.toString().trim());
       return this.navigationDataSet; 
  } 
 
@@ -72,6 +89,14 @@ public class NavigationSaxHandler extends DefaultHandler{
           buffer = new StringBuffer();
           this.in_coordinatestag = true;                        
       }
+      else if (localName.equals("audio")) {          
+          navigationDataSet.setCurrentPlacemark(new Placemark());
+          _title = atts.getValue(atts.getIndex("title"));
+          _description = atts.getValue(atts.getIndex("name"));
+          _coordinates = atts.getValue(atts.getIndex("coordinates"));
+          _address = atts.getValue(atts.getIndex("address"));          
+          this.in_audio = true;                        
+      }
  } 
 
  /** Gets be called on closing tags like: 
@@ -101,6 +126,11 @@ public class NavigationSaxHandler extends DefaultHandler{
        } else if (localName.equals("coordinates")) { 
            this.in_coordinatestag = false;
        }
+       
+       else if (localName.equals("audio")) { 
+    	   navigationDataSet.addCurrentPlacemark();
+           this.in_audio = false;
+       }
  } 
 
  /** Gets be called on the following structure: 
@@ -120,5 +150,14 @@ public void characters(char ch[], int start, int length) {
         navigationDataSet.getCurrentPlacemark().setCoordinates(new String(ch, start, length));
         buffer.append(ch, start, length);
     }
+    
+    else
+        if(this.in_audio){        
+            if (navigationDataSet.getCurrentPlacemark()==null) navigationDataSet.setCurrentPlacemark(new Placemark());
+            navigationDataSet.getCurrentPlacemark().setTitle(_title);
+            navigationDataSet.getCurrentPlacemark().setCoordinates(_coordinates);
+            navigationDataSet.getCurrentPlacemark().setDescription(_description);
+            navigationDataSet.getCurrentPlacemark().setAddress(_address);
+        }
 } 
 }

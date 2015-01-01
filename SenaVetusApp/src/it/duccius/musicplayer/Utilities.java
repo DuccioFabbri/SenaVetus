@@ -16,11 +16,13 @@ import android.util.Log;
 
 
 public class Utilities {
-//	private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
-//	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
-	private static String urlDownloads = "http://192.168.1.129:8080/SenaVetus/downloads.xml";
-	private static String urlKml = "http://192.168.1.129:8080/SenaVetus/SenaVetus.kml";
-	
+	// SIENA 2.227.2.94
+	private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
+	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
+	// LUGANO 77.57.63.163
+//	private static String urlDownloads = "http://77.57.63.163:8080/SenaVetus/downloads.xml";
+//	private static String urlKml = "http://77.57.63.163:8080/SenaVetus/SenaVetus.kml";
+//	
 	public static boolean downloadFile(String url, String filePath, String nomeFile,
 			int timeoutSec) throws MalformedURLException, IOException {
 		try

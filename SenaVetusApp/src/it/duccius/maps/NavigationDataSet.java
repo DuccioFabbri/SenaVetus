@@ -1,6 +1,7 @@
 package it.duccius.maps;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 
@@ -10,6 +11,11 @@ private ArrayList<Placemark> placemarks = new ArrayList<Placemark>();
 private Placemark currentPlacemark;
 private Placemark routePlacemark;
 private String coordinates;
+
+public void sort()
+{
+	Collections.sort(placemarks);	
+}
 
 public String getCoordFromTitle(String title)
 {

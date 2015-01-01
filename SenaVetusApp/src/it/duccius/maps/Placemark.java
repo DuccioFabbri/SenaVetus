@@ -1,6 +1,6 @@
 package it.duccius.maps;
 
-public class Placemark {
+public class Placemark implements Comparable{
 
 String title;
 String description;
@@ -39,6 +39,16 @@ public double getLatitude() {
 public double getLongitude() {
 	// TODO Auto-generated method stub
 	return  Double.parseDouble(this.coordinates.split(",")[1]);
+}
+
+public int compareTo(Object arg0) {
+	 
+     /* For Ascending order*/
+     
+     return this.getTitle().compareTo(((Placemark)arg0).getTitle());
+     
+     /* For Descending order do like this */
+     //return compareage-this.studentage;
 }
 
 }

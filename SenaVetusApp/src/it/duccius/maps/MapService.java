@@ -169,7 +169,7 @@ public static ArrayList<AudioGuide> getDownloadsDataSet(String url) {
         {                    
         final URL aUrl = new URL(url);
         final URLConnection conn = aUrl.openConnection();
-        conn.setReadTimeout(5 * 1000);  // timeout for reading the google maps data: 15 secs
+        conn.setReadTimeout(5 * 1000);
         conn.connect();
         
         /* Get a SAXParser from the SAXPArserFactory. */

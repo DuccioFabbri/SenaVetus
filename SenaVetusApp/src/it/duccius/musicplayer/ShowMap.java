@@ -341,7 +341,7 @@ public class ShowMap extends Activity implements LocationListener  {
 	}
 	public void onBackPressed( ) {
 		Intent in = new Intent(getApplicationContext(),
-				AudioPlayerActivity.class);
+				_AudioPlayerActivity.class);
 		in.putExtra("language", _language);
 		setResult(200, in);
 //		startActivity(in);
