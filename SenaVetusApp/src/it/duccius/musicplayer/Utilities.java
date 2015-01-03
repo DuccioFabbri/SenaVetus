@@ -12,38 +12,53 @@ import java.net.URLConnection;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 
+//import it.duccius.download.RetriveAsyncFile;
 
 public class Utilities {
 	// SIENA 2.227.2.94
 	private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
-	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
+//	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
 	// LUGANO 77.57.63.163
 //	private static String urlDownloads = "http://77.57.63.163:8080/SenaVetus/downloads.xml";
 //	private static String urlKml = "http://77.57.63.163:8080/SenaVetus/SenaVetus.kml";
 //	
-	public static boolean downloadFile(String url, String filePath, String nomeFile,
-			int timeoutSec) throws MalformedURLException, IOException {
-		try
-		{
-			final URL aUrl = new URL(url);
-			final URLConnection conn = aUrl.openConnection();
-			conn.setConnectTimeout(timeoutSec * 1000);
-			conn.setReadTimeout(timeoutSec * 1000);  
-			conn.connect();
-	
-			Utilities.StreamToFile(aUrl.openStream(), filePath, nomeFile);
-			
-			return true;
-		}
-		//NetworkOnMainThreadException
-		catch(Exception e)
-		{
-			Log.d("downloadFile()",e.toString());
-			return false;
-		}
-	}
+	/**
+	 * @param url: url you want to download
+	 * @param filePath: path where you want to save the downloaded file
+	 * @param nomeFile: name of the downloaded file
+	 * @param timeoutSec: timeout in sec. to wait to establish the connection. After this time the attempt is interrupted.
+	 * @return True if the url can be downloaded to the desired position in the specified Timeoiut connection time, otherwise returns False 
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+//	public static Boolean downloadFile(String url, String filePath, String nomeFile,
+//			int timeoutSec) throws MalformedURLException, IOException {
+//		try
+//		{
+//			RetriveAsyncFile asyncDownload = new RetriveAsyncFile(url,filePath,nomeFile,timeoutSec);
+//			asyncDownload.execute();
+////			
+////			final URL aUrl = new URL(url);
+////			final URLConnection conn = aUrl.openConnection();
+////			conn.setConnectTimeout(timeoutSec * 1000);
+////			conn.setReadTimeout(timeoutSec * 1000);  
+////			conn.connect();
+////			Utilities.StreamToFile(aUrl.openStream(), filePath, nomeFile);
+//			
+//			// http://stackoverflow.com/questions/6343166/android-os-networkonmainthreadexception 			 						
+//			
+//			return true;
+//		}
+//		//NetworkOnMainThreadException
+//		catch(Exception e)
+//		{
+//			Log.d("downloadFile()",e.toString());
+//			return false;
+//		}
+//	}
 	private static void verifyFile(String filePath) {
 		File picFolder = new File(filePath);
 		if (!picFolder.exists())
@@ -187,9 +202,9 @@ public class Utilities {
 	public static String getUrlDownloads() {
 		return urlDownloads;
 	}
-	public static String getUrlKml() {
-		return urlKml;
-	}
+//	public static String getUrlKml() {
+//		return urlKml;
+//	}
 	
 	
 }

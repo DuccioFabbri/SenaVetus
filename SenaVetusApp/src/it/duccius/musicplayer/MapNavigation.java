@@ -1,5 +1,6 @@
 package it.duccius.musicplayer;
 
+//import it.duccius.musicplayer.RetriveAsyncFile;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.R.drawable;
 import it.duccius.musicplayer.R.id;
@@ -12,6 +13,8 @@ import it.duccius.maps.Placemark;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,18 +33,24 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -51,8 +60,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MapNavigation extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener {
+public class MapNavigation extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener, LocationListener  {
 
+	ProgressDialog progressDialog;
+	
 	GoogleMap mMap;
 	
 	private ImageButton btnPlay;
@@ -100,9 +111,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	//public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
 	//public String _urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
-	public String _urlKml = Utilities.getUrlKml();
-	public String _kmlFileName = "SenaVetus.kml";
-	public String _kmlSDPath = Utilities.getKMLSDPath();
+//	public String _urlKml = Utilities.getUrlKml();
+	//public String _kmlFileName = "SenaVetus.kml";
+//	public String _kmlSDPath = Utilities.getKMLSDPath();
 	public String _clickedMarker ;
 	public int _clickedMarkerIndex;
 	
@@ -115,23 +126,69 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	NavigationDataSet _nDs = new NavigationDataSet();
 	String _currentPOIcoords = "";
 	
+	LocationManager _locationManager;
+	Location _location;
+	private String provider;
 	
 	public boolean downloadAudioGuideList ()
 	{			
 		try {
 			
-			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
-			return downloadOk;
+//			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
+//			return downloadOk;
+			final RetriveAsyncFile asyncDownload = new RetriveAsyncFile(this, _urlDownloads,_filePath,_downloadsFileName,_timeoutSec);
+			progressDialog = new ProgressDialog(this);
+			setupProgessBar();
+			asyncDownload.execute();						
 			
-		} catch (MalformedURLException e) {
+			if (asyncDownload.exception != null)
+				throw asyncDownload.exception;
+			return true;
+			
+		} catch (Exception e) {
 			Log.d("downloadMapItemes()", e.getMessage());
 			return false;
-		} catch (IOException e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		}
+		} 
 	}
-	
+	public void checkNewAudio()
+	{
+		File f = new File(_downloadsSDPath);
+		if(f.exists()) {  			
+			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
+			_nDs.sort();
+		}
+		// Aggiorna:
+		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
+		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
+		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
+		checkForUpdates();	
+		initializeMap();
+		setupMediaPlayer();
+	}
+	public void setupMediaPlayer()
+	{
+		_playList = _localAudioGuideListLang;
+		checkEmptyAGList();
+			
+		textLanguage.setText(_language);
+				
+		// Mediaplayer
+		mp = new MediaPlayer();		
+		utils = new Utilities();
+		
+		// Listeners
+		songProgressBar.setOnSeekBarChangeListener(this); // Important
+		mp.setOnCompletionListener(this); // Important				
+		
+		try
+		{
+			//int i=Integer.parseInt(id_audioSD);
+			playSong(currentSongIndex);
+		}
+		catch(Exception e)
+		{Log.d("playSong",e.getMessage());}
+					
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -146,61 +203,53 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    songManager = new SongsManager(_language);		
 	  
 		//###############################
-		
-		// Recupero SenaVetus.kml
-	    if (!getMapPlacemarkList())
-		{							
-	    	// Il bottone non c'è più
-	    	//btnMap.setClickable(false);
-	    	return;
-		}
-		
+	    _locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    Criteria criteria = new Criteria();
+	    provider = _locationManager.getBestProvider(criteria, false);
+	    Location location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+	    
+	    Location currentLocation = getCurrentLocation();
+	    
 		// Recupero downloads.xml
 		if (!getAudioGuideList())
-		{	
-			// Il bottone non c'è più
-			//btnMap.setClickable(false);
+		{			
 			return;
 		}
-		File f = new File(_kmlSDPath);
-		if(f.exists()) {  
-//			_nDs = MapService.getNavigationDataSet("file://"+_kmlSDPath);
-			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
-			_nDs.sort();
-		}
-		// Aggiorna:
-		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
-		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
-		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
-		checkForUpdates();
-	    				
-		initializeMap();	
-		
-		//_playList = refreshPlayList();
-		_playList = _localAudioGuideListLang;
-		checkEmptyAGList();
-			
-		textLanguage.setText(_language);
-				
-		// Mediaplayer
-		mp = new MediaPlayer();		
-		utils = new Utilities();
-		
-		// Listeners
-		songProgressBar.setOnSeekBarChangeListener(this); // Important
-		mp.setOnCompletionListener(this); // Important				
-		
-		// By default play first song
-		//id_audioSD = "0";
-		try
-		{
-			//int i=Integer.parseInt(id_audioSD);
-			playSong(currentSongIndex);
-		}
-		catch(Exception e)
-		{Log.d("playSong",e.getMessage());}
-					
-//		playSong(0);
+//		File f = new File(_downloadsSDPath);
+//		if(f.exists()) {  			
+//			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
+//			_nDs.sort();
+//		}
+//		// Aggiorna:
+//		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
+//		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
+//		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
+//		checkForUpdates();
+//	    				
+//		initializeMap();	
+//		
+//		//_playList = refreshPlayList();
+//		_playList = _localAudioGuideListLang;
+//		checkEmptyAGList();
+//			
+//		textLanguage.setText(_language);
+//				
+//		// Mediaplayer
+//		mp = new MediaPlayer();		
+//		utils = new Utilities();
+//		
+//		// Listeners
+//		songProgressBar.setOnSeekBarChangeListener(this); // Important
+//		mp.setOnCompletionListener(this); // Important				
+//		
+//		try
+//		{
+//			//int i=Integer.parseInt(id_audioSD);
+//			playSong(currentSongIndex);
+//		}
+//		catch(Exception e)
+//		{Log.d("playSong",e.getMessage());}
+//					
 				
 		/**
 		 * Play button click event
@@ -385,6 +434,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 	}
 	
+
+	
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
@@ -395,26 +446,27 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			File picFolder = new File(_downloadsSDPath);
 			if (!picFolder.exists())
 			{
-				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
+				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG).show();
+				
 				return false;
 			}
 		}		
 		return true;
 	}
 //######################################################################
-	public boolean downloadMapItemes ()
-	{
-		try {
-			boolean downloadOk = Utilities.downloadFile(_urlKml, _filePath, _kmlFileName, _timeoutSec);
-			return downloadOk;
-		} catch (MalformedURLException e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		} catch (IOException e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		}
-	}
+//	public boolean downloadMapItemes ()
+//	{
+//		try {
+//			boolean downloadOk = Utilities.downloadFile(_urlKml, _filePath, _kmlFileName, _timeoutSec);
+//			return downloadOk;
+//		} catch (MalformedURLException e) {
+//			Log.d("downloadMapItemes()", e.getMessage());
+//			return false;
+//		} catch (IOException e) {
+//			Log.d("downloadMapItemes()", e.getMessage());
+//			return false;
+//		}
+//	}
 	
 	private void initializeMap() {
 		Location currentLocation = getCurrentLocation();
@@ -603,29 +655,88 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 
 		// Getting the name of the best provider
 		String provider = locationManager.getBestProvider(criteria, true);
-
+		
+		locationManager.requestLocationUpdates(provider, 0, 0, this);
+		
+		
 		// Getting Current Location
-		Location location = locationManager.getLastKnownLocation(provider);
+		Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+		this.onLocationChanged(location);
+		this.onLocationChanged(_location);
+		;
 		return location;
 	}
+//	private Location getCurrentLocation() {
+//		Location location = null;
+//	    try {
+//	    	
+//	    	LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//	        // getting GPS status
+//	        boolean isGPSEnabled = locationManager
+//	                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+//
+//	        // getting network status
+//	        boolean isNetworkEnabled = locationManager
+//	                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//
+//	        if (!isGPSEnabled && !isNetworkEnabled) {
+//	            // no network provider is enabled
+//	        } else {
+//	            //this.canGetLocation = true;
+//	            if (isNetworkEnabled) {
+//	                locationManager.requestLocationUpdates(
+//	                        LocationManager.NETWORK_PROVIDER,
+//	                        (long)15000,
+//	                        (float)1, (LocationListener) this);
+//	                Log.d("Network", "Network Enabled");
+//	                if (locationManager != null) {
+//	                    location = locationManager
+//	                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//	                    
+//	                }
+//	            }
+//	            // if GPS Enabled get lat/long using GPS Services
+//	            if (isGPSEnabled) {
+//	                if (location == null) {
+//	                    locationManager.requestLocationUpdates(
+//	                            LocationManager.GPS_PROVIDER,
+//	                            (long)15000,
+//		                        (float)1, (LocationListener) this);
+//	                    Log.d("GPS", "GPS Enabled");
+//	                    if (locationManager != null) {
+//	                        location = locationManager
+//	                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//	                        
+//	                    }
+//	                }
+//	            }
+//	        }
+//
+//	    } catch (Exception e) {
+//	        e.printStackTrace();
+//	    }
+//
+//	    return location;
+//	}
 	
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
-	private boolean getMapPlacemarkList() {
-		boolean downloadOk = downloadMapItemes();
-		if (!downloadOk)
-		{			
-			File picFolder = new File(_kmlSDPath);
-			if (!picFolder.exists())
-			{
-				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
-				return false;
-			}
-		}
-		
-		return true;
-	}
+//	private boolean getMapPlacemarkList() {
+//		boolean downloadOk = downloadMapItemes();
+//		if (!downloadOk)
+//		{			
+//			File picFolder = new File(_kmlSDPath);
+//			if (!picFolder.exists())
+//			{
+//				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
+//				return false;
+//			}
+//		}
+//		
+//		return true;
+//	}
 	//#################################################################################
 
 	@SuppressWarnings("unchecked")
@@ -892,5 +1003,112 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnPOIplay.setVisibility(4);
 		btnPOIdownload.setVisibility(4);
 	}
-	
+	private void setupProgessBar()
+	{						
+		
+		progressDialog.setTitle("In progress...");
+		progressDialog.setMessage("Loading...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setIndeterminate(false);
+		progressDialog.setMax(100);
+		progressDialog.setIcon(R.drawable.arrow_stop_down);
+		progressDialog.setCancelable(true);
+		progressDialog.show();
+        
+//		_progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//            	asyncDownload.cancel(true);            	
+//            }
+//        });	
+	}
+	public class RetriveAsyncFile extends AsyncTask<Void, Void, Boolean> {
+
+		private Activity context;
+	    public Exception exception;
+	    private int _timeoutSec=5;
+	    private String _filePath;
+	    private String _nomeFile;
+	    private String _url;
+	   
+	    
+	    
+	    public RetriveAsyncFile (Activity context, String url, String filePath, String nomeFile,
+				int timeoutSec)
+	    {
+	    	 this.context = context;
+	    	 
+	    	_url = url;
+	    	_filePath = filePath;
+	    	_nomeFile = nomeFile;
+	    	_timeoutSec = timeoutSec;  
+	    	
+	    	
+	    	 
+	    }
+	    
+	    protected Boolean doInBackground(Void...params) {
+	    	 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+	         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+	              getClass().getName());
+	         wl.acquire();	         
+	    	try {
+	            URL url= new URL(_url);
+	            final URLConnection conn = url.openConnection();
+				conn.setConnectTimeout(_timeoutSec * 1000);
+				conn.setReadTimeout(_timeoutSec * 1000);
+				conn.connect();
+				
+				Utilities.StreamToFile(url.openStream(), _filePath, _nomeFile);
+				
+	            return true;
+	            
+	        } catch (Exception e) {
+	            this.exception = e;  
+	            Log.d("RetriveAsyncFile", e.toString());
+	            return false;
+	        }
+	    	finally {
+	            wl.release();
+	        }
+	    }
+	    protected void onProgressUpdate(Integer... progress) {
+	        progressDialog.setProgress(progress[0]);        
+	   }
+	   
+	    @Override
+	    protected void onPostExecute(Boolean result) {
+
+	    	progressDialog.dismiss();
+	    	checkNewAudio();
+	     
+	    }
+
+	}
+	@Override
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		_location = location;
+		
+	}
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+	  @Override
+	  protected void onResume() {
+	    super.onResume();
+	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
+	  }
 }

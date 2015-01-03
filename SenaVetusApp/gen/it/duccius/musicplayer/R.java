@@ -559,7 +559,8 @@ containing a value of this type.
         public static final int rounded_corner=0x7f03000e;
         public static final int sd_row=0x7f03000f;
         public static final int sena=0x7f030010;
-        public static final int webview=0x7f030011;
+        public static final int start=0x7f030011;
+        public static final int webview=0x7f030012;
     }
     public static final class menu {
         public static final int geo=0x7f0b0000;

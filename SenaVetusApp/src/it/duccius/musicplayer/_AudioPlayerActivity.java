@@ -69,7 +69,7 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	
 	//public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
 	//public String _urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
-	public String _urlKml = Utilities.getUrlKml();
+	public String _urlKml = "";//Utilities.getUrlKml();
 	public String _kmlFileName = "SenaVetus.kml";
 	public String _kmlSDPath = Utilities.getKMLSDPath();
 	
@@ -87,12 +87,10 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		//int timeoutSec = 5;
 		
 		try {
-			boolean downloadOk = Utilities.downloadFile(_urlKml, _filePath, _kmlFileName, _timeoutSec);
-			return downloadOk;
-		} catch (MalformedURLException e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		} catch (IOException e) {
+//			boolean downloadOk = Utilities.downloadFile(_urlKml, _filePath, _kmlFileName, _timeoutSec);
+//			return downloadOk;
+			return true;
+		} catch (Exception e) {
 			Log.d("downloadMapItemes()", e.getMessage());
 			return false;
 		}
@@ -106,16 +104,14 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		
 		try {
 			
-			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
-			return downloadOk;
+//			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
+//			return downloadOk;
+			return true;
 			
-		} catch (MalformedURLException e) {
+		} catch (Exception e) {
 			Log.d("downloadMapItemes()", e.getMessage());
 			return false;
-		} catch (IOException e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		}
+		} 
 	}
 	
 	@SuppressWarnings("unchecked")

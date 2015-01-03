@@ -237,7 +237,8 @@ int layout result 0x7f03000d
 int layout rounded_corner 0x7f03000e
 int layout sd_row 0x7f03000f
 int layout sena 0x7f030010
-int layout webview 0x7f030011
+int layout start 0x7f030011
+int layout webview 0x7f030012
 int menu geo 0x7f0b0000
 int menu list_item 0x7f0b0001
 int menu main 0x7f0b0002
