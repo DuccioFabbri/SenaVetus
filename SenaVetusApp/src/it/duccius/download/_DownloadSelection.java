@@ -2,6 +2,7 @@ package it.duccius.download;
  
 import it.duccius.musicplayer.ApplicationData;
 import it.duccius.musicplayer.AudioGuide;
+import it.duccius.musicplayer.AudioGuideList;
 import it.duccius.musicplayer.PlayListAudio;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.SongsManager;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-public class DownloadSelection extends Activity implements
+public class _DownloadSelection extends Activity implements
         OnClickListener {
     Button _button;
     ListView _listView;
@@ -32,7 +34,10 @@ public class DownloadSelection extends Activity implements
     ArrayList<AudioGuide> _guides =  new ArrayList<AudioGuide>();
     
     ArrayList<AudioGuide> _audioToDownload; 
- 
+    AudioGuideList _audioToDownloadLang = new AudioGuideList();
+    ArrayList<AudioGuide> ags;
+    ArrayList<AudioGuide> _playList=  new ArrayList<AudioGuide>();
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,10 +46,16 @@ public class DownloadSelection extends Activity implements
         Intent intent = getIntent();		
 	    try
 	    {
-	    	_language = intent.getExtras().getString("language");	    	
+	    	//_language = intent.getExtras().getString("language");	
+	    	//ArrayList audioToDownloadLang = (ArrayList)intent.getSerializableExtra("_audioToDownloadLang");
+	    	_playList = (ArrayList<AudioGuide>) intent.getExtras().getSerializable("_playList");
+	    	ags = (ArrayList<AudioGuide>) intent.getExtras().getSerializable("_audioToDownloadLang");
+	    	_audioToDownloadLang.setAudioGuides(ags);
 	    }
 	    catch(Exception e)
-	    {}
+	    {
+	    	Log.d(getPackageName(), e.getMessage());
+	    }
 	    
         setContentView(R.layout.download_selection);        
         setupLangSpinner();

@@ -234,7 +234,10 @@ public class SongsManager {
 			//for (Audio audioInSD: songsListData )
 			AudioGuide newAudioGuide = sdAudios.getFromName(disponibileSuServer.getName());
 			if (newAudioGuide == null)
+			{
+				disponibileSuServer.setToBeDownloaded(true);
 				toBeDownloaded.add(disponibileSuServer);
+			}
 //			for (AudioGuide audioInSD: sdAudios )
 //			{							
 //				if( audioInSD.getName().equals(disponibileSuServer.getName())){

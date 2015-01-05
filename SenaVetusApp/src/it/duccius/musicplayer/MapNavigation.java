@@ -1,6 +1,8 @@
 package it.duccius.musicplayer;
 
 //import it.duccius.musicplayer.RetriveAsyncFile;
+import it.duccius.download.DownloadAudio;
+import it.duccius.download._DownloadSelection;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.R.drawable;
 import it.duccius.musicplayer.R.id;
@@ -76,6 +78,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnShuffle;
 	private ImageButton btnMap;	
 	private ImageButton btnPOIplay;
+	private ImageButton btnPOIinfo;
 	private ImageButton btnPOIdownload;
 	
 	private ImageView songThumbnail;
@@ -121,7 +124,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	ArrayList<AudioGuide> _localAudioGuideListLang = new ArrayList<AudioGuide>();
 	ArrayList<AudioGuide> _audioGuideListLang = new ArrayList<AudioGuide>();
-	ArrayList<AudioGuide> _audioToDownloadLang = new ArrayList<AudioGuide>();
+//	ArrayList<AudioGuide> _audioToDownloadLang = new ArrayList<AudioGuide>();
+	AudioGuideList _audioToDownloadLang = new AudioGuideList();
 	
 	NavigationDataSet _nDs = new NavigationDataSet();
 	String _currentPOIcoords = "";
@@ -203,53 +207,20 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    songManager = new SongsManager(_language);		
 	  
 		//###############################
-	    _locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	    Criteria criteria = new Criteria();
-	    provider = _locationManager.getBestProvider(criteria, false);
-	    Location location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-	    
-	    Location currentLocation = getCurrentLocation();
+	    getCurrentLocation();
 	    
 		// Recupero downloads.xml
 		if (!getAudioGuideList())
 		{			
 			return;
 		}
-//		File f = new File(_downloadsSDPath);
-//		if(f.exists()) {  			
-//			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
-//			_nDs.sort();
-//		}
+		
 //		// Aggiorna:
 //		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
 //		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
 //		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
 //		checkForUpdates();
-//	    				
-//		initializeMap();	
-//		
-//		//_playList = refreshPlayList();
-//		_playList = _localAudioGuideListLang;
-//		checkEmptyAGList();
-//			
-//		textLanguage.setText(_language);
-//				
-//		// Mediaplayer
-//		mp = new MediaPlayer();		
-//		utils = new Utilities();
-//		
-//		// Listeners
-//		songProgressBar.setOnSeekBarChangeListener(this); // Important
-//		mp.setOnCompletionListener(this); // Important				
-//		
-//		try
-//		{
-//			//int i=Integer.parseInt(id_audioSD);
-//			playSong(currentSongIndex);
-//		}
-//		catch(Exception e)
-//		{Log.d("playSong",e.getMessage());}
-//					
+			
 				
 		/**
 		 * Play button click event
@@ -414,23 +385,30 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		 * Launches list activity which displays list of songs
 		 * Per semplificare l'interfaccia ho tolto la possibilità di scegliere i brani dalla playlist
 		 * */
-//		btnPlaylist.setOnClickListener(new View.OnClickListener() 
-//		{
-//			
-//			@Override
-//			public void onClick(View arg0) {
-//				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
-//				
-//				//startActivity(i);
+		btnPOIinfo.setOnClickListener(new View.OnClickListener() 
+		{
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), DownloadAudio.class);
+				
+				//startActivity(i);
 //				Bundle b = new Bundle();
-//		        b.putSerializable("_playList", _playList);		       		        
+//		        //b.putSerializable("_audioToDownloadLang", _audioToDownloadLang);		       		        
 //		        b.putString("language", _language);		 
-//		        // Add the bundle to the intent.
-//		        i.putExtras(b);
-//				startActivityForResult(i, 100);	
-//				//finish();
-//			}
-//		});
+		        // Add the bundle to the intent.
+		        //i.putExtra("language", _language);
+		        //i.putExtra("_audioToDownloadLang", _audioToDownloadLang);
+		        Bundle b = new Bundle();
+		        b.putSerializable("_playList", _playList);
+		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
+		        b.putString("language", _language);		 
+		        // Add the bundle to the intent.
+		        i.putExtras(b);
+				startActivityForResult(i, 100);	
+				//finish();
+			}
+		});
 		
 	}
 	
@@ -454,24 +432,17 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		return true;
 	}
 //######################################################################
-//	public boolean downloadMapItemes ()
-//	{
-//		try {
-//			boolean downloadOk = Utilities.downloadFile(_urlKml, _filePath, _kmlFileName, _timeoutSec);
-//			return downloadOk;
-//		} catch (MalformedURLException e) {
-//			Log.d("downloadMapItemes()", e.getMessage());
-//			return false;
-//		} catch (IOException e) {
-//			Log.d("downloadMapItemes()", e.getMessage());
-//			return false;
-//		}
-//	}
 	
 	private void initializeMap() {
-		Location currentLocation = getCurrentLocation();
-		LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		LatLng to = from;
+		//Location currentLocation = getCurrentLocation();
+		Location currentLocation = _location;
+		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
+		LatLng from;
+		if (currentLocation != null)
+			from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+		else
+			from = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
+		LatLng to = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
 		setUpMapIfNeeded(from, to);
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
@@ -496,6 +467,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		//likely want to create a List of whatever type of items you're trying to add to the map and edit this appropriately
 		//Your "Item" class will need at least a unique id, latitude and longitude.
 	private HashMap<String, Marker> courseMarkers = new HashMap<String, Marker>();
+	
+	private Marker _activeMarker;
+	private Marker _previousMarker;
 	
 		private void addItemsToMap(NavigationDataSet items)
 		{
@@ -555,8 +529,17 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    {	       
 			@Override
 			public boolean onMarkerClick(Marker marker) {
-				// TODO Auto-generated method stub
+				//
+				if(_activeMarker != null)
+					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+				//----------
+				_previousMarker = _activeMarker;				
+				_activeMarker = marker;
+				//----------
+				
+				//TODO Auto-generated method stub
 				_clickedMarker = marker.getTitle();
+			
 				checkReadyToPlay();
 				
 				checkReadyToDownload();
@@ -569,15 +552,21 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				int visibility =4;
 				_clickedMarkerIndex = alString.indexOf(_clickedMarker);
 				if (_clickedMarkerIndex>-1)
+				{
+					if (_previousMarker != null && _activeMarker != null &&_previousMarker == _activeMarker)
+					{
+						if(_playList != null && _playList.size()>0 && _clickedMarkerIndex>-1)
+						{					
+							playSong(_clickedMarkerIndex);
+						}							
+					}
+					else
+					{
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));						
+					}
+					
 					visibility = 0;
-//				for (String tit: alString)
-//				{
-//					if (tit.equals(_clickedMarker))
-//					{						
-//						visibility = 0;
-//						break;
-//					}
-//				}
+				}
 				
 				btnPOIplay = (ImageButton) findViewById(R.id.btnPOIplay);
 				btnPOIdownload.setImageResource(R.drawable.btn_play);
@@ -592,6 +581,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 					if (tit.equals(_clickedMarker))
 					{
 						visibility = 0;
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 						break;
 					}
 				}
@@ -629,7 +619,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	        	// Construct a CameraPosition focusing on Mountain View and animate the camera to that position.
 	        	CameraPosition cameraPosition = new CameraPosition.Builder()
 	        	    .target(from)      // Sets the center of the map to Mountain View
-	        	    .zoom(19)                   // Sets the zoom
+	        	    .zoom(8)                   // Sets the zoom
 	        	    .bearing(90)                // Sets the orientation of the camera to east
 	        	    .tilt(30)                   // Sets the tilt of the camera to 30 degrees
 	        	    .build();                   // Creates a CameraPosition from the builder
@@ -646,97 +636,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	        }
 	    }
 	}
-	private Location getCurrentLocation() {
-		// Getting LocationManager object from System Service LOCATION_SERVICE
-		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-		// Creating a criteria object to retrieve provider
-		Criteria criteria = new Criteria();
-
-		// Getting the name of the best provider
-		String provider = locationManager.getBestProvider(criteria, true);
-		
-		locationManager.requestLocationUpdates(provider, 0, 0, this);
-		
-		
-		// Getting Current Location
-		Location location = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-		this.onLocationChanged(location);
-		this.onLocationChanged(_location);
-		;
-		return location;
-	}
-//	private Location getCurrentLocation() {
-//		Location location = null;
-//	    try {
-//	    	
-//	    	LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//
-//	        // getting GPS status
-//	        boolean isGPSEnabled = locationManager
-//	                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-//
-//	        // getting network status
-//	        boolean isNetworkEnabled = locationManager
-//	                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-//
-//	        if (!isGPSEnabled && !isNetworkEnabled) {
-//	            // no network provider is enabled
-//	        } else {
-//	            //this.canGetLocation = true;
-//	            if (isNetworkEnabled) {
-//	                locationManager.requestLocationUpdates(
-//	                        LocationManager.NETWORK_PROVIDER,
-//	                        (long)15000,
-//	                        (float)1, (LocationListener) this);
-//	                Log.d("Network", "Network Enabled");
-//	                if (locationManager != null) {
-//	                    location = locationManager
-//	                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//	                    
-//	                }
-//	            }
-//	            // if GPS Enabled get lat/long using GPS Services
-//	            if (isGPSEnabled) {
-//	                if (location == null) {
-//	                    locationManager.requestLocationUpdates(
-//	                            LocationManager.GPS_PROVIDER,
-//	                            (long)15000,
-//		                        (float)1, (LocationListener) this);
-//	                    Log.d("GPS", "GPS Enabled");
-//	                    if (locationManager != null) {
-//	                        location = locationManager
-//	                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//	                        
-//	                    }
-//	                }
-//	            }
-//	        }
-//
-//	    } catch (Exception e) {
-//	        e.printStackTrace();
-//	    }
-//
-//	    return location;
-//	}
-	
-	// Provo a scaricare una nuova versione del file,
-	// se non ci riesco allora cerco di usare una versione già presente in locale
-	// se non ho neanche questa opzione restituisco false.
-//	private boolean getMapPlacemarkList() {
-//		boolean downloadOk = downloadMapItemes();
-//		if (!downloadOk)
-//		{			
-//			File picFolder = new File(_kmlSDPath);
-//			if (!picFolder.exists())
-//			{
-//				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
-//				return false;
-//			}
-//		}
-//		
-//		return true;
-//	}
 	//#################################################################################
 
 	@SuppressWarnings("unchecked")
@@ -744,10 +644,14 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	   if (requestCode == 100)
 	   {		  	
 		    try
-		    {		    	
-		    	_language = intent.getExtras().getString("language");
-		    	// intent.getExtras().getString("id_audioSD");
-		    	_playList = (ArrayList<AudioGuide>) intent.getExtras().getSerializable("selectedItems");
+		    {		   if(resultCode == RESULT_OK) 	{
+			//		    	_language = intent.getExtras().getString("language");
+			//		    	// intent.getExtras().getString("id_audioSD");
+			//		    	_playList = (ArrayList<AudioGuide>) intent.getExtras().getSerializable("selectedItems");
+					    	if (mp != null)
+					    		mp.release();
+					    	checkNewAudio();
+		    			}
 		    }
 		    catch(Exception e)
 		    {
@@ -781,7 +685,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			AudioGuideList audioGuideListLang = new AudioGuideList();
 			audioGuideListLang.setAudioGuides(_audioGuideListLang);
 			
-			_audioToDownloadLang = songManager.getAudioToDownload(localAudioGuideListLang,audioGuideListLang ).getAudioGuides();
+			_audioToDownloadLang = songManager.getAudioToDownload(localAudioGuideListLang,audioGuideListLang );
 			
 			
 			Collections.sort(_audioToDownloadLang);
@@ -827,6 +731,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnMap = (ImageButton) findViewById(R.id.btnMap);
 		btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
+		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);
 		
 		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
 		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
@@ -1030,9 +935,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    private String _filePath;
 	    private String _nomeFile;
 	    private String _url;
-	   
-	    
-	    
+	   	    	
 	    public RetriveAsyncFile (Activity context, String url, String filePath, String nomeFile,
 				int timeoutSec)
 	    {
@@ -1041,10 +944,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    	_url = url;
 	    	_filePath = filePath;
 	    	_nomeFile = nomeFile;
-	    	_timeoutSec = timeoutSec;  
-	    	
-	    	
-	    	 
+	    	_timeoutSec = timeoutSec;  	    		    		    	 
 	    }
 	    
 	    protected Boolean doInBackground(Void...params) {
@@ -1060,7 +960,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				conn.connect();
 				
 				Utilities.StreamToFile(url.openStream(), _filePath, _nomeFile);
-				
+				 
+//	             publishProgress((int) ((i / (float) count) * 100));
 	            return true;
 	            
 	        } catch (Exception e) {
@@ -1085,11 +986,27 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    }
 
 	}
+	/**
+	 * Recupera l'attuale posizione e la assegna a '_location'
+	 * Uso 'PASSIVE_PROVIDER' perchè con altre soluzioni ho avuto problemi.
+	 * 
+	 * http://www.vogella.com/tutorials/AndroidLocationAPI/article.html
+	 * http://stackoverflow.com/questions/19621882/getlastknownlocation-returning-null?rq=1
+	 */
+	private void getCurrentLocation() {
+		_locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    Criteria criteria = new Criteria();
+	    provider = _locationManager.getBestProvider(criteria, false);
+	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
+	    _location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+	}
 	@Override
 	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
-		_location = location;
-		
+		 if(_location == null)
+		    {
+		    	_location = location;
+		    }		
 	}
 	@Override
 	public void onProviderDisabled(String provider) {
@@ -1111,4 +1028,5 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    super.onResume();
 	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
 	  }
+	  
 }

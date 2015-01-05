@@ -1,6 +1,6 @@
 package it.duccius.musicplayer;
 
-import it.duccius.download.DownloadSelection;
+import it.duccius.download._DownloadSelection;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -279,7 +279,7 @@ public class _PlayListActivity extends ListActivity {
 	public void updateAudioguides (View view)
 	{
 		Intent in = new Intent(this,
-				DownloadSelection.class);
+				_DownloadSelection.class);
 		
 		in.putExtra("language", getSelectedLang());
 		

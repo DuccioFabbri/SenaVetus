@@ -5,7 +5,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.lang.Iterable;
 
-public class AudioGuideList implements Iterable<AudioGuide>{ 
+public class AudioGuideList extends ArrayList<AudioGuide> implements Iterable<AudioGuide>{ 
+
 
 private ArrayList<AudioGuide> audioGuides = new ArrayList<AudioGuide>();
 
@@ -49,9 +50,17 @@ public String toString() {
     }
     return s;
 }
+public ArrayList<String> getAudioTitles() {
+	ArrayList<String> audioTitles = new ArrayList<String>();
+	for (AudioGuide audio: audioGuides)
+	{
+		audioTitles.add(audio.getTitle());
+	}
+	return audioTitles;
+}
 
-public void add(AudioGuide newAudioGuide) {
-	audioGuides.add(newAudioGuide);
+public boolean add(AudioGuide newAudioGuide) {
+	return audioGuides.add(newAudioGuide);
 }
 
 public ArrayList<AudioGuide> getAudioGuides() {

@@ -4,6 +4,8 @@ package it.duccius.download;
 //http://stackoverflow.com/questions/3028306/download-a-file-with-android-and-showing-the-progress-in-a-progressdialog
 
 import it.duccius.musicplayer.ApplicationData;
+import it.duccius.musicplayer.AudioGuide;
+import it.duccius.musicplayer.MapNavigation;
 import it.duccius.musicplayer.PlayListAudio;
 import it.duccius.musicplayer.R;
 
@@ -67,16 +69,17 @@ public class Download extends Activity {
             setContentView(R.layout.activity_main);
             listView = (ListView) findViewById(R.id.imageList);
  
-            Bundle b = getIntent().getExtras();
-            String[] resultArr = b.getStringArray("selectedItems");
-            _language = b.getString("language");
+            Intent intent = getIntent();
+            //String[] resultArr = b.getStringArray("selectedItems");
+            ArrayList<String> selectedItems = (ArrayList<String>) intent.getExtras().getSerializable("selectedItems");
+            _language = intent.getStringExtra("language");
             
            
         /*Creating and executing background task*/
             //http://developer.android.com/reference/android/os/AsyncTask.html
                     
         final GetXMLTask task = new GetXMLTask(this);
-        task.execute(resultArr);
+        task.execute(selectedItems);
  
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("In progress...");
@@ -158,7 +161,7 @@ public class Download extends Activity {
         return true;
     }
  
-    private class GetXMLTask extends AsyncTask<String, Integer, List<RowItem>> {
+    private class GetXMLTask extends AsyncTask<ArrayList<String>, Integer, List<RowItem>> {
         private Activity context;
         List<RowItem> rowItems;
         int noOfURLs;
@@ -167,7 +170,7 @@ public class Download extends Activity {
         }
  
         @Override
-        protected List<RowItem> doInBackground(String... sUrl) {
+        protected List<RowItem> doInBackground(ArrayList<String>... sUrl) {
             // take CPU lock to prevent CPU from going off if the user 
             // presses the power button during download
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -177,10 +180,10 @@ public class Download extends Activity {
 
             rowItems = new ArrayList<RowItem>();
             noOfURLs=sUrl.length;
-            _tempSdFld = getTempSDFld(sUrl[0]);
-            _destSdFld = getDestSDFld(sUrl[0]);
+            _tempSdFld = getTempSDFld(sUrl[0].get(0));
+            _destSdFld = getDestSDFld(sUrl[0].get(0));
             
-            _destSdImgFld = getdestSdImgFld(sUrl[0]);            
+            _destSdImgFld = getdestSdImgFld(sUrl[0].get(0));            
             
             //createFolder(_tempSdFld);
             verifyFile(_tempSdFld);
@@ -190,11 +193,11 @@ public class Download extends Activity {
             try {
             	for (int i=0; i<sUrl.length; i++ )
             	{try {
-            		rowItems = getWebAudio(sUrl[i]);
+            		rowItems = getWebAudio(sUrl[0].get(i));
             		if (rowItems != null)
 	            		{
 	            		//String picUrl = sUrl[i].replace(".mp3", ".jpg") ;
-	            		String picUrl =getImgUrl(sUrl[i]);
+	            		String picUrl =getImgUrl(sUrl[0].get(i));
 	            		Bitmap pic = getWebPic(picUrl);
 	            		FileOutputStream out;
 						
@@ -415,7 +418,7 @@ public class Download extends Activity {
 //        listView.setAdapter(listViewAdapter);
         progressDialog.dismiss();
         Intent intent = new Intent(getApplicationContext(),
-        		PlayListAudio.class);
+        		MapNavigation.class);
      		
      		// Sending songIndex to PlayerActivity        
         intent.putExtra("language", _language);       

@@ -1,6 +1,6 @@
 package it.duccius.musicplayer;
 
-import it.duccius.download.DownloadSelection;
+import it.duccius.download._DownloadSelection;
 
 import java.util.ArrayList;
 
@@ -222,7 +222,7 @@ OnClickListener{
     public void  update ()
     {
     	 Intent intent = new Intent(getApplicationContext(),
-         		DownloadSelection.class);
+         		_DownloadSelection.class);
   
          // Create a bundle object
          Bundle b = new Bundle();
