@@ -1,4 +1,6 @@
 package it.duccius.musicplayer;
+import it.duccius.download.RowItem;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -8,6 +10,7 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -59,6 +62,12 @@ public class Utilities {
 //			return false;
 //		}
 //	}
+	// Interfaccia da richiamare quando il download del file in asincrono tramite DownloadFile è terminato
+	public interface  MyCallbackInterface {
+
+        void onDownloadFinished(List<RowItem> rowItems);
+    }
+
 	private static void verifyFile(String filePath) {
 		File picFolder = new File(filePath);
 		if (!picFolder.exists())
@@ -96,18 +105,30 @@ public class Utilities {
 				}
 		    }
 	}
+	public static  String getTempSDFldLang(String language) {
+			String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+language;
+			return sourcePath;
+		}
 	public static String getTempSDFld() {
 		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp";
 		return sourcePath;
 	}
+	public static String getDestSDFldLang(String language) {
+			String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+ language;
+			return sourcePath;
+		}
 	public static String getDownloadsSDPath() {
 		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+"downloads.xml";
 		return sourcePath;
 	}
-	public static String getKMLSDPath() {
-		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+"SenaVetus.kml";
-		return sourcePath;
-	}
+	public static String getdestSdImgFld() {
+			String destSdImgFld = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getPicFolder();
+			return destSdImgFld;
+		}
+//	public static String getKMLSDPath() {
+//		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+"SenaVetus.kml";
+//		return sourcePath;
+//	}
 	/**
 	 * Function to convert milliseconds time to
 	 * Timer Format

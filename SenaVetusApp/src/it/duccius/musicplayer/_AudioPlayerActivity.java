@@ -69,9 +69,9 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	
 	//public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
 	//public String _urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
-	public String _urlKml = "";//Utilities.getUrlKml();
-	public String _kmlFileName = "SenaVetus.kml";
-	public String _kmlSDPath = Utilities.getKMLSDPath();
+	//public String _urlKml = "";//Utilities.getUrlKml();
+	//public String _kmlFileName = "SenaVetus.kml";
+	//public String _kmlSDPath = Utilities.getKMLSDPath();
 	
 	public int _timeoutSec = 5;
 	
@@ -131,12 +131,12 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	  
 		//###############################
 		
-		// Recupero SenaVetus.kml
-		if (!getMapPlacemarkList())
-		{			
-			btnMap.setClickable(false);
-			return;
-		}
+//		// Recupero SenaVetus.kml
+//		if (!getMapPlacemarkList())
+//		{			
+//			btnMap.setClickable(false);
+//			return;
+//		}
 		
 		// Recupero downloads.xml
 		if (!getAudioGuideList())
@@ -339,20 +339,20 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
-	private boolean getMapPlacemarkList() {
-		boolean downloadOk = downloadMapItemes();
-		if (!downloadOk)
-		{			
-			File picFolder = new File(_kmlSDPath);
-			if (!picFolder.exists())
-			{
-				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
-				return false;
-			}
-		}
-		
-		return true;
-	}	
+//	private boolean getMapPlacemarkList() {
+//		boolean downloadOk = downloadMapItemes();
+//		if (!downloadOk)
+//		{			
+//			File picFolder = new File(_kmlSDPath);
+//			if (!picFolder.exists())
+//			{
+//				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
+//				return false;
+//			}
+//		}
+//		
+//		return true;
+//	}	
 	@SuppressWarnings("unchecked")
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 	   if (requestCode == 100)

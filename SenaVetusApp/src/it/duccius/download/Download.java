@@ -161,7 +161,7 @@ public class Download extends Activity {
         return true;
     }
  
-    private class GetXMLTask extends AsyncTask<ArrayList<String>, Integer, List<RowItem>> {
+    public class GetXMLTask extends AsyncTask<ArrayList<String>, Integer, List<RowItem>> {
         private Activity context;
         List<RowItem> rowItems;
         int noOfURLs;
@@ -170,7 +170,7 @@ public class Download extends Activity {
         }
  
         @Override
-        protected List<RowItem> doInBackground(ArrayList<String>... sUrl) {
+        public List<RowItem> doInBackground(ArrayList<String>... sUrl) {
             // take CPU lock to prevent CPU from going off if the user 
             // presses the power button during download
             PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -417,8 +417,7 @@ public class Download extends Activity {
 //        listViewAdapter = new CustomListViewAdapter(context, rowItems);
 //        listView.setAdapter(listViewAdapter);
         progressDialog.dismiss();
-        Intent intent = new Intent(getApplicationContext(),
-        		MapNavigation.class);
+        Intent intent = new Intent();
      		
      		// Sending songIndex to PlayerActivity        
         intent.putExtra("language", _language);       
@@ -432,7 +431,7 @@ public class Download extends Activity {
         finish();
        }
 
-	private void closingActivity() {
+	public void closingActivity() {
 		deleteDirContents(_tempSdFld);
      // Starting new intent
        

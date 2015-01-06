@@ -1,12 +1,17 @@
 package it.duccius.musicplayer;
 
 //import it.duccius.musicplayer.RetriveAsyncFile;
+import it.duccius.download.Download;
 import it.duccius.download.DownloadAudio;
+import it.duccius.download.DownloadFile;
+import it.duccius.download.RowItem;
 import it.duccius.download._DownloadSelection;
+//import it.duccius.download.Download.GetXMLTask;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.R.drawable;
 import it.duccius.musicplayer.R.id;
 import it.duccius.musicplayer.R.layout;
+import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import it.duccius.maps.MapService;
 import it.duccius.maps.NavigationDataSet;
@@ -20,6 +25,7 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -106,17 +112,11 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private TextView textLanguage;			
 	public static boolean checkConn = false;		
 	
-	//public String _urlDownloads = "http://2.227.2.94:8080/audio/downloads.xml";
 	public String _urlDownloads = Utilities.getUrlDownloads();
 	public String _filePath = Utilities.getTempSDFld();
 	public String _downloadsFileName = "downloads.xml";
 	public String _downloadsSDPath = Utilities.getDownloadsSDPath();
-	
-	//public String _urlKml = "http://2.227.2.94:8080/audio/SenaVetus.kml";
-	//public String _urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
-//	public String _urlKml = Utilities.getUrlKml();
-	//public String _kmlFileName = "SenaVetus.kml";
-//	public String _kmlSDPath = Utilities.getKMLSDPath();
+
 	public String _clickedMarker ;
 	public int _clickedMarkerIndex;
 	
@@ -137,16 +137,18 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public boolean downloadAudioGuideList ()
 	{			
 		try {
+			ArrayList<String> arL = new ArrayList<String>();
 			
-//			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
-//			return downloadOk;
-			final RetriveAsyncFile asyncDownload = new RetriveAsyncFile(this, _urlDownloads,_filePath,_downloadsFileName,_timeoutSec);
-			progressDialog = new ProgressDialog(this);
-			setupProgessBar();
-			asyncDownload.execute();						
+			arL.add(_urlDownloads);
 			
-			if (asyncDownload.exception != null)
-				throw asyncDownload.exception;
+			starDownload(arL,_filePath,new MyCallbackInterface() {
+
+	            @Override
+	            public void onDownloadFinished(List<RowItem> rowItems) {
+	                // Do something when download finished
+	            	checkNewAudio();
+	            }
+	        });
 			return true;
 			
 		} catch (Exception e) {
@@ -346,40 +348,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				
 			}
 		});
-		/**
-		 * POIdownload button click event
-		 * download corresponding audio
-		 * */
-		btnPOIdownload.setOnClickListener(new View.OnClickListener() {			
-			@Override
-			public void onClick(View arg0) {				
-				if(_playList != null && _playList.size()>0)
-				{
-					if(currentSongIndex > 0){
-						playSong(currentSongIndex - 1);
-						currentSongIndex = currentSongIndex - 1;
-					}else{
-						// play last song
-						playSong(_playList.size() - 1);
-						currentSongIndex = _playList.size() - 1;
-					}
-				}				
-			}
-		});
-		/**
-		 * POIplay button click event
-		 * pays corresponding audio
-		 * */
-		btnPOIplay.setOnClickListener(new View.OnClickListener() {			
-			@Override
-			public void onClick(View arg0) {
-				//_clickedMarker
-				if(_playList != null && _playList.size()>0 && _clickedMarkerIndex>-1)
-				{					
-					playSong(_clickedMarkerIndex);
-				}				
-			}
-		});
+		
 		/**
 		 * Button Click event for Play list click event
 		 * Launches list activity which displays list of songs
@@ -392,20 +361,13 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), DownloadAudio.class);
 				
-				//startActivity(i);
-//				Bundle b = new Bundle();
-//		        //b.putSerializable("_audioToDownloadLang", _audioToDownloadLang);		       		        
-//		        b.putString("language", _language);		 
-		        // Add the bundle to the intent.
-		        //i.putExtra("language", _language);
-		        //i.putExtra("_audioToDownloadLang", _audioToDownloadLang);
 		        Bundle b = new Bundle();
 		        b.putSerializable("_playList", _playList);
 		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
 		        b.putString("language", _language);		 
 		        // Add the bundle to the intent.
 		        i.putExtras(b);
-				startActivityForResult(i, 100);	
+				startActivityForResult(i, 1);	
 				//finish();
 			}
 		});
@@ -518,11 +480,97 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 
 		        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
 		        .position(MarkerPos)
-			  .title(item.getTitle());
+		        .title(item.getTitle());
 	         // .snippet("Population: 4,137,400");
+			  	//mo.snippet("XXXXXX");
 			return mo;
 			
 		}
+		private void checkReadyToPlay() {
+			ArrayList<String> alString = getAdapterSource(_localAudioGuideListLang); 
+//			int visibility =4;
+			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
+			if (_clickedMarkerIndex>-1)
+			{
+				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
+				{
+					if(_playList != null && _playList.size()>0 )
+					{					
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+						_activeMarker.setSnippet("" );
+						playSong(_clickedMarkerIndex);
+					}							
+				}
+				else
+				{
+					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+					_activeMarker.setSnippet("Click and Play" );
+				}					
+			}				
+		}
+		private void checkReadyToDownload() {
+			ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
+			int clickedMarkerIndex = alString.indexOf(_clickedMarker);
+			if (clickedMarkerIndex>-1)
+			{
+				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
+				{
+					if(_audioToDownloadLang != null && _audioToDownloadLang.getAudioGuides().size()>0 )
+					{					
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+						//playSong(_clickedMarkerIndex);
+						
+						ArrayList<String> arL = new ArrayList<String>();
+						AudioGuide ag = _audioToDownloadLang.getFromPosition(clickedMarkerIndex);
+						String str = ag.getPath();
+						arL.add(str);
+						//downloadAudioGuide (arL);
+						
+						starDownload(arL,new MyCallbackInterface() {
+
+				            @Override
+				            public void onDownloadFinished(List<RowItem> rowItems) {
+				                // Do something when download finished
+				            	if (mp != null)
+						    		mp.release();
+				            	checkNewAudio();
+				            }
+				        });
+					}							
+				}
+				else
+				{
+					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));	
+					_activeMarker.setSnippet("Click and Download" );
+				}					
+			}				
+		}
+		private void starDownload(ArrayList<String> arL, MyCallbackInterface callback) {
+			ProgressDialog progressDialog = new ProgressDialog((this));
+			progressDialog.setTitle("In progress...");
+			progressDialog.setMessage("Loading...");
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setIndeterminate(false);
+			progressDialog.setMax(100);
+			progressDialog.setIcon(R.drawable.arrow_stop_down);
+			progressDialog.setCancelable(true);
+			progressDialog.show();
+			DownloadFile df = new DownloadFile(this,_language,progressDialog, callback);
+			df.execute(arL);
+		}
+		private void starDownload(ArrayList<String> arL, String destPath,MyCallbackInterface callback) {
+			ProgressDialog progressDialog = new ProgressDialog((this));
+			progressDialog.setTitle("In progress...");
+			progressDialog.setMessage("Loading...");
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setIndeterminate(false);
+			progressDialog.setMax(100);
+			progressDialog.setIcon(R.drawable.arrow_stop_down);
+			progressDialog.setCancelable(true);
+			progressDialog.show();
+			DownloadFile df = new DownloadFile(this,_language,destPath,progressDialog,callback);
+			df.execute(arL);
+		}		
 	public OnMarkerClickListener getMarkerClickListener()
 	{
 	    return new OnMarkerClickListener() 
@@ -539,7 +587,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				
 				//TODO Auto-generated method stub
 				_clickedMarker = marker.getTitle();
-			
+				
 				checkReadyToPlay();
 				
 				checkReadyToDownload();
@@ -547,50 +595,12 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				return false;
 			}
 			
-			private void checkReadyToPlay() {
-				ArrayList<String> alString = getAdapterSource(_localAudioGuideListLang); 
-				int visibility =4;
-				_clickedMarkerIndex = alString.indexOf(_clickedMarker);
-				if (_clickedMarkerIndex>-1)
-				{
-					if (_previousMarker != null && _activeMarker != null &&_previousMarker == _activeMarker)
-					{
-						if(_playList != null && _playList.size()>0 && _clickedMarkerIndex>-1)
-						{					
-							playSong(_clickedMarkerIndex);
-						}							
-					}
-					else
-					{
-						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));						
-					}
-					
-					visibility = 0;
-				}
-				
-				btnPOIplay = (ImageButton) findViewById(R.id.btnPOIplay);
-				btnPOIdownload.setImageResource(R.drawable.btn_play);
-				btnPOIplay.setVisibility(visibility);
-			}
-			private void checkReadyToDownload() {
-				ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
-				int visibility =4;
-				
-				for (String tit: alString)
-				{
-					if (tit.equals(_clickedMarker))
-					{
-						visibility = 0;
-						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-						break;
-					}
-				}
-				btnPOIdownload = (ImageButton) findViewById(R.id.btnPOIdownload);
-				btnPOIdownload.setImageResource(R.drawable.btn_download);
-				btnPOIdownload.setVisibility(visibility);
-			}
+			
 	    };
+	    
 	}
+
+	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
 		//_sdAudios = getSdAudios();	
 		SongsManager sm = new SongsManager(_language);				
@@ -641,7 +651,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 
 	@SuppressWarnings("unchecked")
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-	   if (requestCode == 100)
+	   if (requestCode == 1)
 	   {		  	
 		    try
 		    {		   if(resultCode == RESULT_OK) 	{
@@ -690,10 +700,13 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			
 			Collections.sort(_audioToDownloadLang);
 			
-			if (!_audioToDownloadLang.isEmpty())
+			if (!_audioToDownloadLang.getAudioGuides().isEmpty())
 			{
+				btnPOIinfo.setVisibility(View.VISIBLE);
 				Toast.makeText(getApplicationContext(), "Sono disponibili nuove audiogide\n. Accedi alla sezione 'Aggiornamenti' e clicca su 'Download'.", Toast.LENGTH_SHORT).show();
 			}
+			else
+				btnPOIinfo.setVisibility(View.INVISIBLE);
 			res = true;
 		}
 		return res;
@@ -907,25 +920,6 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private void hidePOIbtns() {
 		btnPOIplay.setVisibility(4);
 		btnPOIdownload.setVisibility(4);
-	}
-	private void setupProgessBar()
-	{						
-		
-		progressDialog.setTitle("In progress...");
-		progressDialog.setMessage("Loading...");
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		progressDialog.setIndeterminate(false);
-		progressDialog.setMax(100);
-		progressDialog.setIcon(R.drawable.arrow_stop_down);
-		progressDialog.setCancelable(true);
-		progressDialog.show();
-        
-//		_progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//            	asyncDownload.cancel(true);            	
-//            }
-//        });	
 	}
 	public class RetriveAsyncFile extends AsyncTask<Void, Void, Boolean> {
 

@@ -69,7 +69,7 @@ public class DownloadAudio extends Activity implements
 //				MapNavigation.class);
 		Intent in = new Intent();
 		
-		in.putExtra("language", getSelectedLang());
+		//in.putExtra("language", getSelectedLang());
 		if (getParent() == null) {
 		setResult(Activity.RESULT_CANCELED, in);}
 		else
@@ -155,9 +155,36 @@ public class DownloadAudio extends Activity implements
  
         // start the ResultActivity
         //startActivity(intent);
-        startActivityForResult(intent, 100);
-        
-        // non aspetto il ritorno perchè tanto lo invia la prossima activity
-        finish();
+        startActivityForResult(intent, 1);
+                
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    	// Per chiudere l'attività, aspetto la risposta di Download e poi la passo indietro a chi mi ha chiamato
+ 	   if (requestCode == 1)
+ 	   {		  	
+ 		    try
+ 		    {		  
+ 		    	Intent intent1 = new Intent();
+ 	     		
+ 	     		// Sending songIndex to PlayerActivity        
+ 	        intent1.putExtra("language", _language);       
+ 	     		//startActivity(intent);
+ 	        // http://stackoverflow.com/questions/2497205/how-to-return-a-result-startactivityforresult-from-a-tabhost-activity
+ 	        if (getParent() == null) {
+ 	            setResult(resultCode, intent1);
+ 	        } else {
+ 	            getParent().setResult(resultCode, intent1);
+ 	        } 	        	        
+ 		    			
+ 		    }
+ 		    catch(Exception e)
+ 		    {
+ 		    	Log.d("zzzz", e.toString());
+ 		    }
+ 		    finally
+ 		    {
+ 		    	 finish();
+ 		    }
+ 	   }
+ 	}
 }
