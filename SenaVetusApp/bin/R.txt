@@ -1,5 +1,4 @@
-int array map_type_array 0x7f0a0001
-int array sports_array 0x7f0a0000
+int array map_type_array 0x7f0a0000
 int attr adSize 0x7f010000
 int attr adSizes 0x7f010001
 int attr adUnitId 0x7f010002

@@ -7,10 +7,13 @@ import it.duccius.musicplayer.MapNavigation;
 import it.duccius.musicplayer.PlayListAudio;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.SongsManager;
+import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -140,25 +143,62 @@ public class DownloadAudio extends Activity implements
             }
         }
  
-        Intent intent = new Intent(getApplicationContext(),
-        		Download.class);
- 
-        // Create a bundle object
-        Bundle b = new Bundle();
-       // b.putSerializable("audioToDownload", _audioToDownloadLang.getAudioGuides());
-        //b.putStringArray("selectedItems", outputStrArr);
-        b.putSerializable("selectedItems", selectedItems);
-        b.putString("language", _language);
- 
-        // Add the bundle to the intent.
-        intent.putExtras(b);
- 
-        // start the ResultActivity
-        //startActivity(intent);
-        startActivityForResult(intent, 1);
+//        Intent intent = new Intent(getApplicationContext(),
+//        		Download.class);
+//      
+//        
+//        // Create a bundle object
+//        Bundle b = new Bundle();
+//       // b.putSerializable("audioToDownload", _audioToDownloadLang.getAudioGuides());
+//        //b.putStringArray("selectedItems", outputStrArr);
+//        b.putSerializable("selectedItems", selectedItems);
+//        b.putString("language", _language);
+// 
+//        // Add the bundle to the intent.
+//        intent.putExtras(b);
+// 
+//        // start the ResultActivity
+//        //startActivity(intent);
+//        startActivityForResult(intent, 1);
+        
+        //--------
+        starDownload(selectedItems,new MyCallbackInterface() {
+
+            @Override
+            public void onDownloadFinished(List<RowItem> rowItems) {
+            	Intent intent = new Intent();
+            	try{		       		    	
+     	        // http://stackoverflow.com/questions/2497205/how-to-return-a-result-startactivityforresult-from-a-tabhost-activity            	
+                if (getParent() == null) {
+                    setResult(Activity.RESULT_OK, intent);
+                } else {
+                    getParent().setResult(Activity.RESULT_OK, intent);
+                }
+               }
+            	catch(Exception e)
+            	{getParent().setResult(Activity.RESULT_CANCELED, intent);}
+            	finally{
+            		finish();
+            	}
+            }
+        });
+ 		//---------------
                 
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+    private void starDownload(ArrayList<String> arL, MyCallbackInterface callback) {
+		ProgressDialog progressDialog = new ProgressDialog((this));
+		progressDialog.setTitle("In progress...");
+		progressDialog.setMessage("Loading...");
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setIndeterminate(false);
+		progressDialog.setMax(100);
+		progressDialog.setIcon(R.drawable.arrow_stop_down);
+		progressDialog.setCancelable(true);
+		progressDialog.show();
+		DownloadFile df = new DownloadFile(this,_language,progressDialog, callback);
+		df.execute(arL);
+	}
+    public void ______onActivityResult(int requestCode, int resultCode, Intent intent) {
     	// Per chiudere l'attività, aspetto la risposta di Download e poi la passo indietro a chi mi ha chiamato
  	   if (requestCode == 1)
  	   {		  	

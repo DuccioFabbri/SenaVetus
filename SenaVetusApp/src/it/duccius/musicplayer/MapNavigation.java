@@ -2,6 +2,7 @@ package it.duccius.musicplayer;
 
 //import it.duccius.musicplayer.RetriveAsyncFile;
 import it.duccius.download.Download;
+
 import it.duccius.download.DownloadAudio;
 import it.duccius.download.DownloadFile;
 import it.duccius.download.RowItem;
@@ -361,6 +362,13 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), DownloadAudio.class);
 				
+				//startActivity(i);
+//				Bundle b = new Bundle();
+//		        //b.putSerializable("_audioToDownloadLang", _audioToDownloadLang);		       		        
+//		        b.putString("language", _language);		 
+		        // Add the bundle to the intent.
+		        //i.putExtra("language", _language);
+		        //i.putExtra("_audioToDownloadLang", _audioToDownloadLang);
 		        Bundle b = new Bundle();
 		        b.putSerializable("_playList", _playList);
 		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
@@ -399,12 +407,18 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		//Location currentLocation = getCurrentLocation();
 		Location currentLocation = _location;
 		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		LatLng from;
-		if (currentLocation != null)
-			from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-		else
-			from = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
-		LatLng to = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
+		LatLng from = new LatLng(11.325371,43.327671);
+		LatLng to = from;
+		if(!_nDs.getPlacemarks().isEmpty())
+		{
+			if (currentLocation != null)
+				from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+			else			
+				from = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
+			
+			to = new LatLng(_nDs.getPlacemarks().get(0).getLongitude(),_nDs.getPlacemarks().get(0).getLatitude());
+		}
+		
 		setUpMapIfNeeded(from, to);
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
@@ -921,65 +935,65 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnPOIplay.setVisibility(4);
 		btnPOIdownload.setVisibility(4);
 	}
-	public class RetriveAsyncFile extends AsyncTask<Void, Void, Boolean> {
-
-		private Activity context;
-	    public Exception exception;
-	    private int _timeoutSec=5;
-	    private String _filePath;
-	    private String _nomeFile;
-	    private String _url;
-	   	    	
-	    public RetriveAsyncFile (Activity context, String url, String filePath, String nomeFile,
-				int timeoutSec)
-	    {
-	    	 this.context = context;
-	    	 
-	    	_url = url;
-	    	_filePath = filePath;
-	    	_nomeFile = nomeFile;
-	    	_timeoutSec = timeoutSec;  	    		    		    	 
-	    }
-	    
-	    protected Boolean doInBackground(Void...params) {
-	    	 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-	         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
-	              getClass().getName());
-	         wl.acquire();	         
-	    	try {
-	            URL url= new URL(_url);
-	            final URLConnection conn = url.openConnection();
-				conn.setConnectTimeout(_timeoutSec * 1000);
-				conn.setReadTimeout(_timeoutSec * 1000);
-				conn.connect();
-				
-				Utilities.StreamToFile(url.openStream(), _filePath, _nomeFile);
-				 
-//	             publishProgress((int) ((i / (float) count) * 100));
-	            return true;
-	            
-	        } catch (Exception e) {
-	            this.exception = e;  
-	            Log.d("RetriveAsyncFile", e.toString());
-	            return false;
-	        }
-	    	finally {
-	            wl.release();
-	        }
-	    }
-	    protected void onProgressUpdate(Integer... progress) {
-	        progressDialog.setProgress(progress[0]);        
-	   }
-	   
-	    @Override
-	    protected void onPostExecute(Boolean result) {
-
-	    	progressDialog.dismiss();
-	    	checkNewAudio();
-	     
-	    }
-
-	}
+//	public class RetriveAsyncFile extends AsyncTask<Void, Void, Boolean> {
+//
+//		private Activity context;
+//	    public Exception exception;
+//	    private int _timeoutSec=5;
+//	    private String _filePath;
+//	    private String _nomeFile;
+//	    private String _url;
+//	   	    	
+//	    public RetriveAsyncFile (Activity context, String url, String filePath, String nomeFile,
+//				int timeoutSec)
+//	    {
+//	    	 this.context = context;
+//	    	 
+//	    	_url = url;
+//	    	_filePath = filePath;
+//	    	_nomeFile = nomeFile;
+//	    	_timeoutSec = timeoutSec;  	    		    		    	 
+//	    }
+//	    
+//	    protected Boolean doInBackground(Void...params) {
+//	    	 PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+//	         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+//	              getClass().getName());
+//	         wl.acquire();	         
+//	    	try {
+//	            URL url= new URL(_url);
+//	            final URLConnection conn = url.openConnection();
+//				conn.setConnectTimeout(_timeoutSec * 1000);
+//				conn.setReadTimeout(_timeoutSec * 1000);
+//				conn.connect();
+//				
+//				Utilities.StreamToFile(url.openStream(), _filePath, _nomeFile);
+//				 
+////	             publishProgress((int) ((i / (float) count) * 100));
+//	            return true;
+//	            
+//	        } catch (Exception e) {
+//	            this.exception = e;  
+//	            Log.d("RetriveAsyncFile", e.toString());
+//	            return false;
+//	        }
+//	    	finally {
+//	            wl.release();
+//	        }
+//	    }
+//	    protected void onProgressUpdate(Integer... progress) {
+//	        progressDialog.setProgress(progress[0]);        
+//	   }
+//	   
+//	    @Override
+//	    protected void onPostExecute(Boolean result) {
+//
+//	    	progressDialog.dismiss();
+//	    	checkNewAudio();
+//	     
+//	    }
+//
+//	}
 	/**
 	 * Recupera l'attuale posizione e la assegna a '_location'
 	 * Uso 'PASSIVE_PROVIDER' perchè con altre soluzioni ho avuto problemi.

@@ -9,8 +9,7 @@ package it.duccius.musicplayer;
 
 public final class R {
     public static final class array {
-        public static final int map_type_array=0x7f0a0001;
-        public static final int sports_array=0x7f0a0000;
+        public static final int map_type_array=0x7f0a0000;
     }
     public static final class attr {
         /** 
@@ -681,6 +680,19 @@ containing a value of this type.
         public static final int hello_world=0x7f05002c;
         public static final int image=0x7f050032;
         public static final int my_first_test=0x7f050024;
+        /**  
+    <string-array name="sports_array">
+        <item>Shuttle Badminton</item>
+        <item>Tennis</item>
+        <item>Table Tennis</item>
+        <item>Basket Ball</item>
+        <item>Foot Ball</item>
+        <item>Volley Ball</item>
+        <item>Hockey</item>
+        <item>Swimming</item>
+    </string-array>
+
+         */
         public static final int result_activity=0x7f05002e;
         public static final int submit=0x7f05002f;
         public static final int title_activity_geo=0x7f05002d;

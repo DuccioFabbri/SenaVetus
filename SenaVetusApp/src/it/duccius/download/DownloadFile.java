@@ -85,7 +85,7 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
         verifyFile(_destSdImgFld); 
         
         try {
-        	for (int i=0; i<sUrl.length; i++ )
+        	for (int i=0; i<sUrl[0].size(); i++ )
         	{try {
         		rowItems = getWebAudio(sUrl[0].get(i));
         		
