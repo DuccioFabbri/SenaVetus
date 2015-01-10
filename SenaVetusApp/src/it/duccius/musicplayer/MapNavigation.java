@@ -1,17 +1,11 @@
 package it.duccius.musicplayer;
 
-//import it.duccius.musicplayer.RetriveAsyncFile;
-import it.duccius.download.Download;
+
 
 import it.duccius.download.DownloadAudio;
 import it.duccius.download.DownloadFile;
 import it.duccius.download.RowItem;
-import it.duccius.download._DownloadSelection;
-//import it.duccius.download.Download.GetXMLTask;
 import it.duccius.musicplayer.R;
-import it.duccius.musicplayer.R.drawable;
-import it.duccius.musicplayer.R.id;
-import it.duccius.musicplayer.R.layout;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import it.duccius.maps.MapService;
@@ -20,9 +14,6 @@ import it.duccius.maps.Placemark;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,9 +33,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -55,14 +48,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.AsyncTask;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -80,10 +72,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnBackward;
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
-	private ImageButton btnPlaylist;
-	private ImageButton btnRepeat;
-	private ImageButton btnShuffle;
-	private ImageButton btnMap;	
+	private ImageButton btnPlaylist;	
 	private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
 	private ImageButton btnPOIdownload;
@@ -121,7 +110,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public String _clickedMarker ;
 	public int _clickedMarkerIndex;
 	
-	public int _timeoutSec = 5;
+	public int _timeoutSec = 5;		
 	
 	ArrayList<AudioGuide> _localAudioGuideListLang = new ArrayList<AudioGuide>();
 	ArrayList<AudioGuide> _audioGuideListLang = new ArrayList<AudioGuide>();
@@ -135,9 +124,20 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	Location _location;
 	private String provider;
 	
+	public boolean isOnline() {
+	    ConnectivityManager cm =
+	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo netInfo = cm.getActiveNetworkInfo();
+	    return netInfo != null && netInfo.isConnectedOrConnecting();
+	}
+	
 	public boolean downloadAudioGuideList ()
 	{			
 		try {
+			if( !isOnline())
+			{
+				return false;
+			}
 			ArrayList<String> arL = new ArrayList<String>();
 			
 			arL.add(_urlDownloads);
@@ -203,21 +203,22 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //		setContentView(R.layout.player);
 		setContentView(R.layout.sena);
 		
-		getViewElwments();		
+				
 						
 		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
 	    songManager = new SongsManager(_language);		
 	  
 		//###############################
-	    getCurrentLocation();
 	    
+	    getViewElwments();
 		// Recupero downloads.xml
-		if (!getAudioGuideList())
-		{			
-			return;
-		}
-		
+	    
+    		if (!getAudioGuideList())
+				return;
+    		getCurrentLocation();
+    		
+    		
 //		// Aggiorna:
 //		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
 //		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
@@ -389,17 +390,24 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	// se non ho neanche questa opzione restituisco false.
 	private boolean getAudioGuideList() {
 		boolean downloadOk = downloadAudioGuideList();
-		if (!downloadOk)
-		{			
+		if (downloadOk)
+		{	
+			return true;
+		}
+		else
+		{
 			File picFolder = new File(_downloadsSDPath);
-			if (!picFolder.exists())
+			if (picFolder.exists())
 			{
+				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Si può comunque procedere con una versione obsoleta dei file.", Toast.LENGTH_LONG).show();
+				return true;
+			}
+			else{
 				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG).show();
 				
 				return false;
 			}
-		}		
-		return true;
+		}				
 	}
 //######################################################################
 	
@@ -407,7 +415,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		//Location currentLocation = getCurrentLocation();
 		Location currentLocation = _location;
 		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		LatLng from = new LatLng(11.325371,43.327671);
+		LatLng from = new LatLng(43.327671,11.325371);
 		LatLng to = from;
 		if(!_nDs.getPlacemarks().isEmpty())
 		{
@@ -625,8 +633,12 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private void setUpMapIfNeeded(LatLng from, LatLng to) {
 	    // Do a null check to confirm that we have not already instantiated the map.
 	    if (mMap == null) {
+	    	
+	    	// meglio usare getFragmentManager
+	    	//https://developers.google.com/maps/documentation/android/
 	        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
 	                            .getMap();
+	    	
 	        // Check if we were successful in obtaining the map.
 	        if (mMap != null) {
 	            // The Map is verified. It is now safe to manipulate the map.
@@ -658,6 +670,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	        	mMap.setMyLocationEnabled(true);
 	        	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
 	        }
+//	        else
+//	        {
+//	        	FragmentManager fm = getFragmentManager();
+//	        	Fragment  fragment = fm.findFragmentById(R.id.map);
+//	        	FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.setCustomAnimations(android.R.animator.fade_in,
+//                        android.R.animator.fade_out);
+//	        	ft.hide(fragment);
+//	        }
 	    }
 	}
 
@@ -755,13 +776,11 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
 		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
 		songThumbnail = (ImageView) findViewById(R.id.thumbnail);	
-		btnMap = (ImageButton) findViewById(R.id.btnMap);
+		
 		btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);
-		
-		btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
-		btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
+				
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
@@ -788,7 +807,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		try {
 			hidePOIbtns();
 			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
-			AudioGuide ag = (AudioGuide) _playList.get(songIndex);
+			AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(songIndex);
 			//String audioPath = ag.getPath();
 			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
         	mp.reset();
@@ -812,12 +831,14 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			// Updating progress bar
 			updateProgressBar();	
 			
-			AudioGuideList aglLocalAudioGuideList = new AudioGuideList();
-			aglLocalAudioGuideList.setAudioGuides(_audioGuideListLang);
-			AudioGuide currentAudioGuide = aglLocalAudioGuideList.getFromPosition(songIndex);
-			songTitleLabel.setText(currentAudioGuide.getTitle());
+//			AudioGuideList aglLocalAudioGuideList = new AudioGuideList();
 			
-			LatLng poiLatLong = new LatLng(Double.parseDouble(currentAudioGuide.getLng()),Double.parseDouble(currentAudioGuide.getLat()));
+//			aglLocalAudioGuideList.setAudioGuides(_audioGuideListLang);
+			//AudioGuide currentAudioGuide = aglLocalAudioGuideList.getFromPosition(songIndex);
+//			AudioGuide currentAudioGuide = _localAudioGuideListLang.get(songIndex);
+			songTitleLabel.setText(ag.getTitle());
+			
+			LatLng poiLatLong = new LatLng(Double.parseDouble(ag.getLng()),Double.parseDouble(ag.getLat()));
 			
 			mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(poiLatLong, 19));
 			
@@ -1006,7 +1027,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    Criteria criteria = new Criteria();
 	    provider = _locationManager.getBestProvider(criteria, false);
 	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
-	    _location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+	    _location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);	    	    	
 	}
 	@Override
 	public void onLocationChanged(Location location) {

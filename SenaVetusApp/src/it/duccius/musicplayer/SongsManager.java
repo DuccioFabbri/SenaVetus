@@ -134,27 +134,20 @@ public class SongsManager {
 			if (home.listFiles(new FileExtensionFilter()).length > 0) {
 				int i=0 ;
 				for (File file : home.listFiles(new FileExtensionFilter())) {
-					AudioGuide song = new AudioGuide();
-					song.setName(file.getName().substring(0, (file.getName().length() - 4)));
-					song.setPath(file.getPath());
-					song.setSdPosition(i);
-					// devo recuperare il title a partire dal name
-					// ...
+					
 					// Leggo file download.xml
 					// scorro tutti gli elementi cercando quello con name giusto
 					for (AudioGuide ag: audioGuideListLang)
 					{
-						if(ag.getName().equals(song.getName()))
+						if(ag.getName().equals(file.getName().substring(0, (file.getName().length() - 4))))
 						{
-							song.setTitle(ag.getTitle());
+							ag.setPath(file.getPath());
+							ag.setSdPosition(i);
+							songsList.add(ag);
 							break;
 						}
-					}
-					// recupero il title
-					
+					}					
 					i++;
-					// Adding each song to SongList
-					songsList.add(song);
 				}
 			}
 		}

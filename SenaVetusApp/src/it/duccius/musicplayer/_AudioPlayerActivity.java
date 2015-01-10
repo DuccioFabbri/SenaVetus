@@ -578,20 +578,20 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	 {
 // http://asnsblues.blogspot.it/2011/11/google-maps-query-string-parameters.html
 		
-		 Intent i = new Intent(this, ShowMap.class);
-		 //startActivity(i);
-			Bundle b = new Bundle();
-	        b.putSerializable("playList", _playList);
-	        b.putSerializable("allGuides", _guides);	
-	        b.putSerializable("localAudioGuideListLang", _localAudioGuideListLang);
-	        b.putSerializable("audioToDownloadLang", _audioToDownloadLang);	        
-	        	        
-	        b.putString("language", _language);		
-	        b.putInt("currentSongIndex", currentSongIndex);
-	        // Add the bundle to the intent.
-	        i.putExtras(b);
-	       
-			startActivityForResult(i, 200);	
+//		 Intent i = new Intent(this, ShowMap.class);
+//		 //startActivity(i);
+//			Bundle b = new Bundle();
+//	        b.putSerializable("playList", _playList);
+//	        b.putSerializable("allGuides", _guides);	
+//	        b.putSerializable("localAudioGuideListLang", _localAudioGuideListLang);
+//	        b.putSerializable("audioToDownloadLang", _audioToDownloadLang);	        
+//	        	        
+//	        b.putString("language", _language);		
+//	        b.putInt("currentSongIndex", currentSongIndex);
+//	        // Add the bundle to the intent.
+//	        i.putExtras(b);
+//	       
+//			startActivityForResult(i, 200);	
 		 
 	 }
 	@Override

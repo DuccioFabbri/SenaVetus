@@ -1,0 +1,24 @@
+Avviare app senza connessione internet.
+Nessun file presente in locale.
+...
+toast di segnalazione errore.
+Non si caricano elementi della activity.
+----------------------------------------------------------------------------
+Avviare app senza connessione internet.
+File downloads.xml presente in locale.
+...
+toast di segnalazione di problemi di connessione e di uso file obsoleto.
+Si caricano elementi della activity e si prosegue.
+----------------------------------------------------------------------------
+Avviare app con connessione internet, ma non si ottiene il file downloads.xml dal server.
+File downloads.xml presente in locale.
+...
+toast di segnalazione di problemi di connessione e di uso file obsoleto.
+Si caricano elementi della activity e si prosegue.
+----------------------------------------------------------------------------
+É possibile trovare la geolocalizzazione
+...
+----------------------------------------------------------------------------
+Non è possibile trovare la geolocalizzazione
+...
+----------------------------------------------------------------------------
