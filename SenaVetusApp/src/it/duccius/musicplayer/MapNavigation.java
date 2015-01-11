@@ -104,7 +104,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	public String _urlDownloads = Utilities.getUrlDownloads();
 	public String _filePath = Utilities.getTempSDFld();
-	public String _downloadsFileName = "downloads.xml";
+	//public String _downloadsFileName = "downloads.xml";
 	public String _downloadsSDPath = Utilities.getDownloadsSDPath();
 
 	public String _clickedMarker ;
@@ -544,7 +544,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 						
 						ArrayList<String> arL = new ArrayList<String>();
 						AudioGuide ag = _audioToDownloadLang.getFromPosition(clickedMarkerIndex);
-						String str = ag.getPath();
+						//String str = ag.getPath();
+						String str = Utilities.getMp3UrlFromName(ag.getName());
 						arL.add(str);
 						//downloadAudioGuide (arL);
 						

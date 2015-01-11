@@ -89,15 +89,17 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
         	{try {
         		rowItems = getWebAudio(sUrl[0].get(i));
         		
-        		if (rowItems != null && (
-        								((String)sUrl[0].get(i)).endsWith(".mp3")))
+        		if (rowItems != null && 
+        				(((String)sUrl[0].get(i)).contains(".mp3")))
             		{
             		//String picUrl = sUrl[i].replace(".mp3", ".jpg") ;
-            		String picUrl =getImgUrl(sUrl[0].get(i));
+            		//String picUrl =getImgUrl(sUrl[0].get(i));
+            		String picUrl = Utilities.getImgUrlFromMp3Url(sUrl[0].get(i));
             		Bitmap pic = getWebPic(picUrl);
             		FileOutputStream out;
 					
-            		String pn =  picUrl.split("/")[picUrl.split("/").length-1];
+            		//String pn =  picUrl.split("/")[picUrl.split("/").length-1];
+            		String pn = Utilities.getImgNameFromUrl(picUrl);
             		
             		String destFile = _destSdImgFld+"/"+pn;            		
             		
@@ -157,6 +159,22 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
 		 res = res.substring(0, res.length()-1);
 		 return res;
 	 }
+	private String getImgUrl2(String url)
+	 {
+		 String lang = "";
+		 String jpgPath = url.replace(".mp3", ".jpg");
+		 String[] tokens = jpgPath.split(File.separator);
+		tokens[tokens.length-3]="pics";
+		System.arraycopy(tokens,tokens.length-1,tokens,tokens.length-2,1);
+		//tokens[tokens.length-1]=getPicName(url).replace(".mp3", ".jpg");
+		String res = "";
+		 for (int i=0; i < tokens.length-1; i++)
+		 {
+			 res = res +tokens[i]+File.separator;
+		 }
+		 res = res.substring(0, res.length()-1);
+		 return res;
+	 }
 	private String getAudioName(String url)
 	 {
 		 String title = "";
@@ -200,8 +218,17 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
 		    // download the file
 		    input = connection.getInputStream();
 		  
-		    output = new FileOutputStream(_tempSdFld +File.separator+ getAudioName(sUrl));
-
+		   // output = new FileOutputStream(_tempSdFld +File.separator+ getAudioName(sUrl));
+		    String destTemp= _tempSdFld +File.separator+ getAudioName(sUrl);
+		    if (sUrl.contains(".mp3"))
+		    	destTemp = _tempSdFld +File.separator+ Utilities.getMp3NameFromUrl(sUrl);		    	
+		    else if(sUrl.contains(".xml"))
+		    	destTemp = _tempSdFld +File.separator+ getAudioName(sUrl);
+		    else if(sUrl.contains(".xml"))
+		    	destTemp = _tempSdFld +File.separator+ Utilities.getImgNameFromUrl(sUrl);
+		    
+		    output = new FileOutputStream(destTemp);
+		    
 		    byte data[] = new byte[4096];
 		    long total = 0;
 		    int count;
@@ -215,7 +242,15 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
 		            publishProgress((int) (total * 100 / fileLength));
 		        output.write(data, 0, count);
 		    }
-		    moveToAudioFolder(sUrl);			    
+		    String destDef= _destSdFld+File.separator+ getAudioName(sUrl);
+		    if (sUrl.contains(".mp3"))
+		    	destDef = _destSdFld +File.separator+ Utilities.getMp3NameFromUrl(sUrl);		    	
+		    else if(sUrl.contains(".xml"))
+		    	destDef = _destSdFld +File.separator+ getAudioName(sUrl);
+		    else if(sUrl.contains(".xml"))
+		    	destDef = _destSdFld +File.separator+ Utilities.getImgNameFromUrl(sUrl);
+		    
+		    moveToAudioFolder2(destTemp,destDef);			    
 		    rowItems.add(new RowItem(getAudioName(sUrl)));
 		    return rowItems;
 		} 
@@ -268,7 +303,12 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
 		    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
 		    {			    	
 		    	Log.d("getWebPic() ", "Impossibile scaricare l\'immagine dal server");
-		         return null;
+		    	BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+	            bmOptions.inSampleSize = 1;
+
+//	            byte[] bytes = new byte[1];
+//	            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length,bmOptions);
+		         return bitmap;
 		    }
 		    // this will be useful to display download percentage
 		    // might be -1: server did not report the length
@@ -331,7 +371,12 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
 		
 		fileFrom.renameTo(fileTo);
 	}
-  
+	private void moveToAudioFolder2(String from, String to) {
+		File fileFrom = new File(from);
+		File fileTo = new File(to);
+		
+		fileFrom.renameTo(fileTo);
+	}
 
     protected void onProgressUpdate(Integer... progress) {
         _progressDialog.setProgress(progress[0]);

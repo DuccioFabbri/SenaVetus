@@ -7,6 +7,7 @@ import it.duccius.musicplayer.MapNavigation;
 import it.duccius.musicplayer.PlayListAudio;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.SongsManager;
+import it.duccius.musicplayer.Utilities;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import java.util.ArrayList;
@@ -139,7 +140,8 @@ public class DownloadAudio extends Activity implements
             {
                 //selectedItems.add(_adapter.getItem(position).toString());
             	AudioGuide ag = _audioToDownloadLang.getFromPosition(position);
-            	selectedItems.add(ag.getPath());
+            	//selectedItems.add(ag.getPath());
+            	selectedItems.add(Utilities.getMp3UrlFromName(ag.getName()));
             }
         }
  

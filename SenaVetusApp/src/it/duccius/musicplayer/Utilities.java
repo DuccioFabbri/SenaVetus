@@ -21,12 +21,47 @@ import android.util.Log;
 //import it.duccius.download.RetriveAsyncFile;
 
 public class Utilities {
+	private static final String _downloadsFileName = "downloads.xml";
+	// Dropbox	
+	private static String urlDownloads = new String("https://sites.google.com/site/ducciofabbri/home/sv-1/" +_downloadsFileName);
+	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/~img_name~.jpg?attredirects=0&d=1";
+	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/ita/~mp3_name~.mp3?attredirects=0&d=1";
+	public static String getImgUrlFromName(String img_name )
+	{
+		return baseUrlImg.replaceAll("~img_name~", img_name);
+	}
+	public static String getMp3UrlFromName(String mp3_name )
+	{
+		return baseUrlMp3.replaceAll("~mp3_name~", mp3_name);
+	}
+	public static String getImgUrlFromMp3Url(String mp3_url )
+	{
+		int i = baseUrlMp3.indexOf("~mp3_name~");
+		int lf = baseUrlMp3.length()-i-"~mp3_name~".length();
+		
+		String mp3_name = mp3_url.substring(i, mp3_url.length()-lf);
+		return getImgUrlFromName(mp3_name);
+	}
+	public static String getImgNameFromUrl(String img_url )
+	{
+		int i = baseUrlImg.indexOf("~img_name~");
+		int lf = baseUrlImg.length()-i-"~img_name~".length();
+		
+		return img_url.substring(i, img_url.length()-lf)+".jpg";
+		 
+	}
+	public static String getMp3NameFromUrl(String mp3_url )
+	{
+		int i = baseUrlMp3.indexOf("~mp3_name~");
+		int lf = baseUrlMp3.length()-i-"~mp3_name~".length();
+		
+		return mp3_url.substring(i, mp3_url.length()-lf)+".mp3";
+		 
+	}
 	// SIENA 2.227.2.94
-	private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
-//	private static String urlKml = "http://2.227.2.94:8080/SenaVetus/SenaVetus.kml";
+	//private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
 	// LUGANO 77.57.63.163
 //	private static String urlDownloads = "http://77.57.63.163:8080/SenaVetus/downloads.xml";
-//	private static String urlKml = "http://77.57.63.163:8080/SenaVetus/SenaVetus.kml";
 //	
 	/**
 	 * @param url: url you want to download
@@ -118,7 +153,7 @@ public class Utilities {
 			return sourcePath;
 		}
 	public static String getDownloadsSDPath() {
-		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+"downloads.xml";
+		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+_downloadsFileName;
 		return sourcePath;
 	}
 	public static String getdestSdImgFld() {
