@@ -1,0 +1,3 @@
+/mnt/sdcard/SenaVetus/temp/ITA/02_PortaCamollia.mp3
+
+p.setDataSource(audioPath);  ----   /mnt/sdcard/SenaVetus/ITA/02_PortaCamollia.mp3

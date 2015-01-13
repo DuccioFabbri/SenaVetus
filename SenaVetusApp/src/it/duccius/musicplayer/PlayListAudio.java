@@ -195,10 +195,10 @@ OnClickListener{
             outputStrArr[i] = selectedItems.get(i);
            
         }
- 
-        Intent intent = new Intent(getApplicationContext(),
-        		_AudioPlayerActivity.class);
- 
+ //--------------------------------------------------------------------------------------
+ //       Intent intent = new Intent(getApplicationContext(),
+ //       		_AudioPlayerActivity.class);
+ //--------------------------------------------------------------------------------------
         // Create a bundle object
         Bundle b = new Bundle();
         b.putSerializable("selectedItems", selectedAGs);
@@ -208,11 +208,15 @@ OnClickListener{
         b.putString("language", _language);
  
         // Add the bundle to the intent.
-        intent.putExtras(b);
- 
+//--------------------------------------------------------------------------------------
+//        intent.putExtras(b);
+//--------------------------------------------------------------------------------------
+        
         // start the ResultActivity
         //startActivity(intent);
-        setResult(Activity.RESULT_OK, intent);
+ //--------------------------------------------------------------------------------------
+ //       setResult(Activity.RESULT_OK, intent);
+ //--------------------------------------------------------------------------------------
         finish();
     }
     public void  update (View view)

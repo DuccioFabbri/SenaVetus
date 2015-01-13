@@ -812,9 +812,26 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			//String audioPath = ag.getPath();
 			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
         	mp.reset();
+        	//audioPath = "/mnt/sdcard/Music/02_PortaCamollia.mp3";
 			mp.setDataSource(audioPath);
-			mp.prepare();
-			mp.start();
+			//http://stackoverflow.com/questions/9008770/media-player-called-in-state-0-error-38-0
+			mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+			    @Override
+			    public void onPrepared(MediaPlayer mp) {
+			    	try{
+			    	mp.start();
+			    	}
+			    	catch(Exception e)
+			    	{
+			    		Log.d("playSong()", e.getMessage() + e.getStackTrace());
+			    	}
+			    }
+			});
+			mp.prepareAsync();
+
+			
+//			mp.prepare();
+//			mp.start();
 			// Displaying Song title
 			//String songTitle = _playList.get(songIndex).getName();
         	
