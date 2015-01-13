@@ -1,7 +1,5 @@
 package it.duccius.musicplayer;
 
-import it.duccius.download._DownloadSelection;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -278,13 +276,13 @@ public class _PlayListActivity extends ListActivity {
 	 }
 	public void updateAudioguides (View view)
 	{
-		Intent in = new Intent(this,
-				_DownloadSelection.class);
-		
-		in.putExtra("language", getSelectedLang());
-		
-		finish();		
-		startActivity(in);
+//		Intent in = new Intent(this,
+//				_DownloadSelection.class);
+//		
+//		in.putExtra("language", getSelectedLang());
+//		
+//		finish();		
+//		startActivity(in);
 		
 	}
 	public void refresh(View view) {

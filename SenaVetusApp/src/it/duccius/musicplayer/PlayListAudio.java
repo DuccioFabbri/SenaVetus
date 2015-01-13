@@ -1,6 +1,5 @@
 package it.duccius.musicplayer;
 
-import it.duccius.download._DownloadSelection;
 
 import java.util.ArrayList;
 
@@ -225,20 +224,20 @@ OnClickListener{
     }
     public void  update ()
     {
-    	 Intent intent = new Intent(getApplicationContext(),
-         		_DownloadSelection.class);
-  
-         // Create a bundle object
-         Bundle b = new Bundle();
-        
-         b.putString("language", _language);
-  
-         // Add the bundle to the intent.
-         intent.putExtras(b);
-  
-         // start the ResultActivity
-        // startActivity(intent);       
-         startActivityForResult(intent, 100);	
+//    	 Intent intent = new Intent(getApplicationContext(),
+//         		_DownloadSelection.class);
+//  
+//         // Create a bundle object
+//         Bundle b = new Bundle();
+//        
+//         b.putString("language", _language);
+//  
+//         // Add the bundle to the intent.
+//         intent.putExtras(b);
+//  
+//         // start the ResultActivity
+//        // startActivity(intent);       
+//         startActivityForResult(intent, 100);	
          //finish();
     }
 	@SuppressWarnings("unchecked")
