@@ -3,10 +3,7 @@ package it.duccius.download;
 import it.duccius.musicplayer.ApplicationData;
 import it.duccius.musicplayer.AudioGuide;
 import it.duccius.musicplayer.AudioGuideList;
-import it.duccius.musicplayer.MapNavigation;
-import it.duccius.musicplayer.PlayListAudio;
 import it.duccius.musicplayer.R;
-import it.duccius.musicplayer.SongsManager;
 import it.duccius.musicplayer.Utilities;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
@@ -144,24 +141,6 @@ public class DownloadAudio extends Activity implements
             	selectedItems.add(Utilities.getMp3UrlFromName(ag.getName()));
             }
         }
- 
-//        Intent intent = new Intent(getApplicationContext(),
-//        		Download.class);
-//      
-//        
-//        // Create a bundle object
-//        Bundle b = new Bundle();
-//       // b.putSerializable("audioToDownload", _audioToDownloadLang.getAudioGuides());
-//        //b.putStringArray("selectedItems", outputStrArr);
-//        b.putSerializable("selectedItems", selectedItems);
-//        b.putString("language", _language);
-// 
-//        // Add the bundle to the intent.
-//        intent.putExtras(b);
-// 
-//        // start the ResultActivity
-//        //startActivity(intent);
-//        startActivityForResult(intent, 1);
         
         //--------
         starDownload(selectedItems,new MyCallbackInterface() {
@@ -200,33 +179,4 @@ public class DownloadAudio extends Activity implements
 		DownloadFile df = new DownloadFile(this,_language,progressDialog, callback);
 		df.execute(arL);
 	}
-    public void ______onActivityResult(int requestCode, int resultCode, Intent intent) {
-    	// Per chiudere l'attività, aspetto la risposta di Download e poi la passo indietro a chi mi ha chiamato
- 	   if (requestCode == 1)
- 	   {		  	
- 		    try
- 		    {		  
- 		    	Intent intent1 = new Intent();
- 	     		
- 	     		// Sending songIndex to PlayerActivity        
- 	        intent1.putExtra("language", _language);       
- 	     		//startActivity(intent);
- 	        // http://stackoverflow.com/questions/2497205/how-to-return-a-result-startactivityforresult-from-a-tabhost-activity
- 	        if (getParent() == null) {
- 	            setResult(resultCode, intent1);
- 	        } else {
- 	            getParent().setResult(resultCode, intent1);
- 	        } 	        	        
- 		    			
- 		    }
- 		    catch(Exception e)
- 		    {
- 		    	Log.d("zzzz", e.toString());
- 		    }
- 		    finally
- 		    {
- 		    	 finish();
- 		    }
- 	   }
- 	}
 }

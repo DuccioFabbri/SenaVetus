@@ -6,14 +6,14 @@
     <!--
 	<audio lang ="ITA" name="AntiportoCamollia" title="01 - Antiporto di Camollia" ext=".mp3" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" />                      
 	-->
-	<audio lang ="ITA" name="02_PortaCamollia" title="02 - Porta Camollia" ext=".mp3" coordinates="11.325371,43.327671,0.000000" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" >
+	<audio lang ="ITA" name="02_PortaCamollia" title="02 - Porta Camollia" ext=".mp3" coordinates="11.325371,43.327671,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
 	</audio>                            
-	<audio lang ="ITA" name="03_186Paracadutisti" title="03 - Caserma Bandini" ext=".mp3" coordinates="11.321425,43.327480,0.000000" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" >		
+	<audio lang ="ITA" name="03_186Paracadutisti" title="03 - Caserma Bandini" ext=".mp3" coordinates="11.321425,43.327480,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
 	</audio>                                    
-	<audio lang ="ITA" name="04_ColonnaPioII" title="04 - Colonna Pio II" ext=".mp3" coordinates="11.322149,43.328632,0.000000" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" >		
+	<audio lang ="ITA" name="04_ColonnaPioII" title="04 - Colonna Pio II" ext=".mp3" coordinates="11.322149,43.328632,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
 	</audio>                                      
-	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" >		
+	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
 	</audio>                                      
-	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ENG/" >		
+	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
 	</audio>
 </Document> 

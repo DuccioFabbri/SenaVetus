@@ -455,16 +455,17 @@ containing a value of this type.
         public static final int TextView02=0x7f070016;
         public static final int TextView03=0x7f070018;
         public static final int TextView04=0x7f070019;
-        public static final int action_settings=0x7f070054;
+        public static final int action_settings=0x7f070055;
         public static final int book_now=0x7f070010;
         public static final int btnBackward=0x7f07003d;
         public static final int btnDownload=0x7f07001d;
         public static final int btnForward=0x7f07003e;
         public static final int btnMap=0x7f070047;
         public static final int btnNext=0x7f07003f;
-        public static final int btnPOIdownload=0x7f070050;
-        public static final int btnPOIinfo=0x7f070052;
-        public static final int btnPOIplay=0x7f070051;
+        public static final int btnPOIdownload=0x7f070051;
+        public static final int btnPOIimg=0x7f070050;
+        public static final int btnPOIinfo=0x7f070053;
+        public static final int btnPOIplay=0x7f070052;
         public static final int btnPlay=0x7f07001c;
         public static final int btnPlaylist=0x7f070039;
         public static final int btnPrevious=0x7f07003c;
@@ -534,7 +535,7 @@ containing a value of this type.
         public static final int txtlist=0x7f07004a;
         public static final int updateAudio=0x7f070049;
         public static final int url=0x7f07004b;
-        public static final int webView1=0x7f070053;
+        public static final int webView1=0x7f070054;
         public static final int wrap_content=0x7f07000d;
     }
     public static final class integer {

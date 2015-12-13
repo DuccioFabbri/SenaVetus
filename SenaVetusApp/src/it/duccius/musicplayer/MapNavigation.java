@@ -76,8 +76,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
 	private ImageButton btnPOIdownload;
+	private ImageButton btnPOIimg;
+	private ImageView btnImagePOI;
 	
-	private ImageView songThumbnail;
+	private ImageButton songThumbnail;
 		
 	private SeekBar songProgressBar;
 	private TextView songTitleLabel;
@@ -164,7 +166,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
 			_nDs.sort();
 		}
-		// Aggiorna:
+		// il metodo checkForUpdates() aggiorna:
 		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
 		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
 		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
@@ -187,13 +189,12 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		songProgressBar.setOnSeekBarChangeListener(this); // Important
 		mp.setOnCompletionListener(this); // Important				
 		
-		try
-		{
-			//int i=Integer.parseInt(id_audioSD);
-			playSong(currentSongIndex);
-		}
-		catch(Exception e)
-		{Log.d("playSong",e.getMessage());}
+//		try
+//		{			
+//			//playSong(currentSongIndex);
+//		}
+//		catch(Exception e)
+//		{Log.d("playSong",e.getMessage());}
 					
 	}
 	@SuppressWarnings("unchecked")
@@ -381,6 +382,22 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			}
 		});
 		
+		btnPOIimg.setOnClickListener(new View.OnClickListener() 
+		{
+			
+			@Override
+			public void onClick(View arg0) {
+				if(_clickedMarker !=""){
+					
+					//Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+_nomeMarker+".jpg").toString());	
+					//btnImagePOI.setImageBitmap(bmp);
+				}
+				if(btnImagePOI.getVisibility()==View.VISIBLE)
+					btnImagePOI.setVisibility(View.GONE);
+				else
+					btnImagePOI.setVisibility(View.VISIBLE);
+			}
+		});
 	}
 	
 
@@ -514,21 +531,25 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
 			if (_clickedMarkerIndex>-1)
 			{
-				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
-				{
-					if(_playList != null && _playList.size()>0 )
-					{					
-						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-						_activeMarker.setSnippet("" );
-						playSong(_clickedMarkerIndex);
-					}							
-				}
-				else
-				{
-					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-					_activeMarker.setSnippet("Click and Play" );
-				}					
-			}				
+//				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
+//				{
+//					if(_playList != null && _playList.size()>0 )
+//					{					
+//						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+//						_activeMarker.setSnippet("" );
+//						playSong(_clickedMarkerIndex);
+//					}							
+//				}
+//				else
+//				{
+//					//_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+//					_activeMarker.setSnippet("Click and Play" );
+//				}
+				//Se ho l'audio lo trasmetto subito
+				playSong(_clickedMarkerIndex);
+				btnPOIimg.setVisibility(View.VISIBLE);
+			}else
+				btnPOIimg.setVisibility(View.GONE);
 		}
 		private void checkReadyToDownload() {
 			ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
@@ -539,7 +560,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				{
 					if(_audioToDownloadLang != null && _audioToDownloadLang.getAudioGuides().size()>0 )
 					{					
-						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+						
 						//playSong(_clickedMarkerIndex);
 						
 						ArrayList<String> arL = new ArrayList<String>();
@@ -554,9 +575,11 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				            @Override
 				            public void onDownloadFinished(List<RowItem> rowItems) {
 				                // Do something when download finished
-				            	if (mp != null)
-						    		mp.release();
+//				            	if (mp != null)
+//						    		mp.release();
 				            	checkNewAudio();
+				            	//checkForUpdates();
+				            	_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				            }
 				        });
 					}							
@@ -594,6 +617,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			DownloadFile df = new DownloadFile(this,_language,destPath,progressDialog,callback);
 			df.execute(arL);
 		}		
+		
 	public OnMarkerClickListener getMarkerClickListener()
 	{
 	    return new OnMarkerClickListener() 
@@ -602,7 +626,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			public boolean onMarkerClick(Marker marker) {
 				//
 				if(_activeMarker != null)
-					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+//					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				//----------
 				_previousMarker = _activeMarker;				
 				_activeMarker = marker;
@@ -610,6 +634,16 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				
 				//TODO Auto-generated method stub
 				_clickedMarker = marker.getTitle();
+				SongsManager sm = new SongsManager(_language);	
+				AudioGuide agMarker= sm.getAudioGuideByTitle(_guides,_clickedMarker);
+				
+				
+				String nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+agMarker.getName()+".jpg").toString();
+				//nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/02_PortaCamollia.jpg").toString();
+				Bitmap bmp = BitmapFactory.decodeFile(nome);
+				//bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+_nomeMarker+".jpg").toString());	
+				btnImagePOI.setImageBitmap(bmp);
+				//btnPOIimg.setImageBitmap(bmp);
 				
 				checkReadyToPlay();
 				
@@ -702,7 +736,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			songThumbnail.setImageBitmap(bmp);		
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*
+	 * Leggo quali audio sono presenti nel file downloads.xml
+	 * poi li confronto con quelli presenti nella cartella locale
+	 * infine restituisco true se esistono nuovi file da scaricare.
+	 * Il confronto viene fatto sul solo ttributo @name
+	 * non sono gestite le versioni diverse per audio che hanno lo stesso @name.
+	 * Gli eventuali nuovi file sono elencati in _audioToDownloadLang ed il metodo rende true
+	 */
+	@SuppressWarnings("unchecked")	
 	private boolean checkForUpdates() {
 		boolean res = false;
 		// Prima recupero tutti gli elementi del file downloads.xml e li etto in _guides
@@ -767,11 +809,13 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnNext = (ImageButton) findViewById(R.id.btnNext);
 		btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
 		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
-		songThumbnail = (ImageView) findViewById(R.id.thumbnail);	
+		//songThumbnail = (ImageButton) findViewById(R.id.thumbnail);	
 		
 		btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);
+		btnPOIimg  = (ImageButton) findViewById(R.id.btnPOIimg);
+		btnImagePOI  = (ImageButton) findViewById(R.id.thumbnail);
 				
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
@@ -781,6 +825,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	}
 	private String getDestSDFld() {
 		String sourcePath = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getAppName()+"/"+_language;
+		return sourcePath;
+	}
+	private String getPicFld() {
+		String sourcePath = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getAppName()+"/";
 		return sourcePath;
 	}
 	private String getAudioName(String url)
@@ -930,7 +978,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	 * */
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		
+		btnPlay.setImageResource(R.drawable.btn_play);
+//		songProgressBar.setProgress(0);
+		//mHandler.removeCallbacks(mUpdateTimeTask);
 		// check for repeat is ON or OFF
 		if(isRepeat){
 			// repeat is on play same song again
@@ -941,15 +991,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			currentSongIndex = rand.nextInt((_playList.size() - 1) - 0 + 1) + 0;
 			playSong(currentSongIndex);
 		} else{
-			// no repeat or shuffle ON - play next song
-			if(currentSongIndex < (_playList.size() - 1)){
-				playSong(currentSongIndex + 1);
-				currentSongIndex = currentSongIndex + 1;
-			}else{
-				// play first song
-				playSong(0);
-				currentSongIndex = 0;
-			}
+//			// no repeat or shuffle ON - play next song
+//			if(currentSongIndex < (_playList.size() - 1)){
+//				playSong(currentSongIndex + 1);
+//				currentSongIndex = currentSongIndex + 1;
+//			}else{
+//				// play first song
+//				playSong(0);
+//				currentSongIndex = 0;
+//			}
 		}
 	}
 		
@@ -963,7 +1013,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 
 	private void hidePOIbtns() {
 		btnPOIplay.setVisibility(4);
-		btnPOIdownload.setVisibility(4);
+		btnPOIdownload.setVisibility(4);		
 	}
 
 	/**

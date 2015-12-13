@@ -254,6 +254,28 @@ public class SongsManager {
 		}
 		return sdAudiosStrings;
 	}
+	public AudioGuide getAudioGuideByName(ArrayList<AudioGuide> sdAudios, String name) {
+		AudioGuide found = new AudioGuide();
+		
+		for (AudioGuide audio: sdAudios)
+		{
+			if (audio.getName().equalsIgnoreCase(name))
+				found = audio;
+		}
+		
+		return found;
+	}
+	public AudioGuide getAudioGuideByTitle(ArrayList<AudioGuide> sdAudios, String title) {
+		AudioGuide found = new AudioGuide();
+		
+		for (AudioGuide audio: sdAudios)
+		{
+			if (audio.getTitle().equalsIgnoreCase(title))
+				found = audio;
+		}
+		
+		return found;
+	}
 	/**
 	 * Class to filter files which are having .mp3 extension
 	 * */

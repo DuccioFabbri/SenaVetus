@@ -69,6 +69,7 @@ public static NavigationDataSet calculateRoute(String startCoords, String target
  * Retrieve navigation data set from either remote URL or String
  * @param url
  * @return navigation set
+ * Il risultato é un elenco di coppie con il nome ed il titolo dei POI presenti in downloads.xml
  */
 public static NavigationDataSet getNavigationDataSet(String url) {
 

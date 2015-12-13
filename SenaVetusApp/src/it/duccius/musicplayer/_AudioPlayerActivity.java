@@ -95,24 +95,24 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 			return false;
 		}
 	}
-	public boolean downloadAudioGuideList ()
-	{
-		//String url = "http://2.227.2.94:8080/audio/downloads.xml";
-		//String filePath = Utilities.getTempSDFld();
-		//String nomeFile = "downloads.xml";
-		//int timeoutSec = 5;
-		
-		try {
-			
-//			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
-//			return downloadOk;
-			return true;
-			
-		} catch (Exception e) {
-			Log.d("downloadMapItemes()", e.getMessage());
-			return false;
-		} 
-	}
+//	public boolean downloadAudioGuideList ()
+//	{
+//		//String url = "http://2.227.2.94:8080/audio/downloads.xml";
+//		//String filePath = Utilities.getTempSDFld();
+//		//String nomeFile = "downloads.xml";
+//		//int timeoutSec = 5;
+//		
+//		try {
+//			
+////			boolean downloadOk = Utilities.downloadFile(_urlDownloads, _filePath, _downloadsFileName, _timeoutSec);
+////			return downloadOk;
+//			return true;
+//			
+//		} catch (Exception e) {
+//			Log.d("downloadMapItemes()", e.getMessage());
+//			return false;
+//		} 
+//	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -139,11 +139,11 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 //		}
 		
 		// Recupero downloads.xml
-		if (!getAudioGuideList())
-		{		
-			btnMap.setClickable(false);
-			return;
-		}
+//		if (!getAudioGuideList())
+//		{		
+//			btnMap.setClickable(false);
+//			return;
+//		}
 		// Aggiorna:
 		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
 		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
@@ -319,23 +319,23 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		});
 		
 	}
-	// Provo a scaricare una nuova versione del file,
-	// se non ci riesco allora cerco di usare una versione già presente in locale
-	// se non ho neanche questa opzione restituisco false.
-	private boolean getAudioGuideList() {
-		boolean downloadOk = downloadAudioGuideList();
-		if (!downloadOk)
-		{			
-			File picFolder = new File(_downloadsSDPath);
-			if (!picFolder.exists())
-			{
-				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
-				return false;
-			}
-		}
-		
-		return true;
-	}
+//	// Provo a scaricare una nuova versione del file,
+//	// se non ci riesco allora cerco di usare una versione già presente in locale
+//	// se non ho neanche questa opzione restituisco false.
+//	private boolean getAudioGuideList() {
+//		boolean downloadOk = downloadAudioGuideList();
+//		if (!downloadOk)
+//		{			
+//			File picFolder = new File(_downloadsSDPath);
+//			if (!picFolder.exists())
+//			{
+//				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare che si abbia accesso alla rete, chiudere l'applicazione e riprovare più tardi.", Toast.LENGTH_LONG);
+//				return false;
+//			}
+//		}
+//		
+//		return true;
+//	}
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
@@ -369,12 +369,6 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		    }
 	   }
 	}
-	private void setupAudioThumbnail(String imgName) {
-//		imgName = imgName.substring(4);
-			Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+imgName+".jpg").toString());		
-			songThumbnail.setImageBitmap(bmp);		
-	}
-	
 	private boolean checkForUpdates() {
 		boolean res = false;
 //		if(songManager.loadGuideList(_guides))
@@ -392,18 +386,6 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		return res;
 	}
 
-	private ArrayList<AudioGuide> refreshPlayList() {
-		ArrayList<AudioGuide> list = new ArrayList<AudioGuide>();
-		if ( _playList != null && _playList.isEmpty())
-		{
-			list = songManager.getSdAudioList(_audioGuideListLang);
-		}	
-		else
-		{
-			list = _playList;
-		}
-		return list;
-	}
 	private void checkEmptyAGList() {
 		if ( _playList != null && _playList.isEmpty())
 		{
@@ -431,17 +413,6 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 		songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 		textLanguage = (TextView) findViewById(R.id.textLanguage);
 	}
-	private String getDestSDFld() {
-		String sourcePath = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getAppName()+"/"+_language;
-		return sourcePath;
-	}
-	private String getAudioName(String url)
-	 {
-		 String title = "";
-		 String [] tokens = url.split("/");
-		 title = tokens[tokens.length-1];
-		 return title;
-	 }
 	/**
 	 * Function to play a song
 	 * @param songIndex - index of song
@@ -449,43 +420,44 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	public void  playSong(int songIndex){
 		// Play song
 		try {
-			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
-			AudioGuide ag = (AudioGuide) _playList.get(songIndex);
-			//String audioPath = ag.getPath();
-			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
-        	mp.reset();
-			mp.setDataSource(audioPath);
-			mp.prepare();
-			mp.start();
-			// Displaying Song title
-			String songTitle = _playList.get(songIndex).getName();
-        	songTitleLabel.setText(songTitle);
-        	
-        	
-        	setupAudioThumbnail(songTitle);
-        	// Changing Button Image to pause image
-			btnPlay.setImageResource(R.drawable.btn_pause);
-			
-			// set Progress bar values
-			songProgressBar.setProgress(0);//
-			songProgressBar.setMax(100);
-			
-			// Updating progress bar
-			updateProgressBar();			
+//			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
+//			AudioGuide ag = (AudioGuide) _playList.get(songIndex);
+//			//String audioPath = ag.getPath();
+//			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
+//        	mp.reset();
+//			mp.setDataSource(audioPath);
+//			mp.prepare();
+//			mp.start();
+//			// Displaying Song title
+//			String songTitle = _playList.get(songIndex).getName();
+//        	songTitleLabel.setText(songTitle);
+//        	
+//        	
+//        	setupAudioThumbnail(songTitle);
+//        	// Changing Button Image to pause image
+//			btnPlay.setImageResource(R.drawable.btn_pause);
+//			
+//			// set Progress bar values
+//			songProgressBar.setProgress(0);//
+//			songProgressBar.setMax(100);
+//			
+//			// Updating progress bar
+//			updateProgressBar();			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} 
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**
 	 * Update timer on seekbar
 	 * */
 	public void updateProgressBar() {
-        mHandler.postDelayed(mUpdateTimeTask, 100);        
+//        mHandler.postDelayed(mUpdateTimeTask, 100);        
     }	
 	
 	/**
@@ -552,26 +524,27 @@ public class _AudioPlayerActivity extends Activity implements OnCompletionListen
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		
-		// check for repeat is ON or OFF
-		if(isRepeat){
-			// repeat is on play same song again
-			playSong(currentSongIndex);
-		} else if(isShuffle){
-			// shuffle is on - play a random song
-			Random rand = new Random();
-			currentSongIndex = rand.nextInt((_playList.size() - 1) - 0 + 1) + 0;
-			playSong(currentSongIndex);
-		} else{
-			// no repeat or shuffle ON - play next song
-			if(currentSongIndex < (_playList.size() - 1)){
-				playSong(currentSongIndex + 1);
-				currentSongIndex = currentSongIndex + 1;
-			}else{
-				// play first song
-				playSong(0);
-				currentSongIndex = 0;
-			}
-		}
+//		btnPlay.setImageResource(R.drawable.btn_play);
+//		// check for repeat is ON or OFF
+//		if(isRepeat){
+//			// repeat is on play same song again
+//			playSong(currentSongIndex);
+//		} else if(isShuffle){
+//			// shuffle is on - play a random song
+//			Random rand = new Random();
+//			currentSongIndex = rand.nextInt((_playList.size() - 1) - 0 + 1) + 0;
+//			playSong(currentSongIndex);
+//		} else{
+//			// no repeat or shuffle ON - play next song
+//			if(currentSongIndex < (_playList.size() - 1)){
+//				playSong(currentSongIndex + 1);
+//				currentSongIndex = currentSongIndex + 1;
+//			}else{
+//				// play first song
+//				playSong(0);
+//				currentSongIndex = 0;
+//			}
+//		}
 	}
 		
 	 public void openMap(final View view)

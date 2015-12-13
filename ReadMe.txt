@@ -1,5 +1,11 @@
 Sena Vetus
 
+Il file con l´elenco dei pois si scarica da:
+https://sites.google.com/site/ducciofabbri/home/sv-1/downloads.xml
+Immagini
+https://sites.google.com/site/ducciofabbri/pics/
+MP3
+https://sites.google.com/site/ducciofabbri/audio/ita
 
 Installato Eclipse ADT Bundle da:
 http://developer.android.com/sdk/installing/index.html?pkg=adt
@@ -103,6 +109,8 @@ destination path:C:\Users\Duccio\Lavori\Android\AndroidBuildingMusicPlayer\Andro
 
 Console per la pubblicazione:
 https://play.google.com/apps/publish/?dev_acc=01508487635089532122#AppListPlace
+
+Si clicca su "All application" - "APK" - "Upload new APK to Alpha"
 
 In relatà non posso fare l'upload di un apk che ho firmato con un certigficato differente, devo continuare a firmare con quello riginale.
 Cercando meglio ho ritrovato il keystore originale:
