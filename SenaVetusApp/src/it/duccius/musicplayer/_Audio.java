@@ -2,7 +2,7 @@ package it.duccius.musicplayer;
 
 import java.util.HashMap;
 
-public class Audio extends HashMap<String, String>{
+public class _Audio extends HashMap<String, String>{
 	
 	private Integer imageId;
 	private String songTitle;

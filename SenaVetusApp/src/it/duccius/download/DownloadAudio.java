@@ -142,8 +142,7 @@ public class DownloadAudio extends Activity implements
             }
         }
         
-        
-        //--  ------
+        //--------
         starDownload(selectedItems,new MyCallbackInterface() {
 
             @Override
