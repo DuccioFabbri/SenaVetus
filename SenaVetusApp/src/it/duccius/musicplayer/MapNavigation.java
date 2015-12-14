@@ -57,6 +57,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,8 +77,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
 	private ImageButton btnPOIdownload;
-	private ImageButton btnPOIimg;
-	private ImageView btnImagePOI;
+	
+	private ImageView btnThumbnail;
 	
 	private ImageButton songThumbnail;
 		
@@ -85,6 +86,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private TextView songTitleLabel;
 	private TextView songCurrentDurationLabel;
 	private TextView songTotalDurationLabel;
+	
+	private LinearLayout  footer;
 	// Media Player
 	private  MediaPlayer mp;
 	// Handler to update UI timer, progress bar etc,.
@@ -382,20 +385,12 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			}
 		});
 		
-		btnPOIimg.setOnClickListener(new View.OnClickListener() 
+		btnThumbnail.setOnClickListener(new View.OnClickListener() 
 		{
 			
 			@Override
-			public void onClick(View arg0) {
-				if(_clickedMarker !=""){
-					
-					//Bitmap bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+_nomeMarker+".jpg").toString());	
-					//btnImagePOI.setImageBitmap(bmp);
-				}
-				if(btnImagePOI.getVisibility()==View.VISIBLE)
-					btnImagePOI.setVisibility(View.GONE);
-				else
-					btnImagePOI.setVisibility(View.VISIBLE);
+			public void onClick(View arg0) {				
+				btnThumbnail.setVisibility(View.GONE);				
 			}
 		});
 	}
@@ -546,10 +541,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //					_activeMarker.setSnippet("Click and Play" );
 //				}
 				//Se ho l'audio lo trasmetto subito
-				playSong(_clickedMarkerIndex);
-				btnPOIimg.setVisibility(View.VISIBLE);
-			}else
-				btnPOIimg.setVisibility(View.GONE);
+				playSong(_clickedMarkerIndex);								
+				btnThumbnail.setVisibility(View.VISIBLE);
+			}
 		}
 		private void checkReadyToDownload() {
 			ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
@@ -642,8 +636,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				//nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/02_PortaCamollia.jpg").toString();
 				Bitmap bmp = BitmapFactory.decodeFile(nome);
 				//bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+_nomeMarker+".jpg").toString());	
-				btnImagePOI.setImageBitmap(bmp);
-				//btnPOIimg.setImageBitmap(bmp);
+				btnThumbnail.setImageBitmap(bmp);				
 				
 				checkReadyToPlay();
 				
@@ -813,15 +806,16 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 		btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
-		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);
-		btnPOIimg  = (ImageButton) findViewById(R.id.btnPOIimg);
-		btnImagePOI  = (ImageButton) findViewById(R.id.thumbnail);
+		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);		
+		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
 				
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
 		songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 		textLanguage = (TextView) findViewById(R.id.textLanguage);
+		
+		footer = (LinearLayout) findViewById(R.id.player_footer_bg);
 	}
 	private String getDestSDFld() {
 		String sourcePath = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getAppName()+"/"+_language;
@@ -845,6 +839,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public void  playSong(int songIndex){
 		// Play song
 		try {
+			footer.setVisibility(View.VISIBLE);
+			songProgressBar.setVisibility(View.VISIBLE);
+			
 			hidePOIbtns();
 			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
 			AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(songIndex);
@@ -979,6 +976,11 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		btnPlay.setImageResource(R.drawable.btn_play);
+		footer.setVisibility(View.GONE);
+		songProgressBar.setVisibility(View.GONE);
+		
+		btnThumbnail.setVisibility(View.GONE);
+		
 //		songProgressBar.setProgress(0);
 		//mHandler.removeCallbacks(mUpdateTimeTask);
 		// check for repeat is ON or OFF

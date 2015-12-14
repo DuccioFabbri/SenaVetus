@@ -51,15 +51,6 @@
         android:paddingRight="5dp" >
 
         <ImageButton
-            android:id="@+id/btnPOIimg"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.74"
-            android:background="@null"
-            android:src="@drawable/ic_launcher"
-            android:visibility="gone" />
-
-        <ImageButton
             android:id="@+id/btnPOIdownload"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -131,7 +122,8 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:background="@layout/bg_player_footer"
-        android:gravity="center" >
+        android:gravity="center" 
+        android:visibility="invisible">
 
         <!-- Player Buttons -->
 
@@ -200,7 +192,8 @@
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
         android:progressDrawable="@drawable/seekbar_progress"
-        android:thumb="@drawable/seek_handler" />
+        android:thumb="@drawable/seek_handler" 
+        android:visibility="invisible"/>
 
     <!-- Timer Display -->
 

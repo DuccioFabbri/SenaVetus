@@ -4,11 +4,6 @@ import it.duccius.maps.MapService;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,7 +27,7 @@ public class SongsManager {
 	String _langMediPath="";
 	
 	
-	private ArrayList<_Audio> songsList = new ArrayList<_Audio>();
+	private ArrayList<Audio> songsList = new ArrayList<Audio>();
 	
 	// Constructor
 	public SongsManager(String lang){
@@ -50,7 +45,7 @@ public class SongsManager {
 	 * Function to read all mp3 files from sdcard
 	 * and store the details in ArrayList
 	 * */
-	public ArrayList<_Audio> getPlayList(){
+	public ArrayList<Audio> getPlayList(){
 //		File home = new File(MEDIA_PATH + lang + "/");
 		File home = new File(_langMediPath);
 		if (!home.exists())
@@ -61,7 +56,7 @@ public class SongsManager {
 			if (home.listFiles(new FileExtensionFilter()).length > 0) {
 				int i=0 ;
 				for (File file : home.listFiles(new FileExtensionFilter())) {
-					_Audio song = new _Audio();
+					Audio song = new Audio();
 					song.put("songTitle", file.getName().substring(0, (file.getName().length() - 4)));
 					song.put("songPath", file.getPath());
 					song.setSongPositionInSd(i);
