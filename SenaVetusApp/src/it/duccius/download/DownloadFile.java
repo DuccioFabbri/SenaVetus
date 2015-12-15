@@ -76,7 +76,7 @@ public class DownloadFile extends AsyncTask<ArrayList<String>, Integer, List<Row
         wl.acquire();
 
         rowItems = new ArrayList<RowItem>();
-        noOfURLs=sUrl.length;
+        noOfURLs=sUrl[0].size();
                    
         
         //createFolder(_tempSdFld);

@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -56,6 +57,17 @@ public class Utilities {
 		int lf = baseUrlMp3.length()-i-"~mp3_name~".length();
 		
 		return mp3_url.substring(i, mp3_url.length()-lf)+".mp3";
+		 
+	}
+	public static ArrayList<String> getUrlsToDownload(AudioGuideList audioToDownloadLang )
+	{
+		ArrayList<String> arL  = new ArrayList<String>();
+		for(AudioGuide ag: audioToDownloadLang)
+		{
+			String str = Utilities.getMp3UrlFromName(ag.getName());
+			arL.add(str);
+		}
+		return arL;
 		 
 	}
 	// SIENA 2.227.2.94

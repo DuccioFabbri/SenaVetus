@@ -108,6 +108,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	public String _urlDownloads = Utilities.getUrlDownloads();
 	public String _filePath = Utilities.getTempSDFld();
+//	public String _tempSdFld = Utilities.getTempSDFldLang(_language);        
+//	public String _destSdFld = Utilities.getDestSDFldLang(_language);
 	//public String _downloadsFileName = "downloads.xml";
 	public String _downloadsSDPath = Utilities.getDownloadsSDPath();
 
@@ -152,6 +154,27 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	            public void onDownloadFinished(List<RowItem> rowItems) {
 	                // Do something when download finished
 	            	checkNewAudio();
+	            	/*
+	            	 * 
+	            	 * Qui posso fare direttamente una chiamata per eseguire
+	            	 * il download di tutti i file mancanti per una determinata lingua
+	            	 * L'elenco sará in _audioToDownloadLang
+	            	 * La chiamata sará del tipo: starDownload(arL,_filePath,new MyCallbackInterface() { ...
+	            	 * 
+	            	 * dove ArrayList<String> arL contiene la lista degli url degli audio da scaricare ricavati da _audioToDownloadLang
+	            	 * Si veda per riferimento il metodo: checkReadyToDownload() che scarica un singolo POI
+	            	 */
+	            	  checkForUpdates();
+	            	  ArrayList<String> arL = new ArrayList<String>();
+	            	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
+	            	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 
+	            	   @Override
+				            public void onDownloadFinished(List<RowItem> rowItems) {				     
+				            	checkNewAudio();
+				            	if(null != _activeMarker)
+				            		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+				            }
+				        });	            	 
 	            }
 	        });
 			return true;
