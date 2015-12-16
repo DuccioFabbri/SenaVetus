@@ -337,8 +337,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnNext.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
-			public void onClick(View arg0) {
-				hidePOIbtns();
+			public void onClick(View arg0) {								
+				
 				if(_playList != null && _playList.size()>0){	
 					// check if next song is there or not
 					if(currentSongIndex < (_playList.size() - 1)){
@@ -350,6 +350,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 						currentSongIndex = 0;
 					}
 				}
+				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
+				updateThumbnail(ag);	
+				
+				setFooterVisibility(View.VISIBLE);
 			}
 		});
 		
@@ -373,6 +377,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 						currentSongIndex = _playList.size() - 1;
 					}
 				}
+				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
+				updateThumbnail(ag);	
+				
+				setFooterVisibility(View.VISIBLE);
 				
 			}
 		});
@@ -564,7 +572,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //				}
 				//Se ho l'audio lo trasmetto subito
 				playSong(_clickedMarkerIndex);								
-				btnThumbnail.setVisibility(View.VISIBLE);
+				
 			}
 		}
 		private void checkReadyToDownload() {
@@ -654,24 +662,22 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				AudioGuide agMarker= sm.getAudioGuideByTitle(_guides,_clickedMarker);
 				
 				
-				String nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+agMarker.getName()+".jpg").toString();
-				//nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/02_PortaCamollia.jpg").toString();
-				Bitmap bmp = BitmapFactory.decodeFile(nome);
-				//bmp = BitmapFactory.decodeFile(Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+_nomeMarker+".jpg").toString());	
-				btnThumbnail.setImageBitmap(bmp);				
+				updateThumbnail(agMarker);				
 				
 				checkReadyToPlay();
 				
 				checkReadyToDownload();
 								
 				return false;
-			}
-			
-			
-	    };
-	    
+			}									
+	    };	    
 	}
 
+	private void updateThumbnail(AudioGuide agMarker) {
+		String nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+agMarker.getName()+".jpg").toString();				
+		Bitmap bmp = BitmapFactory.decodeFile(nome);					
+		btnThumbnail.setImageBitmap(bmp);
+	}
 	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
 		//_sdAudios = getSdAudios();	
@@ -863,13 +869,13 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public void  playSong(int songIndex){
 		// Play song
 		try {
-			footer.setVisibility(View.VISIBLE);
-			timerDisplay.setVisibility(View.VISIBLE);
 			
-			songProgressBar.setVisibility(View.VISIBLE);
-			hidePOIbtns();
-			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
 			AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(songIndex);
+			updateThumbnail(ag);	
+			
+			setFooterVisibility(View.VISIBLE);
+			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
+			
 			//String audioPath = ag.getPath();
 			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
         	mp.reset();
@@ -928,6 +934,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void setFooterVisibility(int visibility) {
+		btnThumbnail.setVisibility(visibility);
+		footer.setVisibility(visibility);
+		timerDisplay.setVisibility(visibility);
+		
+		songProgressBar.setVisibility(visibility);
+		hidePOIbtns();
 	}
 	
 	/**
@@ -1001,6 +1016,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		btnPlay.setImageResource(R.drawable.btn_play);
+		btnThumbnail.setVisibility(View.GONE);
 		footer.setVisibility(View.GONE);
 		timerDisplay.setVisibility(View.GONE);
 		
