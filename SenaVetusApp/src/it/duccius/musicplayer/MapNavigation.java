@@ -65,6 +65,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	ProgressDialog progressDialog;
 	
 	GoogleMap mMap;
+	//int _mapType = GoogleMap.MAP_TYPE_HYBRID;
+	int _mapType = GoogleMap.MAP_TYPE_NORMAL;
 	
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
@@ -74,7 +76,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnPlaylist;	
 	private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
-	private ImageButton btnPOIdownload;
+	//private ImageButton btnPOIdownload;
 	
 	private ImageView btnThumbnail;
 	
@@ -658,11 +660,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				
 				//TODO Auto-generated method stub
 				_clickedMarker = marker.getTitle();
-				SongsManager sm = new SongsManager(_language);	
-				AudioGuide agMarker= sm.getAudioGuideByTitle(_guides,_clickedMarker);
-				
-				
-				updateThumbnail(agMarker);				
+				//SongsManager sm = new SongsManager(_language);	
+				//AudioGuide agMarker= sm.getAudioGuideByTitle(_guides,_clickedMarker);							
+				//updateThumbnail(agMarker);				
 				
 				checkReadyToPlay();
 				
@@ -724,7 +724,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //                .snippet("Population: 4,137,400"));
 	        	
 	        	mMap.setMyLocationEnabled(true);
-	        	mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+	        	mMap.setMapType(_mapType);
 	        }
 	    }
 	}
@@ -832,7 +832,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
 		//songThumbnail = (ImageButton) findViewById(R.id.thumbnail);	
 		
-		btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
+		//btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);		
 		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
@@ -1058,7 +1058,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 
 	private void hidePOIbtns() {
 		btnPOIplay.setVisibility(4);
-		btnPOIdownload.setVisibility(4);		
+		//btnPOIdownload.setVisibility(4);		
 	}
 
 	/**
