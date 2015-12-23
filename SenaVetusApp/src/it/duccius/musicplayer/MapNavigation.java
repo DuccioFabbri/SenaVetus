@@ -66,7 +66,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	GoogleMap mMap;
 	//int _mapType = GoogleMap.MAP_TYPE_HYBRID;
-	int _mapType = GoogleMap.MAP_TYPE_NORMAL;
+	//int _mapType = GoogleMap.MAP_TYPE_NORMAL;
 	
 	private ImageButton btnPlay;
 	private ImageButton btnForward;
@@ -74,7 +74,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
 	private ImageButton btnPlaylist;	
-	private ImageButton btnPOIplay;
+	//private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
 	//private ImageButton btnPOIdownload;
 	
@@ -100,6 +100,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private int currentSongIndex = 0; 
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
+	// Di default la playlist coincide con gli audio presenti in locale
 	private ArrayList<AudioGuide> _playList = new ArrayList<AudioGuide>();
 	// _guides: elenco delle audioguide dispoibili sul server pronte dda scaricare
 	private ArrayList<AudioGuide> _guides = new ArrayList<AudioGuide>();
@@ -229,9 +230,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		setContentView(R.layout.player);
-		setContentView(R.layout.sena);
-		
-				
+		setContentView(R.layout.sena);						
 						
 		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
@@ -263,7 +262,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			
 			@Override
 			public void onClick(View arg0) {
-				hidePOIbtns();
+				//hidePOIbtns();
 				// check for already playing
 				if(_playList != null && _playList.size()>0){
 				if(mp.isPlaying()){
@@ -292,7 +291,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			
 			@Override
 			public void onClick(View arg0) {
-				hidePOIbtns();
+				//hidePOIbtns();
 				if(_playList != null && _playList.size()>0){
 					// get current song position				
 					int currentPosition = mp.getCurrentPosition();
@@ -316,7 +315,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			
 			@Override
 			public void onClick(View arg0) {
-				hidePOIbtns();
+				//hidePOIbtns();
 				if(_playList != null && _playList.size()>0){
 					// get current song position				
 					int currentPosition = mp.getCurrentPosition();
@@ -355,7 +354,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
 				updateThumbnail(ag);	
 				
-				setFooterVisibility(View.VISIBLE);
+				//setFooterVisibility(View.VISIBLE);
 			}
 		});
 		
@@ -367,7 +366,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			
 			@Override
 			public void onClick(View arg0) {
-				hidePOIbtns();
+				//hidePOIbtns();
 				if(_playList != null && _playList.size()>0)
 				{
 					if(currentSongIndex > 0){
@@ -382,7 +381,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
 				updateThumbnail(ag);	
 				
-				setFooterVisibility(View.VISIBLE);
+				//setFooterVisibility(View.VISIBLE);
 				
 			}
 		});
@@ -409,6 +408,25 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		        Bundle b = new Bundle();
 		        b.putSerializable("_playList", _playList);
 		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
+		        b.putString("language", _language);		 
+		        // Add the bundle to the intent.
+		        i.putExtras(b);
+				startActivityForResult(i, 1);	
+				//finish();
+			}
+		});
+		
+		btnPlaylist.setOnClickListener(new View.OnClickListener() 
+		{
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
+							
+		        Bundle b = new Bundle();
+		        b.putSerializable("_playList", _playList);
+		        b.putInt("currentSongIndex", currentSongIndex);
+		        b.putSerializable("_localAudioGuideListLang", _localAudioGuideListLang);		        
 		        b.putString("language", _language);		 
 		        // Add the bundle to the intent.
 		        i.putExtras(b);
@@ -724,7 +742,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //                .snippet("Population: 4,137,400"));
 	        	
 	        	mMap.setMyLocationEnabled(true);
-	        	mMap.setMapType(_mapType);
+	        	mMap.setMapType(Utilities.getMapType());
 	        }
 	    }
 	}
@@ -743,6 +761,12 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 					    	if (mp != null)
 					    		mp.release();
 					    	checkNewAudio();
+					    	int newPlayListIndex;
+					    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
+					    	if ((newPlayListIndex>-1)){
+					    		currentSongIndex =newPlayListIndex;
+					    		playSong(currentSongIndex);
+					    	}
 		    			}
 		    }
 		    catch(Exception e)
@@ -833,7 +857,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		//songThumbnail = (ImageButton) findViewById(R.id.thumbnail);	
 		
 		//btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
-		btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
+		//btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);		
 		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
 				
@@ -873,7 +897,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(songIndex);
 			updateThumbnail(ag);	
 			
-			setFooterVisibility(View.VISIBLE);
+			
 			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
 			
 			//String audioPath = ag.getPath();
@@ -887,6 +911,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			    public void onPrepared(MediaPlayer mp) {
 			    	try{
 			    	mp.start();
+			    	setFooterVisibility(View.VISIBLE);
 			    	}
 			    	catch(Exception e)
 			    	{
@@ -942,7 +967,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		timerDisplay.setVisibility(visibility);
 		
 		songProgressBar.setVisibility(visibility);
-		hidePOIbtns();
+		//hidePOIbtns();
 	}
 	
 	/**
@@ -1016,15 +1041,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
 		btnPlay.setImageResource(R.drawable.btn_play);
-		btnThumbnail.setVisibility(View.GONE);
-		footer.setVisibility(View.GONE);
-		timerDisplay.setVisibility(View.GONE);
-		
-		songProgressBar.setVisibility(View.GONE);
-		
-		btnThumbnail.setVisibility(View.GONE);
-		
-//		songProgressBar.setProgress(0);
+
 		//mHandler.removeCallbacks(mUpdateTimeTask);
 		// check for repeat is ON or OFF
 		if(isRepeat){
@@ -1036,15 +1053,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			currentSongIndex = rand.nextInt((_playList.size() - 1) - 0 + 1) + 0;
 			playSong(currentSongIndex);
 		} else{
-//			// no repeat or shuffle ON - play next song
-//			if(currentSongIndex < (_playList.size() - 1)){
-//				playSong(currentSongIndex + 1);
-//				currentSongIndex = currentSongIndex + 1;
-//			}else{
-//				// play first song
-//				playSong(0);
-//				currentSongIndex = 0;
-//			}
+			setFooterVisibility(View.GONE);
 		}
 	}
 		
@@ -1056,10 +1065,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	    mHandler.removeCallbacks(mUpdateTimeTask);
 	 }
 
-	private void hidePOIbtns() {
-		btnPOIplay.setVisibility(4);
-		//btnPOIdownload.setVisibility(4);		
-	}
+//	private void hidePOIbtns() {
+//		//btnPOIplay.setVisibility(4);
+//		//btnPOIdownload.setVisibility(4);		
+//	}
 
 	/**
 	 * Recupera l'attuale posizione e la assegna a '_location'

@@ -13,6 +13,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.gms.maps.GoogleMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
@@ -27,6 +29,28 @@ public class Utilities {
 	private static String urlDownloads = new String("https://sites.google.com/site/ducciofabbri/home/sv-1/" +_downloadsFileName);
 	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/~img_name~.jpg?attredirects=0&d=1";
 	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/ita/~mp3_name~.mp3?attredirects=0&d=1";
+	
+//	private static int mapType = GoogleMap.MAP_TYPE_HYBRID;
+//	private static int mapType = GoogleMap.MAP_TYPE_SATELLITE;
+//	private static int mapType = GoogleMap.MAP_TYPE_TERRAIN;
+	private static int mapType = GoogleMap.MAP_TYPE_NORMAL;
+	//downloadType = 1 : download di tutti i file audio allávvio dell'applicazione
+	//downloadType = 2 : i file vengono scaricati separatamente, cliccando sui POI o dal menú download
+	
+	private static int downloadType = 1;
+	
+	public static int getDownloadType() {
+		return downloadType;
+	}
+	public static void setDownloadType(int downloadType) {
+		Utilities.downloadType = downloadType;
+	}	
+	public static int getMapType() {
+		return mapType;
+	}
+	public static void setMapType(int _mapType) {
+		Utilities.mapType = _mapType;
+	}
 	public static String getImgUrlFromName(String img_name )
 	{
 		return baseUrlImg.replaceAll("~img_name~", img_name);
@@ -70,45 +94,7 @@ public class Utilities {
 		return arL;
 		 
 	}
-	// SIENA 2.227.2.94
-	//private static String urlDownloads = "http://2.227.2.94:8080/SenaVetus/downloads.xml";
-	// LUGANO 77.57.63.163
-//	private static String urlDownloads = "http://77.57.63.163:8080/SenaVetus/downloads.xml";
-//	
-	/**
-	 * @param url: url you want to download
-	 * @param filePath: path where you want to save the downloaded file
-	 * @param nomeFile: name of the downloaded file
-	 * @param timeoutSec: timeout in sec. to wait to establish the connection. After this time the attempt is interrupted.
-	 * @return True if the url can be downloaded to the desired position in the specified Timeoiut connection time, otherwise returns False 
-	 * @throws MalformedURLException
-	 * @throws IOException
-	 */
-//	public static Boolean downloadFile(String url, String filePath, String nomeFile,
-//			int timeoutSec) throws MalformedURLException, IOException {
-//		try
-//		{
-//			RetriveAsyncFile asyncDownload = new RetriveAsyncFile(url,filePath,nomeFile,timeoutSec);
-//			asyncDownload.execute();
-////			
-////			final URL aUrl = new URL(url);
-////			final URLConnection conn = aUrl.openConnection();
-////			conn.setConnectTimeout(timeoutSec * 1000);
-////			conn.setReadTimeout(timeoutSec * 1000);  
-////			conn.connect();
-////			Utilities.StreamToFile(aUrl.openStream(), filePath, nomeFile);
-//			
-//			// http://stackoverflow.com/questions/6343166/android-os-networkonmainthreadexception 			 						
-//			
-//			return true;
-//		}
-//		//NetworkOnMainThreadException
-//		catch(Exception e)
-//		{
-//			Log.d("downloadFile()",e.toString());
-//			return false;
-//		}
-//	}
+	
 	// Interfaccia da richiamare quando il download del file in asincrono tramite DownloadFile è terminato
 	public interface  MyCallbackInterface {
 
@@ -273,6 +259,8 @@ public class Utilities {
 //	public static String getUrlKml() {
 //		return urlKml;
 //	}
+
+	
 	
 	
 }

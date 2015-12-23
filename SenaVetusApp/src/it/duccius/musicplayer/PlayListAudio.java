@@ -14,12 +14,14 @@ import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 
 public class PlayListAudio extends Activity implements
@@ -30,6 +32,7 @@ OnClickListener{
     private Spinner _spnLanguage;
     private String _language = "ITA";
     private Button _btnDownload;
+    private int currentSongIndex;
     
     private SongsManager songManager;
     
@@ -53,53 +56,69 @@ OnClickListener{
 	    	//_checkConn = settings.getBoolean("checkConn", false);
 	    	_language = intent.getExtras().getString("language");
 	    	_playList = (ArrayList<AudioGuide>) intent.getExtras().getSerializable("_playList");
+	    	currentSongIndex = intent.getExtras().getInt("currentSongIndex", 0);
 	    	songManager = new SongsManager(_language);
 	    }
 	    catch(Exception e)
 	    {}
 	    
         setContentView(R.layout.playlist_audio);        
-        setupLangSpinner();
-        //setupListView();
-        setupButton();        
+        //setupLangSpinner();
+        setupListView();
+//        setupButton();        
         
     }
+    
 	public void onBackPressed( ) {
 		finish();
 	}
 
-	private void setupButton() {
-		_button = (Button) findViewById(R.id.testbutton);
-        _button.setOnClickListener(this);
-	}
+//	private void setupButton() {
+//		_button = (Button) findViewById(R.id.testbutton);
+//        _button.setOnClickListener(this);
+//	}
 
 	private void setupListView() {
 		_listView = (ListView) findViewById(R.id.list);
 		//_btnDownload = (Button) findViewById(R.id.button1);
 		//_btnDownload.setClickable(_checkConn);
 		
-		ArrayList<String> sdAudiosStrings = getAdapterSource();
-		if(sdAudiosStrings.size()<1) 
-		{
-			showMsg();	
-		}
-		else
-		{
-			_adapter = new ArrayAdapter<String>(this,
-	                android.R.layout.simple_list_item_multiple_choice, sdAudiosStrings);                	
-	        
-	        _listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-	        _listView.setAdapter(_adapter);
-	        for (AudioGuide sdAg: _sdAudios)
-	        {
-	        	for(AudioGuide ag: _playList )
-	        	{
-	        		if(sdAg.getName().equalsIgnoreCase(ag.getName()))
-	        			_listView.setItemChecked(sdAg.getSdPosition(), true);
-	        	}
-	        }
-		}
-        
+		//ArrayList<String> sdAudiosStrings = getAdapterSource();
+		ArrayList<AudioGuide> sdAudioguides = getAdapterSource2();
+		
+		
+			//_adapter = new ArrayAdapter<String>(this,
+	         //       android.R.layout.simple_list_item_multiple_choice, sdAudiosStrings);                	
+//			_adapter = new ArrayAdapter<String>(this,
+//			        R.layout.rowlayout, R.id.label, sdAudiosStrings);
+			PlaylistAdapter adapter = new PlaylistAdapter(this, sdAudioguides);
+			   
+//	        _listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+	        _listView.setAdapter(adapter);
+	        _listView.setOnItemClickListener(new OnItemClickListener(){	        	        		
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {				
+				
+		        Bundle b = new Bundle();		        
+		        b.putInt("currentSongIndex", arg2);
+		 		        
+		 //--------------------------------------------------------------------------------------
+		 //       setResult(Activity.RESULT_OK, intent);
+		 //--------------------------------------------------------------------------------------
+		        Intent in = new Intent();
+				in.putExtras(b);
+				if (getParent() == null) {			
+				setResult(Activity.RESULT_OK, in);}
+				else
+				{			
+				    getParent().setResult(Activity.RESULT_OK, in);
+				}
+		        finish();
+
+			}
+	        });        
 	}
 	private void showMsg()
 	{
@@ -143,32 +162,29 @@ OnClickListener{
 		ArrayList<String> sdAudiosStrings  = sm.getSdAudioStrings(_sdAudios);
 		return sdAudiosStrings;
 	}
-	
-	private void setupLangSpinner() {
-		_spnLanguage = (Spinner)findViewById(R.id.spnLanguage);
-		ArrayAdapter<String> adapterLang = new ArrayAdapter<String>(
-        		this,
-        		android.R.layout.simple_spinner_item,
-        		ApplicationData.getLanguages()
-        		);
-        
-		_spnLanguage.setAdapter(adapterLang);
-		_spnLanguage.setSelection(adapterLang.getPosition(_language));
-		_spnLanguage.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-            	_language = getSelectedLang();
-            	setupListView();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
-        });
-	}
-	private String getSelectedLang() {
-		return _spnLanguage.getItemAtPosition(_spnLanguage.getSelectedItemPosition()).toString();
+	private ArrayList<AudioGuide> getAdapterSource2() {
+		//_sdAudios = getSdAudios();	
+		SongsManager sm = new SongsManager(_language);
+		_sdAudios = sm.getSdAudioList();
+		
+		//loadGuideList();
+		//ArrayList<AudioGuide> audioDisponibiliServer= guideList(_language);
+		
+		//_audioToDownload = getAudioToDownload(sdAudios, audioDisponibiliServer);
+		songManager.loadGuideList(_guides);
+		for(AudioGuide au: _sdAudios)
+		{
+			for(AudioGuide gd: _guides)
+			{
+				if (au.getName().equals(gd.getName()))
+				{
+					au.setTitle(gd.getTitle());
+					break;
+				}
+			}
+		}
+		
+		return _sdAudios;
 	}
 		
     public void onClick(View v) {
@@ -203,7 +219,7 @@ OnClickListener{
         b.putSerializable("selectedItems", selectedAGs);
 //        b.putString("id_audioSD", "0");
         b.putSerializable("audioToDownload", _sdAudios);
-        
+        b.putInt("currentSongIndex", 0);
         b.putString("language", _language);
  
         // Add the bundle to the intent.
@@ -216,6 +232,14 @@ OnClickListener{
  //--------------------------------------------------------------------------------------
  //       setResult(Activity.RESULT_OK, intent);
  //--------------------------------------------------------------------------------------
+        Intent in = new Intent();
+		in.putExtras(b);
+		if (getParent() == null) {			
+		setResult(Activity.RESULT_OK, in);}
+		else
+		{			
+		    getParent().setResult(Activity.RESULT_OK, in);
+		}
         finish();
     }
     public void  update (View view)
