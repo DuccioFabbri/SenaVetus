@@ -351,10 +351,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 						currentSongIndex = 0;
 					}
 				}
-				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
-				updateThumbnail(ag);	
-				
-				//setFooterVisibility(View.VISIBLE);
+//				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
+//				updateThumbnail(ag);					
 			}
 		});
 		
@@ -378,10 +376,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 						currentSongIndex = _playList.size() - 1;
 					}
 				}
-				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
-				updateThumbnail(ag);	
-				
-				//setFooterVisibility(View.VISIBLE);
+//				AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
+//				updateThumbnail(ag);	
 				
 			}
 		});
@@ -576,16 +572,6 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
 			if (_clickedMarkerIndex>-1)
 			{
-//				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
-//				{
-//					if(_playList != null && _playList.size()>0 )
-//					{					
-//						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//						_activeMarker.setSnippet("" );
-//						playSong(_clickedMarkerIndex);
-//					}							
-//				}
-//				else
 //				{
 //					//_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 //					_activeMarker.setSnippet("Click and Play" );
@@ -912,6 +898,9 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			    	try{
 			    	mp.start();
 			    	setFooterVisibility(View.VISIBLE);
+			    	btnPlay.setImageResource(R.drawable.btn_pause);
+			    	AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
+					updateThumbnail(ag);
 			    	}
 			    	catch(Exception e)
 			    	{
@@ -920,20 +909,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			    }
 			});
 			mp.prepareAsync();
-
-			
-//			mp.prepare();
-//			mp.start();
-			// Displaying Song title
-			//String songTitle = _playList.get(songIndex).getName();
-        	
-        	
-        	// Dovrebbe mostrare delle foto del POI in ascolto
-        	// Per il momento trascurao
-//        	setupAudioThumbnail(songTitle);
-        	// Changing Button Image to pause image
-			btnPlay.setImageResource(R.drawable.btn_pause);
-			
+						
 			// set Progress bar values
 			songProgressBar.setProgress(0);//
 			songProgressBar.setMax(100);
@@ -1040,9 +1016,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	 * */
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		btnPlay.setImageResource(R.drawable.btn_play);
-
-		//mHandler.removeCallbacks(mUpdateTimeTask);
+		
 		// check for repeat is ON or OFF
 		if(isRepeat){
 			// repeat is on play same song again
@@ -1054,6 +1028,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			playSong(currentSongIndex);
 		} else{
 			setFooterVisibility(View.GONE);
+			btnPlay.setImageResource(R.drawable.btn_play);
 		}
 	}
 		

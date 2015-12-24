@@ -4,43 +4,6 @@
     android:layout_height="match_parent"
     android:background="#4a4a4a" >
 
-    <!-- Player Header -->
-    <!--
-          <LinearLayout 
-        android:id="@+id/player_header_bg"
-        android:layout_width="fill_parent"
-        android:layout_height="60dip"
-        android:background="@layout/bg_player_header"
-        android:layout_alignParentTop="true"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
-          -->
-    <!-- Song Title -->
-    <!--
-               <TextView 
-            android:id="@+id/songTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#04b3d2"
-            android:textSize="16dp"
-            android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:text="The Good, The Bad And The Ugly"
-            android:layout_marginTop="10dp"/>"
-    -->
-    <!-- Playlist button -->
-    <!--
-              <ImageButton 
-            android:id="@+id/btnPlaylist"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:src="@drawable/btn_playlist"
-            android:background="@null"/>
-            
-    -->
-    <!-- </LinearLayout> -->
-
     <LinearLayout
         android:id="@+id/poi_menu"
         android:layout_width="fill_parent"
@@ -92,26 +55,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/poi_menu" />
 
-    <!-- Song Thumbnail Image -->
-    <!--
-    <LinearLayout
-        android:id="@+id/songThumbnail"
-        android:layout_width="fill_parent"
-        android:layout_height="400dp"
-        android:layout_above="@+id/player_footer_bg"
-        android:layout_below="@id/poi_menu"
-        android:gravity="center"
-        android:paddingBottom="10dp"
-        android:paddingTop="2dp"
-        android:weightSum="8" >
-		  
-    	<ImageView
-    	    android:id="@+id/thumbnail"
-    	    android:layout_width="258dp"
-    	    android:layout_height="298dp"
-    	    android:src="@drawable/adele" />
-		</LinearLayout>
-    -->
     <!-- Player Footer -->
 
     <LinearLayout
@@ -238,12 +181,6 @@
 
         <!-- Repeat Button -->
 
-        <TextView
-            android:id="@+id/textLanguage"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:text="" />
-
         <ImageButton
             android:id="@+id/btnRepeat"
             android:layout_width="wrap_content"
@@ -265,18 +202,7 @@
             android:background="@null"
             android:src="@drawable/btn_shuffle"
             android:visibility="gone" />
-        <!--
-        <ImageButton
-            android:id="@+id/btnMap"
-            android:layout_marginLeft="5dp"
-            android:background="@null"
-            android:src="@drawable/btn_shuffle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"                      
-            android:onClick="openMap"
-            android:text="Map" 
-            />
-        -->
+                
     </LinearLayout>
  
     <ImageButton
@@ -288,14 +214,4 @@
         android:src="@drawable/adele" 
         android:visibility="gone" />
     
-<!-- 
-    <ImageView
-        android:id="@+id/thumbnail"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_above="@+id/linearLayout1"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/adele"
-        android:visibility="visible" />
--->
 </RelativeLayout>
