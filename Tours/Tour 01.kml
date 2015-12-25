@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Tour 01</name>
+		<Placemark>
+			<name>Line 1</name>
+			<styleUrl>#line-000000-1-nodesc</styleUrl>
+			<ExtendedData>
+			</ExtendedData>
+			<LineString>
+				<tessellate>1</tessellate>
+				<coordinates>11.3303536,43.3191481,0.0 11.3297689,43.3187422,0.0 11.3296884,43.3185119,0.0 11.3297153,43.3183168,0.0 11.3294953,43.3182738,0.0 11.3294524,43.318106,0.0 11.3295758,43.3178562,0.0 11.3293666,43.31754010000001,0.0 11.3289106,43.3170912,0.0 11.3298547,43.3162794,0.0 11.3309062,43.3172278,0.0 11.3307452,43.3179226,0.0 11.3306004,43.3184612,0.0 11.3308096,43.318789,0.0 11.3312173,43.3190856,0.0 11.3313943,43.3194798,0.0 11.3313729,43.3197999,0.0 11.3312173,43.3201277,0.0 11.3305789,43.32108,0.0 11.3304448,43.3211619,0.0 11.3296455,43.3207755,0.0 11.3290554,43.3204477,0.0 11.3289267,43.3203853,0.0 11.3277197,43.3204828,0.0 11.327371000000001,43.3204594,0.0 11.3264376,43.3202175,0.0</coordinates>
+			</LineString>
+		</Placemark>
+		<Style id='line-000000-1-nodesc-normal'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>1</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='line-000000-1-nodesc-highlight'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>2.0</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='line-000000-1-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#line-000000-1-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#line-000000-1-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+	</Document>
+</kml>

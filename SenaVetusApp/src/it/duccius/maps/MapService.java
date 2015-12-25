@@ -31,6 +31,7 @@ public static final int MODE_ANY = 0;
 public static final int MODE_CAR = 1;
 public static final int MODE_WALKING = 2;
 
+public static  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
 
 public static String inputStreamToString (InputStream in) throws IOException {
     StringBuffer out = new StringBuffer();
@@ -102,7 +103,7 @@ public static NavigationDataSet getNavigationDataSet(String url) {
 
         /* Our NavigationSaxHandler now provides the parsed data to us. */ 
         navigationDataSet = navSax2Handler.getParsedData(); 
-
+        _trails = navSax2Handler.get_trails();
         /* Set the result to be displayed in our GUI. */ 
         Log.d(ApplicationData.getAppName(),"navigationDataSet: "+navigationDataSet.toString());
 
@@ -189,7 +190,7 @@ public static ArrayList<AudioGuide> getDownloadsDataSet(String url) {
 
         /* Our NavigationSaxHandler now provides the parsed data to us. */ 
         downloads = navSax2Handler.getParsedData(); 
-
+        //_trails = navSax2Handler.get_trails();
         /* Set the result to be displayed in our GUI. */ 
         Log.d(ApplicationData.getAppName(),"downloads.size(): "+downloads.size());
 

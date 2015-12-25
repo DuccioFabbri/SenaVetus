@@ -1,5 +1,7 @@
 package it.duccius.maps;
 
+import java.util.ArrayList;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -30,17 +32,21 @@ public class NavigationSaxHandler extends DefaultHandler{
  private boolean in_coordinatestag = false;
  
  private boolean in_audio = false;
-
+ private boolean in_trail = false;
+ private boolean in_trail_coords = false;
+ 
  private StringBuffer buffer;
  
  private String _coordinates;
  private String _title;
  private String _description;
  private String _address;
- ;
+ 
+ private Trail newTrail;
 
  private NavigationDataSet navigationDataSet = new NavigationDataSet(); 
-
+ private  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
+ 
  // =========================================================== 
  // Getter & Setter 
  // =========================================================== 
@@ -96,6 +102,18 @@ public class NavigationSaxHandler extends DefaultHandler{
           _coordinates = atts.getValue(atts.getIndex("coordinates"));
           _address = atts.getValue(atts.getIndex("address"));          
           this.in_audio = true;                        
+      }else if (localName.equals("trail")) { 
+          this.in_trail = true;               
+          if(atts != null )        	  
+          {        	 
+        	  newTrail = new Trail();
+        	  newTrail.setName(atts.getValue("name") );
+        	  newTrail.setDescription(atts.getValue("description") );
+        	  newTrail.setTime(atts.getValue("time"));			 
+          }
+      } else if (localName.equals("trail_coords")) { 
+          this.in_trail_coords = true;               
+         
       }
  } 
 
@@ -130,6 +148,9 @@ public class NavigationSaxHandler extends DefaultHandler{
        else if (localName.equals("audio")) { 
     	   navigationDataSet.addCurrentPlacemark();
            this.in_audio = false;
+       }else if (localName.equals("trail")) { 
+           this.in_trail = false;  
+           get_trails().add(newTrail);
        }
  } 
 
@@ -149,15 +170,37 @@ public void characters(char ch[], int start, int length) {
         if (navigationDataSet.getCurrentPlacemark()==null) navigationDataSet.setCurrentPlacemark(new Placemark());
         navigationDataSet.getCurrentPlacemark().setCoordinates(new String(ch, start, length));
         buffer.append(ch, start, length);
-    }
-    
-    else
-        if(this.in_audio){        
-            if (navigationDataSet.getCurrentPlacemark()==null) navigationDataSet.setCurrentPlacemark(new Placemark());
+    }else
+    if(this.in_audio){        
+    	if (navigationDataSet.getCurrentPlacemark()==null) navigationDataSet.setCurrentPlacemark(new Placemark());
             navigationDataSet.getCurrentPlacemark().setTitle(_title);
             navigationDataSet.getCurrentPlacemark().setCoordinates(_coordinates);
             navigationDataSet.getCurrentPlacemark().setDescription(_description);
             navigationDataSet.getCurrentPlacemark().setAddress(_address);
         }
-} 
+    if (in_trail_coords) {
+		 ArrayList<Placemark> trailPlacemarks = new ArrayList<Placemark>();		 
+		 
+		 String points = new String(ch, start, length);
+		 
+		 String[] arrPoints = points.split(" ");
+		 for (String point: arrPoints){
+			 String[] coord = point.split(",");
+			 Placemark pm = new Placemark();
+			 pm.setCoordinates(coord[0]+","+coord[1]);
+			 trailPlacemarks.add(pm);
+		 }
+
+        //age element, set Employee age
+		 newTrail.setTrailPlacemarks(trailPlacemarks);
+        in_trail_coords = false;
+    }
+ 	}
+ public ArrayList<Trail> get_trails() {
+		return _trails;
+	}
+
+	public void set_trails(ArrayList<Trail> _trails) {
+		this._trails = _trails;
+	} 
 }

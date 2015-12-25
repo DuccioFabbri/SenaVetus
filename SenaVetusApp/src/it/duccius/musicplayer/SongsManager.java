@@ -1,6 +1,7 @@
 package it.duccius.musicplayer;
 
 import it.duccius.maps.MapService;
+import it.duccius.maps.Trail;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -33,6 +34,7 @@ public class SongsManager {
 	
 	
 	private ArrayList<Audio> songsList = new ArrayList<Audio>();
+	//public  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
 	
 	// Constructor
 	public SongsManager(String lang){
@@ -173,7 +175,8 @@ public class SongsManager {
 			String UrlXmlFile = "file://"+xmlFile;
 			File f = new File(xmlFile);
 			if(f.exists()) {  
-				filesToDownload = MapService.getDownloadsDataSet(UrlXmlFile);					 
+				filesToDownload = MapService.getDownloadsDataSet(UrlXmlFile);
+				//_trails = MapService._trails;
 			}						
 			if (filesToDownload != null)
 			{

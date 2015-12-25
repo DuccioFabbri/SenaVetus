@@ -11,6 +11,7 @@ import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 import it.duccius.maps.MapService;
 import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
+import it.duccius.maps.Trail;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -40,6 +43,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -106,7 +110,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ArrayList<AudioGuide> _guides = new ArrayList<AudioGuide>();
 	
 	private String _language = "ITA";
-	private TextView textLanguage;			
+	//private TextView textLanguage;			
 	public static boolean checkConn = false;		
 	
 	public String _urlDownloads = Utilities.getUrlDownloads();
@@ -132,6 +136,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	LocationManager _locationManager;
 	Location _location;
 	private String provider;
+	
+	private  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
 	
 	public boolean isOnline() {
 	    ConnectivityManager cm =
@@ -193,12 +199,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		if(f.exists()) {  			
 			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
 			_nDs.sort();
+			
+			_trails =  MapService._trails;
 		}
 		// il metodo checkForUpdates() aggiorna:
 		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
 		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
 		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
-		checkForUpdates();	
+		checkForUpdates();
+		
 		initializeMap();
 		setupMediaPlayer();
 	}
@@ -207,7 +216,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		_playList = _localAudioGuideListLang;
 		checkEmptyAGList();
 			
-		textLanguage.setText(_language);
+		//textLanguage.setText(_language);
 				
 		// Mediaplayer
 		mp = new MediaPlayer();		
@@ -486,6 +495,54 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		}
 		
 		setUpMapIfNeeded(from, to);
+//--------------		
+		if ( null != _trails){
+		// Instantiates a new Polyline object and adds points to define a rectangle
+			PolylineOptions rectOptions = new PolylineOptions();
+		for (Placemark pm: _trails.get(0).getTrailPlacemarks() )
+		{
+			rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
+		}
+		
+//		.add(new LatLng(43.3187422,11.3297689))
+//		.add(new LatLng(43.3191481,11.3303536))
+//		.add(new LatLng(43.3185119,11.3296884))
+//		.add(new LatLng(43.3183168,11.3297153))
+//		.add(new LatLng(43.3182738,11.3294953))
+//		.add(new LatLng(43.3181060,11.3294524))
+//		.add(new LatLng(43.3178562,11.3295758))
+//		.add(new LatLng(43.3175401,11.3293666))
+//		.add(new LatLng(43.3170912,11.3289106))
+//		.add(new LatLng(43.3162794,11.3298547))
+//		.add(new LatLng(43.3172278,11.3309062))
+//		.add(new LatLng(43.3179226,11.3307452))
+//		.add(new LatLng(43.3184612,11.3306004))
+//		.add(new LatLng(43.3187890,11.3308096))
+//		.add(new LatLng(43.3190856,11.3312173))
+//		.add(new LatLng(43.3194798,11.3313943))
+//		.add(new LatLng(43.3197999,11.3313729))
+//		.add(new LatLng(43.3201277,11.3312173))
+//		.add(new LatLng(43.3210800,11.3305789))
+//		.add(new LatLng(43.3211619,11.3304448))
+//		.add(new LatLng(43.3207755,11.3296455))
+//		.add(new LatLng(43.3204477,11.3290554))
+//		.add(new LatLng(43.3203853,11.3289267))
+//		.add(new LatLng(43.3204828,11.3277197))
+//		.add(new LatLng(43.3204594,11.3273710))
+//		.add(new LatLng(43.3202175,11.3264376))
+		rectOptions.width(14);
+		rectOptions.color(Color.BLUE);
+		
+		rectOptions.geodesic(true); // Closes the polyline.
+		
+		// Get back the mutable Polyline
+		Polyline polyline = mMap.addPolyline(rectOptions);
+//		polyline.setWidth(14);
+//		polyline.setColor(100);
+		}
+//--------------
+		
+		
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
 		mMap.setOnMarkerClickListener(getMarkerClickListener());		
@@ -851,7 +908,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);
 		songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
 		songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
-		textLanguage = (TextView) findViewById(R.id.textLanguage);
+		//textLanguage = (TextView) findViewById(R.id.textLanguage);
 		
 		footer = (LinearLayout) findViewById(R.id.player_footer_bg);
 		timerDisplay = (LinearLayout) findViewById(R.id.timerDisplay);
