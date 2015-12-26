@@ -12,6 +12,7 @@ import it.duccius.maps.MapService;
 import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
 import it.duccius.maps.Trail;
+import it.duccius.maps.TrailColor;
 
 import java.io.File;
 import java.io.IOException;
@@ -498,11 +499,26 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //--------------		
 		if ( null != _trails){
 		// Instantiates a new Polyline object and adds points to define a rectangle
-			PolylineOptions rectOptions = new PolylineOptions();
-		for (Placemark pm: _trails.get(0).getTrailPlacemarks() )
-		{
-			rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
-		}
+			for(Trail trail:_trails ){
+				PolylineOptions rectOptions = new PolylineOptions();
+				if(null != trail.getTrailPlacemarks())
+				
+					for (Placemark pm: trail.getTrailPlacemarks() )
+					{
+						rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
+					}
+					rectOptions.width(14);
+					rectOptions.color(Color.rgb(249, 247, 166));
+					String colore = TrailColor.GetColor(_trails.indexOf(trail));
+					String[] rgb = colore.split(",");
+					rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
+					
+					rectOptions.geodesic(true); // Closes the polyline.
+					
+					// Get back the mutable Polyline
+					Polyline polyline = mMap.addPolyline(rectOptions);
+				}
+			}
 		
 //		.add(new LatLng(43.3187422,11.3297689))
 //		.add(new LatLng(43.3191481,11.3303536))
@@ -530,19 +546,11 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //		.add(new LatLng(43.3204828,11.3277197))
 //		.add(new LatLng(43.3204594,11.3273710))
 //		.add(new LatLng(43.3202175,11.3264376))
-		rectOptions.width(14);
-		rectOptions.color(Color.BLUE);
 		
-		rectOptions.geodesic(true); // Closes the polyline.
-		
-		// Get back the mutable Polyline
-		Polyline polyline = mMap.addPolyline(rectOptions);
 //		polyline.setWidth(14);
 //		polyline.setColor(100);
-		}
-//--------------
 		
-		
+//--------------				
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
 		mMap.setOnMarkerClickListener(getMarkerClickListener());		
