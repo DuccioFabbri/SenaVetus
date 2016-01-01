@@ -33,6 +33,17 @@ public static final int MODE_WALKING = 2;
 
 public static  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
 
+public static ArrayList<String> getTrailNames()
+{
+	ArrayList<String> trailNames = new ArrayList<String>();
+	for (Trail item : _trails)
+	{
+		trailNames.add(item.getName());
+	}
+	return trailNames;
+	
+}
+
 public static String inputStreamToString (InputStream in) throws IOException {
     StringBuffer out = new StringBuffer();
     byte[] b = new byte[4096];
@@ -115,48 +126,7 @@ public static NavigationDataSet getNavigationDataSet(String url) {
     return navigationDataSet;
 }
 
-public static NavigationDataSet getNavigationDataSetFile(String url) {
 
-    // urlString = "http://192.168.1.100:80/test.kml";
-	//url = "http://2.227.2.94:8080/audio/SenaVetus.kml";
-    Log.d(ApplicationData.getAppName(),"urlString -->> " + url);
-    NavigationDataSet navigationDataSet = null;
-    try
-        {           
-        final URL aUrl = new URL(url);
-        final URLConnection conn = aUrl.openConnection();
-        conn.setReadTimeout(5 * 1000);  // timeout for reading the google maps data: 15 secs
-        conn.connect();
-
-        //Utilities.StreamToFile(aUrl.openStream(),Utilities.getTempSDFld(),"prova.kml");
-        
-        /* Get a SAXParser from the SAXPArserFactory. */
-        SAXParserFactory spf = SAXParserFactory.newInstance(); 
-        SAXParser sp = spf.newSAXParser(); 
-
-        /* Get the XMLReader of the SAXParser we created. */
-        XMLReader xr = sp.getXMLReader();
-
-        /* Create a new ContentHandler and apply it to the XML-Reader*/ 
-        NavigationSaxHandler navSax2Handler = new NavigationSaxHandler(); 
-        xr.setContentHandler(navSax2Handler); 
-
-        /* Parse the xml-data from our URL. */ 
-        xr.parse(new InputSource(aUrl.openStream()));
-
-        /* Our NavigationSaxHandler now provides the parsed data to us. */ 
-        navigationDataSet = navSax2Handler.getParsedData(); 
-
-        /* Set the result to be displayed in our GUI. */ 
-        Log.d(ApplicationData.getAppName(),"navigationDataSet: "+navigationDataSet.toString());
-
-    } catch (Exception e) {
-        // Log.e(myapp.APP, "error with kml xml", e);
-        navigationDataSet = null;
-    }   
-
-    return navigationDataSet;
-}
 @SuppressWarnings("finally")
 public static ArrayList<AudioGuide> getDownloadsDataSet(String url) {
 

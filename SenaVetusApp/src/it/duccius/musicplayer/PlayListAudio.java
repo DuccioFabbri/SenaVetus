@@ -116,7 +116,6 @@ OnClickListener{
 				    getParent().setResult(Activity.RESULT_OK, in);
 				}
 		        finish();
-
 			}
 	        });        
 	}
@@ -248,21 +247,6 @@ OnClickListener{
     }
     public void  update ()
     {
-//    	 Intent intent = new Intent(getApplicationContext(),
-//         		_DownloadSelection.class);
-//  
-//         // Create a bundle object
-//         Bundle b = new Bundle();
-//        
-//         b.putString("language", _language);
-//  
-//         // Add the bundle to the intent.
-//         intent.putExtras(b);
-//  
-//         // start the ResultActivity
-//        // startActivity(intent);       
-//         startActivityForResult(intent, 100);	
-         //finish();
     }
 	@SuppressWarnings("unchecked")
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {

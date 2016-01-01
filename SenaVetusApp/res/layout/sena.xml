@@ -1,43 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4a4a4a" >
 
+    <!--
     <LinearLayout
         android:id="@+id/poi_menu"
         android:layout_width="fill_parent"
-        android:layout_height="60dip"
+        android:layout_height="100dip"
         android:layout_below="@id/player_header_bg"
         android:background="@layout/bg_player_header"
         android:paddingLeft="5dp"
         android:paddingRight="5dp" >
 
+
+<ImageButton
+    android:id="@+id/btnPlaylist"
+    android:layout_width="0dp"
+    android:layout_height="fill_parent"
+    android:layout_weight="1.72"
+    android:background="@null"
+    android:src="@drawable/btn_download"
+    android:visibility="visible" />
+
+        <Spinner
+            android:id="@+id/trails"
+            android:layout_width="177dp"
+            android:layout_height="50dp"
+            android:layout_above="@id/songTitle"
+            android:layout_gravity="bottom"
+            android:gravity="bottom" />
+
         <ImageButton
-            android:id="@+id/btnPOIimg"
+            android:id="@+id/btnPOIinfo"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.74"
+            android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/ic_launcher"
-            android:visibility="gone" />
-<ImageButton
+            android:src="@drawable/btn_playlist" />
+   
+   </LinearLayout>
+    -->
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:orientation="horizontal"
+        android:paddingTop="20px" >
+
+        <ImageButton
             android:id="@+id/btnPlaylist"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="0.74"
+            android:layout_gravity="left"
+            android:layout_weight="1.32"
             android:background="@null"
-            android:src="@drawable/btn_download"
+            android:src="@drawable/ic_launcher"
             android:visibility="visible" />
-        <TextView
-            android:id="@+id/songTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:layout_weight="0.95"
-            android:text="Sena Vetus"
-            android:textColor="#04b3d2"
-            android:textSize="16dp"
-            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btnTrails"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="left"
+            android:layout_weight="1.72"
+            android:background="@null"
+            android:src="@drawable/img_btn_playlist"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/btnPOIinfo"
@@ -53,7 +86,7 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/poi_menu" />
+        android:layout_below="@+id/toolbar" />
 
     <!-- Player Footer -->
 
@@ -63,8 +96,8 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:background="@layout/bg_player_footer"
-        android:gravity="center" 
-        android:visibility="gone">
+        android:gravity="center"
+        android:visibility="gone" >
 
         <!-- Player Buttons -->
 
@@ -133,8 +166,8 @@
         android:paddingLeft="6dp"
         android:paddingRight="6dp"
         android:progressDrawable="@drawable/seekbar_progress"
-        android:thumb="@drawable/seek_handler" 
-        android:visibility="gone"/>
+        android:thumb="@drawable/seek_handler"
+        android:visibility="gone" />
 
     <!-- Timer Display -->
 
@@ -145,8 +178,8 @@
         android:layout_above="@id/songProgressBar"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" 
-        android:visibility="gone">
+        android:layout_marginRight="20dp"
+        android:visibility="gone" >
 
         <!-- Current Duration Label -->
 
@@ -202,16 +235,15 @@
             android:background="@null"
             android:src="@drawable/btn_shuffle"
             android:visibility="gone" />
-                
     </LinearLayout>
- 
+
     <ImageButton
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/linearLayout1"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/adele" 
+        android:src="@drawable/adele"
         android:visibility="gone" />
-    
+
 </RelativeLayout>

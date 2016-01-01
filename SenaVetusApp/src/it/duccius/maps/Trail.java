@@ -1,9 +1,10 @@
 package it.duccius.maps;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Trail {
-	private static final long serialVersionUID = 8693627450220630246L;
+public class Trail implements Serializable{
+	
 	private String name;
 	private String description;
 	private String time;

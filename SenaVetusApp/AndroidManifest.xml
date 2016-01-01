@@ -31,6 +31,9 @@
         <activity android:name="it.duccius.musicplayer.PlayListAudio"
         android:screenOrientation="portrait" >
         </activity>
+        <activity android:name="it.duccius.musicplayer.TrailList"
+        android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="it.duccius.download.DownloadAudio"
             android:label="@string/app_name" 

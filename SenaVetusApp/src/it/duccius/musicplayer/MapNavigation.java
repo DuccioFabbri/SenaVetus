@@ -1,6 +1,8 @@
 package it.duccius.musicplayer;
 
-
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 
 import it.duccius.download.DownloadAudio;
 import it.duccius.download.DownloadFile;
@@ -56,12 +58,18 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,7 +89,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnPlaylist;	
 	//private ImageButton btnPOIplay;
 	private ImageButton btnPOIinfo;
-	//private ImageButton btnPOIdownload;
+	private ImageButton btnTrails;
 	
 	private ImageView btnThumbnail;
 	
@@ -94,6 +102,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	private LinearLayout  footer;
 	private LinearLayout timerDisplay;
+	
+	private Spinner chooseTrail;
 	// Media Player
 	private  MediaPlayer mp;
 	// Handler to update UI timer, progress bar etc,.
@@ -139,7 +149,16 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private String provider;
 	
 	private  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
+	private int _selectedTrail;
 	
+	private ArrayList<Polyline> _activePolines = new ArrayList<Polyline>();
+	
+	//----------------------------
+	private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+	//----------------------------
+    private Context contesto;
+    
 	public boolean isOnline() {
 	    ConnectivityManager cm =
 	        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -154,16 +173,16 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			{
 				return false;
 			}
-			ArrayList<String> arL = new ArrayList<String>();
-			
-			arL.add(_urlDownloads);
-			
+			//______________________________________________________________
+			// Scarico il file downloads.xml
+            //______________________________________________________________
+			ArrayList<String> arL = new ArrayList<String>();			
+			arL.add(_urlDownloads);			
 			starDownload(arL,_filePath,new MyCallbackInterface() {
-
+            //______________________________________________________________
+				
 	            @Override
 	            public void onDownloadFinished(List<RowItem> rowItems) {
-	                // Do something when download finished
-	            	checkNewAudio();
 	            	/*
 	            	 * 
 	            	 * Qui posso fare direttamente una chiamata per eseguire
@@ -174,15 +193,21 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	            	 * dove ArrayList<String> arL contiene la lista degli url degli audio da scaricare ricavati da _audioToDownloadLang
 	            	 * Si veda per riferimento il metodo: checkReadyToDownload() che scarica un singolo POI
 	            	 */
-	            	  checkForUpdates();
+	            	 // checkForUpdates();	
+	            	checkNewAudio();
+	            	
+	            	ArrayList<String> trailNames= MapService.getTrailNames();	          			            	            		            	 
+	          		
 	            	  ArrayList<String> arL = new ArrayList<String>();
 	            	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
 	            	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 
+	            		  //Utile se il download é avvenuto singolarmente  aseguito di un click su un POI
 	            	   @Override
-				            public void onDownloadFinished(List<RowItem> rowItems) {				     
+				            public void onDownloadFinished(List<RowItem> rowItems) {
+	            		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
 				            	checkNewAudio();
-				            	if(null != _activeMarker)
-				            		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+//				            	if(null != _activeMarker)
+//				            		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				            }
 				        });	            	 
 	            }
@@ -225,21 +250,28 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 		// Listeners
 		songProgressBar.setOnSeekBarChangeListener(this); // Important
-		mp.setOnCompletionListener(this); // Important				
-		
-//		try
-//		{			
-//			//playSong(currentSongIndex);
-//		}
-//		catch(Exception e)
-//		{Log.d("playSong",e.getMessage());}
+		mp.setOnCompletionListener(this); // Important						
 					
 	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		setContentView(R.layout.player);
+		getActionBar().setTitle("PROVA");
+		contesto = this.getBaseContext();
+//---------------------------------
+//		ArrayList<String> trailNames= MapService.getTrailNames();
+//		setContentView(R.layout.activity_sena_main); 	
+//		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+//
+//        // set a custom shadow that overlays the main content when the drawer opens
+//      //  mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+//        // set up the drawer's list view with items and click listener
+//        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+//                R.layout.list_item, trailNames));
+//       // mDrawerList.setOnItemClickListener(new DrawerItemClickListener());		
+//----------------------------------
 		setContentView(R.layout.sena);						
 						
 		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
@@ -248,21 +280,23 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	  
 		//###############################
 	    
-	    getViewElwments();
-		// Recupero downloads.xml
 	    
-    		if (!getAudioGuideList())
-				return;
-    		getCurrentLocation();
-    		
-    		
-//		// Aggiorna:
-//		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
-//		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
-//		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
-//		checkForUpdates();
+		// getAudioGuideList(): recupera downloads.xml e contestualmente scarico gli .mp3 nuovi, valorizzando:
+		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
+		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
+		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua_audioToDownloadLang, _guides, _audioGuideListLang, _localAudioGuideListLang
+	    // - _nDs
+	    // - _trails
+	    
+		if (!getAudioGuideList())
+		{
+			Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare la connessione.", Toast.LENGTH_LONG).show();
+			return;
+		}
 			
-				
+		getCurrentLocation();		
+	    // quando chiamo questo metodo non ho ancora finito di elaborare _trails, che é asincrono, quindi lo spinner é sempre vuoto.
+		getViewElwments();
 		/**
 		 * Play button click event
 		 * plays a song and changes button to pause image
@@ -404,13 +438,6 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			public void onClick(View arg0) {
 				Intent i = new Intent(getApplicationContext(), DownloadAudio.class);
 				
-				//startActivity(i);
-//				Bundle b = new Bundle();
-//		        //b.putSerializable("_audioToDownloadLang", _audioToDownloadLang);		       		        
-//		        b.putString("language", _language);		 
-		        // Add the bundle to the intent.
-		        //i.putExtra("language", _language);
-		        //i.putExtra("_audioToDownloadLang", _audioToDownloadLang);
 		        Bundle b = new Bundle();
 		        b.putSerializable("_playList", _playList);
 		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
@@ -421,7 +448,25 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 				//finish();
 			}
 		});
-		
+		/*
+		 * Questo bottone deve mostrare una lista con i possibili percorsi da seguire
+		 */
+		btnTrails.setOnClickListener(new View.OnClickListener() 
+		{			
+			@Override
+			public void onClick(View arg0) {
+				Intent i = new Intent(getApplicationContext(), TrailList.class);
+				
+		        Bundle b = new Bundle();
+		        b.putSerializable("_trails", _trails);		        	
+		        // Add the bundle to the intent.
+		        i.putExtras(b);
+				startActivityForResult(i, 2);	
+				
+				
+				//finish();
+			}
+		});
 		btnPlaylist.setOnClickListener(new View.OnClickListener() 
 		{
 			
@@ -499,57 +544,39 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //--------------		
 		if ( null != _trails){
 		// Instantiates a new Polyline object and adds points to define a rectangle
-			for(Trail trail:_trails ){
-				PolylineOptions rectOptions = new PolylineOptions();
-				if(null != trail.getTrailPlacemarks())
-				
-					for (Placemark pm: trail.getTrailPlacemarks() )
-					{
-						rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
-					}
-					rectOptions.width(14);
-					rectOptions.color(Color.rgb(249, 247, 166));
-					String colore = TrailColor.GetColor(_trails.indexOf(trail));
-					String[] rgb = colore.split(",");
-					rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
-					
-					rectOptions.geodesic(true); // Closes the polyline.
-					
-					// Get back the mutable Polyline
-					Polyline polyline = mMap.addPolyline(rectOptions);
-				}
+			
+			
+			Trail trail = _trails.get(_selectedTrail);
+			
+			PolylineOptions rectOptions = new PolylineOptions();
+			if(null != trail.getTrailPlacemarks())
+			
+			for (Placemark pm: trail.getTrailPlacemarks() )
+			{
+				rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
 			}
-		
-//		.add(new LatLng(43.3187422,11.3297689))
-//		.add(new LatLng(43.3191481,11.3303536))
-//		.add(new LatLng(43.3185119,11.3296884))
-//		.add(new LatLng(43.3183168,11.3297153))
-//		.add(new LatLng(43.3182738,11.3294953))
-//		.add(new LatLng(43.3181060,11.3294524))
-//		.add(new LatLng(43.3178562,11.3295758))
-//		.add(new LatLng(43.3175401,11.3293666))
-//		.add(new LatLng(43.3170912,11.3289106))
-//		.add(new LatLng(43.3162794,11.3298547))
-//		.add(new LatLng(43.3172278,11.3309062))
-//		.add(new LatLng(43.3179226,11.3307452))
-//		.add(new LatLng(43.3184612,11.3306004))
-//		.add(new LatLng(43.3187890,11.3308096))
-//		.add(new LatLng(43.3190856,11.3312173))
-//		.add(new LatLng(43.3194798,11.3313943))
-//		.add(new LatLng(43.3197999,11.3313729))
-//		.add(new LatLng(43.3201277,11.3312173))
-//		.add(new LatLng(43.3210800,11.3305789))
-//		.add(new LatLng(43.3211619,11.3304448))
-//		.add(new LatLng(43.3207755,11.3296455))
-//		.add(new LatLng(43.3204477,11.3290554))
-//		.add(new LatLng(43.3203853,11.3289267))
-//		.add(new LatLng(43.3204828,11.3277197))
-//		.add(new LatLng(43.3204594,11.3273710))
-//		.add(new LatLng(43.3202175,11.3264376))
-		
-//		polyline.setWidth(14);
-//		polyline.setColor(100);
-		
+			rectOptions.width(14);
+			rectOptions.color(Color.rgb(249, 247, 166));
+			String colore = TrailColor.GetColor(_trails.indexOf(trail));
+			String[] rgb = colore.split(",");
+			rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
+			
+			rectOptions.geodesic(true); // Closes the polyline.
+			
+			// Get back the mutable Polyline
+			
+			for(Polyline pl:_activePolines){
+				pl.remove();								
+			}
+			
+			_activePolines.clear();
+			
+			Polyline polyline = mMap.addPolyline(rectOptions);
+			
+			_activePolines.add(polyline);
+			
+			}
+
 //--------------				
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
@@ -720,7 +747,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			@Override
 			public boolean onMarkerClick(Marker marker) {
 				//
-				if(_activeMarker != null)
+//				if(_activeMarker != null)
 //					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				//----------
 				_previousMarker = _activeMarker;				
@@ -825,6 +852,21 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		    	Log.d("zzzz", e.toString());
 		    }
 	   }
+	   if (requestCode == 2)
+	   {		  	
+		    try
+		    {		   
+		    	if(resultCode == RESULT_OK) 	{			
+		    	
+		    	_selectedTrail = intent.getIntExtra("_selectedTrail", 0);	
+		    	}
+		    	initializeMap();
+		    }
+		    catch(Exception e)
+		    {
+		    	Log.d("zzzz", e.toString());
+		    }
+	   }
 	}
 	private void setupAudioThumbnail(String imgName) {
 //		imgName = imgName.substring(4);
@@ -910,6 +952,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		//btnPOIdownload  = (ImageButton) findViewById(R.id.btnPOIdownload);		
 		//btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);		
+		btnTrails = (ImageButton) findViewById(R.id.btnTrails);
 		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
 				
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
@@ -920,6 +963,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 		footer = (LinearLayout) findViewById(R.id.player_footer_bg);
 		timerDisplay = (LinearLayout) findViewById(R.id.timerDisplay);
+		
+//		ArrayList<String> trailNames= MapService.getTrailNames();
+//		chooseTrail = (Spinner) findViewById(R.id.trails);
+		//chooseTrail.setAdapter(new ArrayAdapter<String>(this,
+	    //            R.layout.list_item, trailNames));
+	        // Set the list's click listener
+		//chooseTrail.setOnItemClickListener(new DrawerItemClickListener());
+
+	        
 		
 	}
 	private String getDestSDFld() {
@@ -982,12 +1034,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			// Updating progress bar
 			updateProgressBar();	
 			
-//			AudioGuideList aglLocalAudioGuideList = new AudioGuideList();
-			
-//			aglLocalAudioGuideList.setAudioGuides(_audioGuideListLang);
-			//AudioGuide currentAudioGuide = aglLocalAudioGuideList.getFromPosition(songIndex);
-//			AudioGuide currentAudioGuide = _localAudioGuideListLang.get(songIndex);
-			songTitleLabel.setText(ag.getTitle());
+			//songTitleLabel.setText(ag.getTitle());
 			
 			LatLng poiLatLong = new LatLng(Double.parseDouble(ag.getLng()),Double.parseDouble(ag.getLat()));
 			

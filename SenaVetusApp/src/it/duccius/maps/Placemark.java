@@ -1,6 +1,8 @@
 package it.duccius.maps;
 
-public class Placemark implements Comparable{
+import java.io.Serializable;
+
+public class Placemark implements Comparable, Serializable{
 
 String title;
 String description;
