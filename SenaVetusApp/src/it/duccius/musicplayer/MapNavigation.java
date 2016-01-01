@@ -542,45 +542,54 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 		setUpMapIfNeeded(from, to);
 //--------------		
-		if ( null != _trails){
-		// Instantiates a new Polyline object and adds points to define a rectangle
-			
-			
-			Trail trail = _trails.get(_selectedTrail);
-			
-			PolylineOptions rectOptions = new PolylineOptions();
-			if(null != trail.getTrailPlacemarks())
-			
-			for (Placemark pm: trail.getTrailPlacemarks() )
-			{
-				rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
-			}
-			rectOptions.width(14);
-			rectOptions.color(Color.rgb(249, 247, 166));
-			String colore = TrailColor.GetColor(_trails.indexOf(trail));
-			String[] rgb = colore.split(",");
-			rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
-			
-			rectOptions.geodesic(true); // Closes the polyline.
-			
-			// Get back the mutable Polyline
-			
-			for(Polyline pl:_activePolines){
-				pl.remove();								
-			}
-			
-			_activePolines.clear();
-			
-			Polyline polyline = mMap.addPolyline(rectOptions);
-			
-			_activePolines.add(polyline);
-			
-			}
+		if ( null != _trails ){
+		// Instantiates a new Polyline object and adds points to define a rectangle						
+			addTrail();			
+		}
 
 //--------------				
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
 		mMap.setOnMarkerClickListener(getMarkerClickListener());		
+	}
+
+private void addTrail() {
+	
+	for(Polyline pl:_activePolines){
+		pl.remove();								
+	}
+	
+	_activePolines.clear();
+	
+	// Ilprimo percorso é sempre quello libero
+	if(_selectedTrail >0)
+	{
+	Trail trail = _trails.get(_selectedTrail);
+	
+	PolylineOptions rectOptions = createPolyline(trail);
+		
+	Polyline polyline = mMap.addPolyline(rectOptions);
+	
+	_activePolines.add(polyline);
+	}
+}
+
+	private PolylineOptions createPolyline(Trail trail) {
+		PolylineOptions rectOptions = new PolylineOptions();
+		if(null != trail.getTrailPlacemarks())
+		
+		for (Placemark pm: trail.getTrailPlacemarks() )
+		{
+			rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
+		}
+		rectOptions.width(14);
+		rectOptions.color(Color.rgb(249, 247, 166));
+		String colore = TrailColor.GetColor(_trails.indexOf(trail));
+		String[] rgb = colore.split(",");
+		rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
+		
+		rectOptions.geodesic(true); // Closes the polyline.
+		return rectOptions;
 	}
 	
 	public OnCameraChangeListener getCameraChangeListener()
