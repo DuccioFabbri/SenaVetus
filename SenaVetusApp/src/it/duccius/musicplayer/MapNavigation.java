@@ -561,11 +561,15 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 		
 		setUpMapIfNeeded(from, to);
 //--------------		
-		if ( null != _trails ){
-		// Instantiates a new Polyline object and adds points to define a rectangle						
-			addTrail();			
-		}
-
+		if ( null != _trails ){					
+			addTrail();	
+			if (_selectedTrail>0){
+				// Mi posiziono al primo Poi del percorso
+				// nel percorso libero non ci sono placemarks
+				to = new LatLng(_trails.get(_selectedTrail).getTrailPlacemarks().get(0).getLongitude(),_trails.get(_selectedTrail).getTrailPlacemarks().get(0).getLatitude());
+				mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(to, 15));
+			}
+		}			
 //--------------				
 		
 		mMap.setOnCameraChangeListener(getCameraChangeListener());
