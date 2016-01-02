@@ -33,8 +33,8 @@ public class TrailListAdapter extends ArrayAdapter<Trail> {
         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     View rowView = inflater.inflate(R.layout.trail_item, parent, false);
     
-    TextView name = (TextView) rowView.findViewById(R.id.name);
-    TextView description = (TextView) rowView.findViewById(R.id.description);
+    TextView name = (TextView) rowView.findViewById(R.id.trail_name);
+    TextView description = (TextView) rowView.findViewById(R.id.trail_description);
     
     String titolo = _trails.get(position).getName() + " - " + _trails.get(position).getTime();
     name.setText(titolo);

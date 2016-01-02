@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name="mapnavigation_exit_title">Chiusura app</string>
+    <string name="mapnavigation_exit_message">Sicuro di voler uscire?</string>
+    <string name="mapnavigation_exit_yesbutton">Sì</string>
+    <string name="mapnavigation_exit_nobutton">No</string>
+    
     <string name="hello">Hello World, AndroidBuildingMusicPlayerActivity!</string>
     <string name="app_name">SenaVetus AudioGuide</string>
     <string name="button_download">Download</string>

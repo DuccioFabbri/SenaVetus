@@ -1,6 +1,7 @@
 package it.duccius.musicplayer;
 
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
@@ -24,11 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import android.view.LayoutInflater;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,8 +43,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
  
 import android.content.SharedPreferences;
@@ -64,6 +72,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -92,6 +101,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private ImageButton btnTrails;
 	
 	private ImageView btnThumbnail;
+	private ImageView imgThumbnail;
 	
 	private ImageButton songThumbnail;
 		
@@ -103,6 +113,14 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private LinearLayout  footer;
 	private LinearLayout timerDisplay;
 	
+	/*
+	 *   http://android-er.blogspot.it/2012/05/add-and-remove-view-dynamically.html
+	 *   Di seguito ci sono le dichiarazioni per caricare dinamicamente i fragment
+	 */
+	FrameLayout mainLayer;
+	View mapLayer, thumbnailLayer;
+	
+	//-------------------------------------------------------------------------------
 	private Spinner chooseTrail;
 	// Media Player
 	private  MediaPlayer mp;
@@ -272,7 +290,8 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 //                R.layout.list_item, trailNames));
 //       // mDrawerList.setOnItemClickListener(new DrawerItemClickListener());		
 //----------------------------------
-		setContentView(R.layout.sena);						
+		//setContentView(R.layout.sena);	
+		setContentView(R.layout.sena_fragments);
 						
 		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
@@ -781,8 +800,23 @@ private void addTrail() {
 	private void updateThumbnail(AudioGuide agMarker) {
 		String nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+agMarker.getName()+".jpg").toString();				
 		Bitmap bmp = BitmapFactory.decodeFile(nome);					
-		btnThumbnail.setImageBitmap(bmp);
+		//btnThumbnail.setImageBitmap(bmp);
+		
+		// http://android-er.blogspot.it/2012/05/add-and-remove-view-dynamically.html
+		mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
+		LayoutInflater inflater = getLayoutInflater();
+		thumbnailLayer = inflater.inflate(R.layout.thumbnail_fragment, null);
+		
+		if (mapLayer != null)
+			mainLayer.removeView(mapLayer);
+		mainLayer.addView(thumbnailLayer);
+		
+		imgThumbnail  = (ImageView) findViewById(R.id.imgThumbnail);
+		imgThumbnail.setImageBitmap(bmp);
+		_thumbnail_ON = true;
 	}
+	
+	boolean _thumbnail_ON;
 	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
 		//_sdAudios = getSdAudios();	
@@ -797,8 +831,13 @@ private void addTrail() {
 	    	
 	    	// meglio usare getFragmentManager
 	    	//https://developers.google.com/maps/documentation/android/
-	        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-	                            .getMap();
+	        //mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+	        //                    .getMap();
+	        
+	        //-----------------------------------------------------------------------------
+	    	
+	    	addMapFragment();
+	        //-----------------------------------------------------------------------------
 	    	
 	        // Check if we were successful in obtaining the map.
 	        if (mMap != null) {
@@ -832,6 +871,16 @@ private void addTrail() {
 	        	mMap.setMapType(Utilities.getMapType());
 	        }
 	    }
+	}
+
+	private void addMapFragment() {
+		// http://android-er.blogspot.it/2012/05/add-and-remove-view-dynamically.html
+		mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
+		LayoutInflater inflater = getLayoutInflater();
+		mapLayer = inflater.inflate(R.layout.map_fragment, null);
+		mainLayer.addView(mapLayer);
+		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map1))
+		        .getMap();
 	}
 
 	//#################################################################################
@@ -1026,7 +1075,7 @@ private void addTrail() {
 			    	setFooterVisibility(View.VISIBLE);
 			    	btnPlay.setImageResource(R.drawable.btn_pause);
 			    	AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(currentSongIndex);
-					updateThumbnail(ag);
+					//updateThumbnail(ag);
 			    	}
 			    	catch(Exception e)
 			    	{
@@ -1059,7 +1108,7 @@ private void addTrail() {
 	}
 
 	private void setFooterVisibility(int visibility) {
-		btnThumbnail.setVisibility(visibility);
+		//btnThumbnail.setVisibility(visibility);
 		footer.setVisibility(visibility);
 		timerDisplay.setVisibility(visibility);
 		
@@ -1208,5 +1257,30 @@ private void addTrail() {
 	    super.onResume();
 	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
 	  }
-	  
+	  @Override
+	  public void onBackPressed(){
+		    if (_thumbnail_ON) 
+		    {
+		    	mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
+				
+				if (thumbnailLayer != null)
+					mainLayer.removeView(thumbnailLayer);
+				mainLayer.addView(mapLayer);
+								
+				_thumbnail_ON = false;
+		        
+		    }else{
+		    	new AlertDialog.Builder(this)
+		        .setTitle(R.string.mapnavigation_exit_title)
+		        .setMessage(R.string.mapnavigation_exit_message)
+		        .setNegativeButton(R.string.mapnavigation_exit_nobutton, null)
+		        .setPositiveButton(R.string.mapnavigation_exit_yesbutton, new DialogInterface.OnClickListener()  {
+
+		            public void onClick(DialogInterface arg0, int arg1) {
+		                MapNavigation.super.onBackPressed();
+		            }
+		        }).create().show();
+		    	
+		    }
+		}
 }
