@@ -111,6 +111,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	private TextView songTotalDurationLabel;
 	
 	private LinearLayout  footer;
+	private LinearLayout  toolbar;
 	private LinearLayout timerDisplay;
 	
 	/*
@@ -606,7 +607,7 @@ private void addTrail() {
 			rectOptions.add(new LatLng(pm.getLongitude(),pm.getLatitude()));			
 		}
 		rectOptions.width(14);
-		rectOptions.color(Color.rgb(249, 247, 166));
+		//rectOptions.color(Color.rgb(249, 247, 166));
 		String colore = TrailColor.GetColor(_trails.indexOf(trail));
 		String[] rgb = colore.split(",");
 		rectOptions.color(Color.rgb(Integer.parseInt(rgb[0]),Integer.parseInt(rgb[1]),Integer.parseInt(rgb[2])));					
@@ -818,6 +819,8 @@ private void addTrail() {
 		imgThumbnail  = (ImageView) findViewById(R.id.imgThumbnail);
 		imgThumbnail.setImageBitmap(bmp);
 		_thumbnail_ON = true;
+		
+		toolbar.setVisibility(View.GONE);
 	}
 	
 	boolean _thumbnail_ON;
@@ -1024,6 +1027,7 @@ private void addTrail() {
 		//textLanguage = (TextView) findViewById(R.id.textLanguage);
 		
 		footer = (LinearLayout) findViewById(R.id.player_footer_bg);
+		toolbar = (LinearLayout) findViewById(R.id.toolbar);
 		timerDisplay = (LinearLayout) findViewById(R.id.timerDisplay);
 		
 //		ArrayList<String> trailNames= MapService.getTrailNames();
@@ -1060,11 +1064,8 @@ private void addTrail() {
 		try {
 			
 			AudioGuide ag = (AudioGuide) _localAudioGuideListLang.get(songIndex);
-			updateThumbnail(ag);	
-			
-			
-			//String audioPath = songManager.getLangMediaPath()+File.separator+_playList.get(songIndex).getTitle()+".mp3";
-			
+			updateThumbnail(ag);					
+		
 			//String audioPath = ag.getPath();
 			String audioPath =getDestSDFld() +File.separator+ getAudioName(ag.getPath());
         	mp.reset();
@@ -1097,6 +1098,7 @@ private void addTrail() {
 			updateProgressBar();	
 			
 			//songTitleLabel.setText(ag.getTitle());
+			_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 			
 			LatLng poiLatLong = new LatLng(Double.parseDouble(ag.getLng()),Double.parseDouble(ag.getLat()));
 			
@@ -1190,6 +1192,7 @@ private void addTrail() {
 	 * */
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
+		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 		
 		// check for repeat is ON or OFF
 		if(isRepeat){
@@ -1271,6 +1274,8 @@ private void addTrail() {
 					mainLayer.removeView(thumbnailLayer);
 				mainLayer.addView(mapLayer);
 								
+				toolbar.setVisibility(View.VISIBLE);
+				
 				_thumbnail_ON = false;
 		        
 		    }else{

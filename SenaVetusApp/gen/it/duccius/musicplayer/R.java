@@ -417,38 +417,42 @@ containing a value of this type.
         public static final int common_signin_btn_text_pressed_light=0x7f020026;
         public static final int gradient_bg=0x7f020027;
         public static final int gradient_bg_hover=0x7f020028;
-        public static final int ic_launcher=0x7f020029;
-        public static final int ic_plusone_medium_off_client=0x7f02002a;
-        public static final int ic_plusone_small_off_client=0x7f02002b;
-        public static final int ic_plusone_standard_off_client=0x7f02002c;
-        public static final int ic_plusone_tall_off_client=0x7f02002d;
-        public static final int img_btn_backward=0x7f02002e;
-        public static final int img_btn_backward_pressed=0x7f02002f;
-        public static final int img_btn_forward=0x7f020030;
-        public static final int img_btn_forward_pressed=0x7f020031;
-        public static final int img_btn_next=0x7f020032;
-        public static final int img_btn_next_pressed=0x7f020033;
-        public static final int img_btn_pause=0x7f020034;
-        public static final int img_btn_pause_pressed=0x7f020035;
-        public static final int img_btn_play=0x7f020036;
-        public static final int img_btn_play_pressed=0x7f020037;
-        public static final int img_btn_playlist=0x7f020038;
-        public static final int img_btn_playlist_pressed=0x7f020039;
-        public static final int img_btn_previous=0x7f02003a;
-        public static final int img_btn_previous_pressed=0x7f02003b;
-        public static final int img_btn_repeat=0x7f02003c;
-        public static final int img_btn_repeat_pressed=0x7f02003d;
-        public static final int img_btn_shuffle=0x7f02003e;
-        public static final int img_btn_shuffle_pressed=0x7f02003f;
-        public static final int img_seekbar_bg=0x7f020040;
-        public static final int img_seekbar_progress_blue=0x7f020041;
-        public static final int list_selector=0x7f020042;
-        public static final int powered_by_google_dark=0x7f020043;
-        public static final int powered_by_google_light=0x7f020044;
-        public static final int seek_handler=0x7f020045;
-        public static final int seekbar_progress=0x7f020046;
-        public static final int seekbar_progress_bg=0x7f020047;
-        public static final int track_info_bg=0x7f020048;
+        public static final int ic_action=0x7f020029;
+        public static final int ic_download=0x7f02002a;
+        public static final int ic_launcher=0x7f02002b;
+        public static final int ic_plusone_medium_off_client=0x7f02002c;
+        public static final int ic_plusone_small_off_client=0x7f02002d;
+        public static final int ic_plusone_standard_off_client=0x7f02002e;
+        public static final int ic_plusone_tall_off_client=0x7f02002f;
+        public static final int ic_pois=0x7f020030;
+        public static final int ic_trail=0x7f020031;
+        public static final int img_btn_backward=0x7f020032;
+        public static final int img_btn_backward_pressed=0x7f020033;
+        public static final int img_btn_forward=0x7f020034;
+        public static final int img_btn_forward_pressed=0x7f020035;
+        public static final int img_btn_next=0x7f020036;
+        public static final int img_btn_next_pressed=0x7f020037;
+        public static final int img_btn_pause=0x7f020038;
+        public static final int img_btn_pause_pressed=0x7f020039;
+        public static final int img_btn_play=0x7f02003a;
+        public static final int img_btn_play_pressed=0x7f02003b;
+        public static final int img_btn_playlist=0x7f02003c;
+        public static final int img_btn_playlist_pressed=0x7f02003d;
+        public static final int img_btn_previous=0x7f02003e;
+        public static final int img_btn_previous_pressed=0x7f02003f;
+        public static final int img_btn_repeat=0x7f020040;
+        public static final int img_btn_repeat_pressed=0x7f020041;
+        public static final int img_btn_shuffle=0x7f020042;
+        public static final int img_btn_shuffle_pressed=0x7f020043;
+        public static final int img_seekbar_bg=0x7f020044;
+        public static final int img_seekbar_progress_blue=0x7f020045;
+        public static final int list_selector=0x7f020046;
+        public static final int powered_by_google_dark=0x7f020047;
+        public static final int powered_by_google_light=0x7f020048;
+        public static final int seek_handler=0x7f020049;
+        public static final int seekbar_progress=0x7f02004a;
+        public static final int seekbar_progress_bg=0x7f02004b;
+        public static final int track_info_bg=0x7f02004c;
     }
     public static final class id {
         public static final int TextView01=0x7f070015;
@@ -695,6 +699,8 @@ containing a value of this type.
         public static final int mapnavigation_exit_title=0x7f050020;
         public static final int mapnavigation_exit_yesbutton=0x7f050022;
         public static final int my_first_test=0x7f050028;
+        public static final int poi_download_description=0x7f05003c;
+        public static final int poi_list_description=0x7f05003a;
         /**  
     <string-array name="sports_array">
         <item>Shuttle Badminton</item>
@@ -716,6 +722,7 @@ containing a value of this type.
         public static final int title_activity_main1=0x7f050038;
         public static final int title_activity_show_map=0x7f050039;
         public static final int title_activity_webview=0x7f05002e;
+        public static final int trail_list_description=0x7f05003b;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */

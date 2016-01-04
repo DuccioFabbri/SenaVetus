@@ -47,5 +47,8 @@
         <item>hybrid</item>
         <item>terrain</item>        
     </string-array>
+        <string name="poi_list_description">Elenco di tutti i punti di interesse</string>
+        <string name="trail_list_description">Elenco dei percorsi consigliati</string>
+        <string name="poi_download_description">Scarica gli audio mancanti</string>
 
 </resources>

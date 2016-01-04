@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:orientation="horizontal"
-        android:paddingTop="20px" >
+        android:paddingTop="5dp" 
+        android:paddingBottom="5dp" >
 
         <ImageButton
             android:id="@+id/btnPlaylist"
@@ -20,7 +21,8 @@
             android:layout_gravity="left"
             android:layout_weight="1.32"
             android:background="@null"
-            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/poi_list_description"
+            android:src="@drawable/ic_pois"
             android:visibility="visible" />
 
         <ImageButton
@@ -30,7 +32,8 @@
             android:layout_gravity="left"
             android:layout_weight="1.72"
             android:background="@null"
-            android:src="@drawable/img_btn_playlist"
+            android:contentDescription="@string/trail_list_description"
+            android:src="@drawable/ic_trail"
             android:visibility="visible" />
 
         <ImageButton
@@ -39,7 +42,9 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/btn_playlist" />
+            android:contentDescription="@string/poi_download_description"
+            android:src="@drawable/ic_download" />
+
     </LinearLayout>
 
 <!-- http://www.vogella.com/tutorials/AndroidFragments/article.html
