@@ -93,7 +93,7 @@
 	            AIzaSyAJMTxnZLrBadkMbfHEwXo1lEzP6FRGtNY
 	     PROD	android:value="AIzaSyCubgNLCBkM6M2LZtOYKx7huCgy5FxmZ6Y"
 	     -->    
-    <meta-data  android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCubgNLCBkM6M2LZtOYKx7huCgy5FxmZ6Y"/>
+    <meta-data  android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAJMTxnZLrBadkMbfHEwXo1lEzP6FRGtNY"/>
     <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
 </application>
 
