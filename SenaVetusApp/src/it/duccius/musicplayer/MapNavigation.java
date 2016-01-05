@@ -1098,7 +1098,7 @@ private void addTrail() {
 			updateProgressBar();	
 			
 			//songTitleLabel.setText(ag.getTitle());
-			_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+			//_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 			
 			LatLng poiLatLong = new LatLng(Double.parseDouble(ag.getLng()),Double.parseDouble(ag.getLat()));
 			
@@ -1192,7 +1192,6 @@ private void addTrail() {
 	 * */
 	@Override
 	public void onCompletion(MediaPlayer arg0) {
-		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 		
 		// check for repeat is ON or OFF
 		if(isRepeat){
