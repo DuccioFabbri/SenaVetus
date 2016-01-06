@@ -1,8 +1,5 @@
 package it.duccius.musicplayer;
 
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
 import it.duccius.download.DownloadAudio;
@@ -32,7 +29,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -44,8 +40,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,12 +60,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Settings;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -192,6 +182,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			{
 				return false;
 			}
+			contesto = this.getBaseContext();
 			//______________________________________________________________
 			// Scarico il file downloads.xml
             //______________________________________________________________
@@ -203,38 +194,43 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	            @Override
 	            public void onDownloadFinished(List<RowItem> rowItems) {
 	            	/*
-	            	 * 
-	            	 * Qui posso fare direttamente una chiamata per eseguire
-	            	 * il download di tutti i file mancanti per una determinata lingua
-	            	 * L'elenco sará in _audioToDownloadLang
-	            	 * La chiamata sará del tipo: starDownload(arL,_filePath,new MyCallbackInterface() { ...
-	            	 * 
-	            	 * dove ArrayList<String> arL contiene la lista degli url degli audio da scaricare ricavati da _audioToDownloadLang
-	            	 * Si veda per riferimento il metodo: checkReadyToDownload() che scarica un singolo POI
-	            	 */
-	            	 // checkForUpdates();	
+	            	 * Scaricato il file con l'elenco degli audio e dei percorsi
+	            	 * preparo tutto per la applicazione
+	            	 * poi confronto cosa manca dei file elencati nel file downloads.       	 
+	            	 */	            		
 	            	leggiFileDownloads();
 	            	initializeMap();
-	            	
-	            	//checkNewAudio();
-	            	checkForUpdates();
 	            	setupMediaPlayer();
 	            	
-	            	ArrayList<String> trailNames= MapService.getTrailNames();	          			            	            		            	 
-	          		
-	            	  ArrayList<String> arL = new ArrayList<String>();
-	            	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
-//	            	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 
-//	            		  //Utile se il download é avvenuto singolarmente  aseguito di un click su un POI
-//	            	   @Override
-//				            public void onDownloadFinished(List<RowItem> rowItems) {
-//	            		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
-//				            	checkNewAudio();
-////				            	if(null != _activeMarker)
-////				            		_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-//				            }
-//				        });	            	 
+	            	checkForUpdates();
+	            	
+	            	//==========================================================
+	            	// Qui chiedo se si vuole scaricare tutti gli audio in una volta o in seguito
+	            	askForFileDownload();
+	            	//===========================================================	            	
+            	 
 	            }
+
+			private void askForFileDownload() {
+				new AlertDialog.Builder(MapNavigation.this)
+				.setTitle(R.string.mapnavigation_download_title)
+				.setMessage(R.string.mapnavigation_download_message)
+				.setNegativeButton(R.string.mapnavigation_download_nobutton, null)
+				.setPositiveButton(R.string.mapnavigation_download_yesbutton, new DialogInterface.OnClickListener()  {
+
+				    public void onClick(DialogInterface arg0, int arg1) {
+				    	  ArrayList<String> arL = new ArrayList<String>();
+				    	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
+				    	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 			            		  
+				    	   @Override
+					            public void onDownloadFinished(List<RowItem> rowItems) {
+				    		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
+				    		   		checkForUpdates();
+					            }
+					        });	
+				    }
+				}).create().show();
+			}
 	        });
 			return true;
 			
@@ -678,21 +674,19 @@ private void addTrail() {
 			return mo;
 			
 		}
-		private void checkReadyToPlay() {
+		private boolean checkReadyToPlay() {
+			boolean res = false;
 			ArrayList<String> alString = getAdapterSource(_localAudioGuideListLang); 
-//			int visibility =4;
 			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
 			if (_clickedMarkerIndex>-1)
 			{
-//				{
-//					//_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-//					_activeMarker.setSnippet("Click and Play" );
-//				}
 				//Se ho l'audio lo trasmetto subito
-				playSong(_clickedMarkerIndex);								
-				
+				playSong(_clickedMarkerIndex);	
+				res=true;
 			}
+			return res;
 		}
+		
 		private void checkReadyToDownload() {
 			ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
 			int clickedMarkerIndex = alString.indexOf(_clickedMarker);
@@ -709,17 +703,12 @@ private void addTrail() {
 						AudioGuide ag = _audioToDownloadLang.getFromPosition(clickedMarkerIndex);
 						//String str = ag.getPath();
 						String str = Utilities.getMp3UrlFromName(ag.getName());
-						arL.add(str);
-						//downloadAudioGuide (arL);
+						arL.add(str);					
 						
 						starDownload(arL,new MyCallbackInterface() {
 
 				            @Override
-				            public void onDownloadFinished(List<RowItem> rowItems) {
-				                // Do something when download finished
-//				            	if (mp != null)
-//						    		mp.release();
-				            	//checkNewAudio();
+				            public void onDownloadFinished(List<RowItem> rowItems) {				                
 				            	checkForUpdates();
 				            	_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 				            	_activeMarker.setSnippet("Click and play" );
@@ -760,7 +749,10 @@ private void addTrail() {
 			DownloadFile df = new DownloadFile(this,_language,destPath,progressDialog,callback);
 			df.execute(arL);
 		}		
-		
+	/*
+	 * Metodo ciamato quando si clicca su un POI della mappa.
+	 * Se abbiamo l'audio viene eseguito, altrimenti si prova a scaricarlo.
+	 */
 	public OnMarkerClickListener getMarkerClickListener()
 	{
 	    return new OnMarkerClickListener() 
@@ -773,15 +765,10 @@ private void addTrail() {
 				_activeMarker = marker;
 				//----------
 				
-				//TODO Auto-generated method stub
-				_clickedMarker = marker.getTitle();
-				//SongsManager sm = new SongsManager(_language);	
-				//AudioGuide agMarker= sm.getAudioGuideByTitle(_guides,_clickedMarker);							
-				//updateThumbnail(agMarker);				
+				_clickedMarker = marker.getTitle();								
 				
-				checkReadyToPlay();
-				
-				checkReadyToDownload();
+				if (!checkReadyToPlay())
+					checkReadyToDownload();
 								
 				return false;
 			}									
@@ -873,14 +860,12 @@ private void addTrail() {
 
 	@SuppressWarnings("unchecked")
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
+		//Ritorno dalla pagina della playlist
 	   if (requestCode == 1)
 	   {		  	
 		    try
-		    {		   if(resultCode == RESULT_OK) 	{
-			
-//					    	if (mp != null)
-//					    		mp.release();
-					    	//checkNewAudio();
+		    {		   if(resultCode == RESULT_OK) 	{			
 		    	
 					    	int newPlayListIndex;
 					    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);

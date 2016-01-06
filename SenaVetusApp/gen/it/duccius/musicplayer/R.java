@@ -586,16 +586,16 @@ containing a value of this type.
         public static final int webview=0x7f0b0005;
     }
     public static final class string {
-        public static final int action_settings=0x7f05002f;
-        public static final int app_name=0x7f050025;
+        public static final int action_settings=0x7f050033;
+        public static final int app_name=0x7f050029;
         public static final int auth_client_needs_enabling_title=0x7f050001;
         public static final int auth_client_needs_installation_title=0x7f050002;
         public static final int auth_client_needs_update_title=0x7f050003;
         public static final int auth_client_play_services_err_notification_msg=0x7f050004;
         public static final int auth_client_requested_by_msg=0x7f050005;
         public static final int auth_client_using_bad_version_title=0x7f050000;
-        public static final int button_download=0x7f050026;
-        public static final int button_play=0x7f050027;
+        public static final int button_download=0x7f05002a;
+        public static final int button_play=0x7f05002b;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -685,22 +685,26 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f05001e;
-        public static final int download=0x7f050037;
-        public static final int edit_message=0x7f050029;
-        public static final int edit_message_0=0x7f05002a;
-        public static final int edit_message_1=0x7f05002b;
-        public static final int edit_message_2=0x7f05002c;
-        public static final int edit_message_3=0x7f05002d;
-        public static final int hello=0x7f050024;
-        public static final int hello_world=0x7f050030;
-        public static final int image=0x7f050036;
+        public static final int download=0x7f05003b;
+        public static final int edit_message=0x7f05002d;
+        public static final int edit_message_0=0x7f05002e;
+        public static final int edit_message_1=0x7f05002f;
+        public static final int edit_message_2=0x7f050030;
+        public static final int edit_message_3=0x7f050031;
+        public static final int hello=0x7f050028;
+        public static final int hello_world=0x7f050034;
+        public static final int image=0x7f05003a;
+        public static final int mapnavigation_download_message=0x7f050025;
+        public static final int mapnavigation_download_nobutton=0x7f050027;
+        public static final int mapnavigation_download_title=0x7f050024;
+        public static final int mapnavigation_download_yesbutton=0x7f050026;
         public static final int mapnavigation_exit_message=0x7f050021;
         public static final int mapnavigation_exit_nobutton=0x7f050023;
         public static final int mapnavigation_exit_title=0x7f050020;
         public static final int mapnavigation_exit_yesbutton=0x7f050022;
-        public static final int my_first_test=0x7f050028;
-        public static final int poi_download_description=0x7f05003c;
-        public static final int poi_list_description=0x7f05003a;
+        public static final int my_first_test=0x7f05002c;
+        public static final int poi_download_description=0x7f050040;
+        public static final int poi_list_description=0x7f05003e;
         /**  
     <string-array name="sports_array">
         <item>Shuttle Badminton</item>
@@ -714,15 +718,15 @@ containing a value of this type.
     </string-array>
 
          */
-        public static final int result_activity=0x7f050032;
-        public static final int submit=0x7f050033;
-        public static final int title_activity_geo=0x7f050031;
-        public static final int title_activity_list_item=0x7f050035;
-        public static final int title_activity_main=0x7f050034;
-        public static final int title_activity_main1=0x7f050038;
-        public static final int title_activity_show_map=0x7f050039;
-        public static final int title_activity_webview=0x7f05002e;
-        public static final int trail_list_description=0x7f05003b;
+        public static final int result_activity=0x7f050036;
+        public static final int submit=0x7f050037;
+        public static final int title_activity_geo=0x7f050035;
+        public static final int title_activity_list_item=0x7f050039;
+        public static final int title_activity_main=0x7f050038;
+        public static final int title_activity_main1=0x7f05003c;
+        public static final int title_activity_show_map=0x7f05003d;
+        public static final int title_activity_webview=0x7f050032;
+        public static final int trail_list_description=0x7f05003f;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */

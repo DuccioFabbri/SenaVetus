@@ -5,6 +5,11 @@
     <string name="mapnavigation_exit_yesbutton">Sì</string>
     <string name="mapnavigation_exit_nobutton">No</string>
     
+    <string name="mapnavigation_download_title">Aggiornamento audioguide</string>
+    <string name="mapnavigation_download_message">Vuoi scaricare tutte le audioguide adesso? Download di circa 50 MB.</string>
+    <string name="mapnavigation_download_yesbutton">Sì, scarica tutto subito e non ci pensiamo più.</string>
+    <string name="mapnavigation_download_nobutton">No, scelgo io quando e cosa scaricare.</string>
+    
     <string name="hello">Hello World, AndroidBuildingMusicPlayerActivity!</string>
     <string name="app_name">SenaVetus AudioGuide</string>
     <string name="button_download">Download</string>
