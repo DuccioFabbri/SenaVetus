@@ -164,8 +164,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	
 	//----------------------------
 	private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-	//----------------------------
+    //----------------------------
     private Context contesto;
     
 	public boolean isOnline() {
@@ -206,7 +205,10 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	            	
 	            	//==========================================================
 	            	// Qui chiedo se si vuole scaricare tutti gli audio in una volta o in seguito
-	            	askForFileDownload();
+	            	if (!_audioToDownloadLang.getAudioGuides().isEmpty())
+	    			{
+	            		askForFileDownload();
+	    			}
 	            	//===========================================================	            	
             	 
 	            }
@@ -264,7 +266,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	public void setupMediaPlayer()
 	{
 		//_playList = _localAudioGuideListLang;
-		checkEmptyAGList();
+		//checkEmptyAGList();
 			
 		//textLanguage.setText(_language);
 				
@@ -777,8 +779,7 @@ private void addTrail() {
 
 	private void updateThumbnail(AudioGuide agMarker) {
 		String nome = Environment.getExternalStoragePublicDirectory(ApplicationData.getPicFolder()+"/"+agMarker.getName()+".jpg").toString();				
-		Bitmap bmp = BitmapFactory.decodeFile(nome);					
-		//btnThumbnail.setImageBitmap(bmp);
+		Bitmap bmp = BitmapFactory.decodeFile(nome);							
 		
 		// http://android-er.blogspot.it/2012/05/add-and-remove-view-dynamically.html
 		mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
@@ -984,12 +985,12 @@ private void addTrail() {
 		}
 		return list;
 	}
-	private void checkEmptyAGList() {
-		if ( _localAudioGuideListLang != null && _localAudioGuideListLang.isEmpty())
-		{
-			Toast.makeText(getApplicationContext(), "Non è dosponibile nessuna guida audio.\n. Scaricane di nuove dalla sezione 'Aggiornamenti' dal pulsante in alto a destra.", Toast.LENGTH_LONG).show();
-		}
-	}
+//	private void checkEmptyAGList() {
+//		if ( _localAudioGuideListLang != null && _localAudioGuideListLang.isEmpty())
+//		{
+//			Toast.makeText(getApplicationContext(), "Non è dosponibile nessuna guida audio.\n. Scaricane di nuove dalla sezione 'Aggiornamenti' dal pulsante in alto a destra.", Toast.LENGTH_LONG).show();
+//		}
+//	}
 
 
 	private void getViewElwments() {
@@ -1199,6 +1200,7 @@ private void addTrail() {
 	@Override
 	 public void onDestroy(){
 	 super.onDestroy();
+	 	_locationManager.removeUpdates(MapNavigation.this);
 	    mp.release();
 	    // http://stackoverflow.com/questions/13854196/application-force-closed-when-exited-android
 	    mHandler.removeCallbacks(mUpdateTimeTask);
@@ -1216,7 +1218,8 @@ private void addTrail() {
 	    Criteria criteria = new Criteria();
 	    provider = _locationManager.getBestProvider(criteria, false);
 	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
-	    _location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);	    	    	
+	    _location = _locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);	
+	    
 	}
 	@Override
 	public void onLocationChanged(Location location) {
@@ -1246,6 +1249,7 @@ private void addTrail() {
 	    super.onResume();
 	    _locationManager.requestLocationUpdates(provider, 400, 1, this);
 	  }
+	  
 	  @Override
 	  public void onBackPressed(){
 		    if (_thumbnail_ON) 
@@ -1269,6 +1273,7 @@ private void addTrail() {
 
 		            public void onClick(DialogInterface arg0, int arg1) {
 		                MapNavigation.super.onBackPressed();
+		                _locationManager.removeUpdates(MapNavigation.this);
 		            }
 		        }).create().show();
 		    	

@@ -1,5 +1,41 @@
 Sena Vetus
 
+
+- Android Studio: http://developer.android.com/sdk/installing/index.html?pkg=studio
+
+
+Il file con l´elenco dei pois si scarica da:
+https://sites.google.com/site/ducciofabbri/home/sv-1/downloads.xml
+Immagini
+https://sites.google.com/site/ducciofabbri/pics/
+MP3
+https://sites.google.com/site/ducciofabbri/audio/ita
+
+Installato Eclipse ADT Bundle da:
+http://developer.android.com/sdk/installing/index.html?pkg=adt
+fatte prime installazioni da:
+http://developer.android.com/sdk/installing/adding-packages.html
+Probabilmente da fare:
+http://developer.android.com/google/play-services/setup.html
+
+
+Installato GitHub sa:
+https://github.com/
+
+user: DuccioFabbri
+psw: socinus65
+
+Repository: C:\GitHub
+Repository locale: C:\GitHub\SenaVetus\SenaVetusApp
+C:\Program Files (x86)\Java\jre7\bin>
+keytool -list -v -keystore "%USERPROFILE%\.android\debug.keystore" -alias androiddebugkey -storepass android -keypass android
+C:\GitHub\SenaVetus\SenaVetusApp\bin\SenaVetusApp.apk
+
+
+
+
+- Icone usate: http://www.icons4android.com/icon/596
+
 - Attivare modo debug su S4: https://www.youtube.com/watch?v=lFg0tJ52Hhs
 L'applicazione è composta da 2 progetti:
 - client Android (AndroidBuildingMusicPlayer):
