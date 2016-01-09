@@ -3,9 +3,12 @@ package it.duccius.musicplayer;
 import android.support.v4.widget.DrawerLayout;
 
 import it.duccius.download.DownloadAudio;
+
 import it.duccius.download.DownloadFile;
+import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
 import it.duccius.musicplayer.R;
+import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import it.duccius.maps.MapService;
@@ -40,6 +43,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -66,13 +70,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MapNavigation extends Activity implements OnCompletionListener, SeekBar.OnSeekBarChangeListener, LocationListener  {
+public class MapNavigation extends Activity  implements OnCompletionListener, 
+														SeekBar.OnSeekBarChangeListener, 
+														LocationListener,
+														OnDownloadModeSelectionListner{
 
 	ProgressDialog progressDialog;
 	
@@ -165,7 +171,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	//----------------------------
 	private DrawerLayout mDrawerLayout;
     //----------------------------
-    private Context contesto;
+   
     
 	public boolean isOnline() {
 	    ConnectivityManager cm =
@@ -181,7 +187,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			{
 				return false;
 			}
-			contesto = this.getBaseContext();
+			
 			//______________________________________________________________
 			// Scarico il file downloads.xml
             //______________________________________________________________
@@ -207,32 +213,34 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	            	// Qui chiedo se si vuole scaricare tutti gli audio in una volta o in seguito
 	            	if (!_audioToDownloadLang.getAudioGuides().isEmpty())
 	    			{
-	            		askForFileDownload();
+	            		//askForFileDownload();
+	            		showEditDialog();
 	    			}
 	            	//===========================================================	            	
             	 
 	            }
 
-			private void askForFileDownload() {
-				new AlertDialog.Builder(MapNavigation.this)
-				.setTitle(R.string.mapnavigation_download_title)
-				.setMessage(R.string.mapnavigation_download_message)
-				.setNegativeButton(R.string.mapnavigation_download_nobutton, null)
-				.setPositiveButton(R.string.mapnavigation_download_yesbutton, new DialogInterface.OnClickListener()  {
-
-				    public void onClick(DialogInterface arg0, int arg1) {
-				    	  ArrayList<String> arL = new ArrayList<String>();
-				    	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
-				    	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 			            		  
-				    	   @Override
-					            public void onDownloadFinished(List<RowItem> rowItems) {
-				    		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
-				    		   		checkForUpdates();
-					            }
-					        });	
-				    }
-				}).create().show();
-			}
+	            
+//			private void askForFileDownload() {
+//				new AlertDialog.Builder(MapNavigation.this)
+//				.setTitle(R.string.mapnavigation_download_title)
+//				.setMessage(R.string.mapnavigation_download_message)
+//				.setNegativeButton(R.string.mapnavigation_download_nobutton, null)
+//				.setPositiveButton(R.string.mapnavigation_download_yesbutton, new DialogInterface.OnClickListener()  {
+//
+//				    public void onClick(DialogInterface arg0, int arg1) {
+//				    	  ArrayList<String> arL = new ArrayList<String>();
+//				    	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
+////				    	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 			            		  
+////				    	   @Override
+//////					            public void onDownloadFinished(List<RowItem> rowItems) {
+//////				    		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
+//////				    		   		checkForUpdates();
+//////					            }
+////					        });	
+//				    }
+//				}).create().show();
+//			}
 	        });
 			return true;
 			
@@ -241,6 +249,63 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 			return false;
 		} 
 	}
+    private void showEditDialog() {
+    	android.app.FragmentManager fm = this.getFragmentManager();
+    	DownloadDialogMode dialogFragment = new DownloadDialogMode ();
+    	dialogFragment.show(fm, "Sample Fragment");
+    	
+    	
+/*
+ * Il seguente pezzo di codice puo essere utile nel sostituire una Activity con un una propria view con un fragment
+ * In questo caso basta aprire una semplice dialog, quindi uso il codice precedente.
+ *     	
+ */
+//    	 if (false && findViewById(R.id.main_fragment) != null) {
+//    		 
+//    		 if (mapLayer != null)
+//    				mainLayer.removeView(mapLayer);
+//    		 
+//    		 DownloadDialogMode newFragment = new DownloadDialogMode();
+//                          
+//             android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+//
+//             // Replace whatever is in the fragment_container view with this fragment,
+//             // and add the transaction to the back stack so the user can navigate back
+//             transaction.replace(R.id.main_fragment, newFragment);
+//             transaction.addToBackStack(null);
+//
+//             // Commit the transaction
+//             transaction.commit();
+//
+//             // Call a method in the ArticleFragment to update its content
+////        	 downloadDialogMode.updateArticleView(position);
+//         }
+
+
+    }
+    // https://gist.github.com/Joev-/5695813
+    // Metodo chiamato sulla chiusura del DialogFragment che chiede come si intende scaricare le audioguide
+    public void onDownloadModeSelection(int downloadMode)
+    {
+    	switch (downloadMode){
+    	case DownloadMode.ALL:
+    		 ArrayList<String> arL = new ArrayList<String>();
+	    	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
+	    	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 			            		  
+	    	   @Override
+		            public void onDownloadFinished(List<RowItem> rowItems) {
+	    		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
+	    		   		checkForUpdates();
+		            }
+		        });	
+    		break;
+    	case DownloadMode.SINGLE:
+    		break;
+    	default:
+    		break;
+    	}
+    }
+
 //	public void checkNewAudio()
 //	{
 //		//leggiFileDownloads();
@@ -283,8 +348,7 @@ public class MapNavigation extends Activity implements OnCompletionListener, See
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setTitle("PROVA");
-		contesto = this.getBaseContext();
+		getActionBar().setTitle("PROVA");		
 
 		//setContentView(R.layout.sena);	
 		setContentView(R.layout.sena_fragments);
