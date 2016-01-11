@@ -24,7 +24,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
-public class PlayListAudio extends Activity implements
+public class _PlayListAudio extends Activity implements
 OnClickListener{
 	// Songs list
 	    Button _button;
@@ -137,30 +137,30 @@ OnClickListener{
 	            }
 	        });	    
 	}
-	private ArrayList<String> getAdapterSource() {
-		//_sdAudios = getSdAudios();	
-		SongsManager sm = new SongsManager(_language);
-		_sdAudios = sm.getSdAudioList();
-		
-		//loadGuideList();
-		//ArrayList<AudioGuide> audioDisponibiliServer= guideList(_language);
-		
-		//_audioToDownload = getAudioToDownload(sdAudios, audioDisponibiliServer);
-		songManager.loadGuideList(_guides);
-		for(AudioGuide au: _sdAudios)
-		{
-			for(AudioGuide gd: _guides)
-			{
-				if (au.getName().equals(gd.getName()))
-				{
-					au.setTitle(gd.getTitle());
-					break;
-				}
-			}
-		}
-		ArrayList<String> sdAudiosStrings  = sm.getSdAudioStrings(_sdAudios);
-		return sdAudiosStrings;
-	}
+//	private ArrayList<String> getAdapterSource() {
+//		//_sdAudios = getSdAudios();	
+//		SongsManager sm = new SongsManager(_language);
+//		_sdAudios = sm.getSdAudioList();
+//		
+//		//loadGuideList();
+//		//ArrayList<AudioGuide> audioDisponibiliServer= guideList(_language);
+//		
+//		//_audioToDownload = getAudioToDownload(sdAudios, audioDisponibiliServer);
+//		songManager.loadGuideList(_guides);
+//		for(AudioGuide au: _sdAudios)
+//		{
+//			for(AudioGuide gd: _guides)
+//			{
+//				if (au.getName().equals(gd.getName()))
+//				{
+//					au.setTitle(gd.getTitle());
+//					break;
+//				}
+//			}
+//		}
+//		ArrayList<String> sdAudiosStrings  = sm.getSdAudioStrings(_sdAudios);
+//		return sdAudiosStrings;
+//	}
 	private ArrayList<AudioGuide> getAdapterSource2() {
 		//_sdAudios = getSdAudios();	
 		SongsManager sm = new SongsManager(_language);

@@ -3,14 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
     
+    <!-- Per i ListFragment questo elemento deve per forza chiamarsi list ?!-->
  	
     <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/list"
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"   
+    	android:layout_height="fill_parent"
+        android:layout_above="@+id/textView1"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button1" >
+        android:clickable="true"
+        >
     </ListView>    
         
     <TextView

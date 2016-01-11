@@ -49,7 +49,7 @@ OnClickListener{
 	}
 
 	private void setupListView() {
-		_listView = (ListView) findViewById(R.id.list);
+		_listView = (ListView) findViewById(R.id.trail_list);
 		
 			TrailListAdapter adapter = new TrailListAdapter(this, _trails);
 	        _listView.setAdapter(adapter);

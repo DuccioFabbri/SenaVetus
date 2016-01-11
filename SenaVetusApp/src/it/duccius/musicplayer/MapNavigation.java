@@ -7,6 +7,7 @@ import it.duccius.download.DownloadAudio;
 import it.duccius.download.DownloadFile;
 import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
+import it.duccius.musicplayer.PlaylistFragment.OnPlayListSelectionListner;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
@@ -78,7 +79,8 @@ import android.widget.Toast;
 public class MapNavigation extends Activity  implements OnCompletionListener, 
 														SeekBar.OnSeekBarChangeListener, 
 														LocationListener,
-														OnDownloadModeSelectionListner{
+														OnDownloadModeSelectionListner,
+														OnPlayListSelectionListner{
 
 	ProgressDialog progressDialog;
 	
@@ -127,13 +129,13 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	private Utilities utils;
 	private int seekForwardTime = 5000; // 5000 milliseconds
 	private int seekBackwardTime = 5000; // 5000 milliseconds
-	private int currentSongIndex = 0; 
+	int currentSongIndex = 0; 
 	private boolean isShuffle = false;
 	private boolean isRepeat = false;
 	// Di default la playlist coincide con gli audio presenti in locale
 	//private ArrayList<AudioGuide> _playList = new ArrayList<AudioGuide>();
 	// _guides: elenco delle audioguide dispoibili sul server pronte dda scaricare
-	private ArrayList<AudioGuide> _guides = new ArrayList<AudioGuide>();
+	ArrayList<AudioGuide> _guides = new ArrayList<AudioGuide>();
 	
 	private String _language = "ITA";
 	//private TextView textLanguage;			
@@ -167,11 +169,6 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	private int _selectedTrail;
 	
 	private ArrayList<Polyline> _activePolines = new ArrayList<Polyline>();
-	
-	//----------------------------
-	private DrawerLayout mDrawerLayout;
-    //----------------------------
-   
     
 	public boolean isOnline() {
 	    ConnectivityManager cm =
@@ -280,8 +277,6 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 //             // Call a method in the ArticleFragment to update its content
 ////        	 downloadDialogMode.updateArticleView(position);
 //         }
-
-
     }
     // https://gist.github.com/Joev-/5695813
     // Metodo chiamato sulla chiusura del DialogFragment che chiede come si intende scaricare le audioguide
@@ -545,17 +540,18 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
-							
-		        Bundle b = new Bundle();
-		        b.putSerializable("_playList", _localAudioGuideListLang);
-		        b.putInt("currentSongIndex", currentSongIndex);
-		        b.putSerializable("_localAudioGuideListLang", _localAudioGuideListLang);		        
-		        b.putString("language", _language);		 
-		        // Add the bundle to the intent.
-		        i.putExtras(b);
-				startActivityForResult(i, 1);	
-				//finish();
+//				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
+//							
+//		        Bundle b = new Bundle();
+//		        b.putSerializable("_playList", _localAudioGuideListLang);
+//		        b.putInt("currentSongIndex", currentSongIndex);
+//		        b.putSerializable("_localAudioGuideListLang", _localAudioGuideListLang);		        
+//		        b.putString("language", _language);		 
+//		        // Add the bundle to the intent.
+//		        i.putExtras(b);
+//				startActivityForResult(i, 1);	
+//				//finish();
+				showPlaylist();
 			}
 		});
 		
@@ -569,6 +565,32 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		});
 	}
 		
+	private void showPlaylist()
+	{
+   	 if (findViewById(R.id.main_fragment) != null) {
+		 
+		 if (mapLayer != null)
+				mainLayer.removeView(mapLayer);
+		 
+		 PlaylistFragment newFragment = new PlaylistFragment();
+                     
+        android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+
+        toolbar.setVisibility(View.GONE);
+        
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.main_fragment, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+        _playlist_ON = true;
+
+        // Call a method in the ArticleFragment to update its content
+//   	 downloadDialogMode.updateArticleView(position);
+    }
+	}
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
 	// se non ho neanche questa opzione restituisco false.
@@ -862,6 +884,8 @@ private void addTrail() {
 	}
 	
 	boolean _thumbnail_ON;
+	boolean _playlist_ON;
+	
 	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
 		//_sdAudios = getSdAudios();	
@@ -1316,6 +1340,11 @@ private void addTrail() {
 	  
 	  @Override
 	  public void onBackPressed(){
+		  
+		  toolbar.setVisibility(View.VISIBLE);
+		  
+		    
+		  
 		    if (_thumbnail_ON) 
 		    {
 		    	mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
@@ -1323,24 +1352,44 @@ private void addTrail() {
 				if (thumbnailLayer != null)
 					mainLayer.removeView(thumbnailLayer);
 				mainLayer.addView(mapLayer);
-								
-				toolbar.setVisibility(View.VISIBLE);
 				
 				_thumbnail_ON = false;
 		        
-		    }else{
-		    	new AlertDialog.Builder(this)
-		        .setTitle(R.string.mapnavigation_exit_title)
-		        .setMessage(R.string.mapnavigation_exit_message)
-		        .setNegativeButton(R.string.mapnavigation_exit_nobutton, null)
-		        .setPositiveButton(R.string.mapnavigation_exit_yesbutton, new DialogInterface.OnClickListener()  {
-
-		            public void onClick(DialogInterface arg0, int arg1) {
-		                MapNavigation.super.onBackPressed();
-		                _locationManager.removeUpdates(MapNavigation.this);
-		            }
-		        }).create().show();
-		    	
-		    }
+		    }else if(_playlist_ON)
+			    {
+			    	hidePlaylistFragment();
+			    }else
+				    {
+				    	new AlertDialog.Builder(this)
+				        .setTitle(R.string.mapnavigation_exit_title)
+				        .setMessage(R.string.mapnavigation_exit_message)
+				        .setNegativeButton(R.string.mapnavigation_exit_nobutton, null)
+				        .setPositiveButton(R.string.mapnavigation_exit_yesbutton, new DialogInterface.OnClickListener()  {
+			
+				            public void onClick(DialogInterface arg0, int arg1) {
+				                MapNavigation.super.onBackPressed();
+				                _locationManager.removeUpdates(MapNavigation.this);
+				            }
+				        }).create().show();
+				    	
+				    }
 		}
+
+	private void hidePlaylistFragment() {
+		_playlist_ON = false;	
+		getFragmentManager().popBackStack();
+		
+		mainLayer.addView(mapLayer);
+	}
+
+	@Override
+	public void onPlayListSelection(int selectedAudio) {
+		// TODO Auto-generated method stub
+		//getFragmentManager().popBackStack();
+		hidePlaylistFragment();
+		if ((selectedAudio>-1)){
+    		currentSongIndex =selectedAudio;
+    		playSong(currentSongIndex);
+    	}
+	}
 }
