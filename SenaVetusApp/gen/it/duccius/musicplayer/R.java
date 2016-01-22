@@ -459,7 +459,7 @@ containing a value of this type.
         public static final int TextView02=0x7f070016;
         public static final int TextView03=0x7f070018;
         public static final int TextView04=0x7f070019;
-        public static final int action_settings=0x7f070066;
+        public static final int action_settings=0x7f070065;
         public static final int book_now=0x7f070010;
         public static final int btnBackward=0x7f07004c;
         public static final int btnDownload=0x7f070020;
@@ -554,7 +554,6 @@ containing a value of this type.
         public static final int titolo=0x7f070044;
         public static final int toolbar=0x7f07005e;
         public static final int trail_description=0x7f070064;
-        public static final int trail_list=0x7f070065;
         public static final int trail_name=0x7f070063;
         public static final int updateAudio=0x7f070058;
         public static final int wrap_content=0x7f07000d;

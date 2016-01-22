@@ -141,7 +141,7 @@ int id TextView01 0x7f070015
 int id TextView02 0x7f070016
 int id TextView03 0x7f070018
 int id TextView04 0x7f070019
-int id action_settings 0x7f070066
+int id action_settings 0x7f070065
 int id book_now 0x7f070010
 int id btnBackward 0x7f07004c
 int id btnDownload 0x7f070020
@@ -236,7 +236,6 @@ int id title 0x7f070034
 int id titolo 0x7f070044
 int id toolbar 0x7f07005e
 int id trail_description 0x7f070064
-int id trail_list 0x7f070065
 int id trail_name 0x7f070063
 int id updateAudio 0x7f070058
 int id wrap_content 0x7f07000d

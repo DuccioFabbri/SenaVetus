@@ -10,6 +10,7 @@ import it.duccius.download.RowItem;
 import it.duccius.musicplayer.PlaylistFragment.OnPlayListSelectionListner;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
+import it.duccius.musicplayer.TrailListFragment.OnTrailListSelectionListner;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
 import it.duccius.maps.MapService;
@@ -80,7 +81,8 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 														SeekBar.OnSeekBarChangeListener, 
 														LocationListener,
 														OnDownloadModeSelectionListner,
-														OnPlayListSelectionListner{
+														OnPlayListSelectionListner,
+														OnTrailListSelectionListner{
 
 	ProgressDialog progressDialog;
 	
@@ -165,8 +167,9 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	Location _location;
 	private String provider;
 	
-	private  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
-	private int _selectedTrail;
+	ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
+	int _selectedTrail;
+	boolean _trailList_ON =false;
 	
 	private ArrayList<Polyline> _activePolines = new ArrayList<Polyline>();
     
@@ -523,16 +526,17 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		{			
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), TrailList.class);
-				
-		        Bundle b = new Bundle();
-		        b.putSerializable("_trails", _trails);		        	
-		        // Add the bundle to the intent.
-		        i.putExtras(b);
-				startActivityForResult(i, 2);	
-				
-				
-				//finish();
+//				Intent i = new Intent(getApplicationContext(), TrailList.class);
+//				
+//		        Bundle b = new Bundle();
+//		        b.putSerializable("_trails", _trails);		        	
+//		        // Add the bundle to the intent.
+//		        i.putExtras(b);
+//				startActivityForResult(i, 2);	
+//				
+//				
+//				//finish();
+				showTraillist();
 			}
 		});
 		btnPlaylist.setOnClickListener(new View.OnClickListener() 
@@ -564,32 +568,58 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			}
 		});
 	}
-		
+
+	private void showTraillist()
+	{
+   	 	if (findViewById(R.id.main_fragment) != null) {
+		 
+			if (mapLayer != null)
+					mainLayer.removeView(mapLayer);
+			 
+			TrailListFragment newFragment = new TrailListFragment();
+	                     
+	        android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+	
+	        toolbar.setVisibility(View.GONE);
+	        
+	        // Replace whatever is in the fragment_container view with this fragment,
+	        // and add the transaction to the back stack so the user can navigate back
+	        transaction.replace(R.id.main_fragment, newFragment);
+	        transaction.addToBackStack(null);
+	
+	        // Commit the transaction
+	        transaction.commit();
+	        _trailList_ON = true;
+	        // Call a method in the ArticleFragment to update its content
+	//   	 downloadDialogMode.updateArticleView(position);
+   	 	}
+	}
+	
 	private void showPlaylist()
 	{
-   	 if (findViewById(R.id.main_fragment) != null) {
+   	 	if (findViewById(R.id.main_fragment) != null) {
 		 
-		 if (mapLayer != null)
-				mainLayer.removeView(mapLayer);
-		 
-		 PlaylistFragment newFragment = new PlaylistFragment();
-                     
-        android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
-
-        toolbar.setVisibility(View.GONE);
-        
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.main_fragment, newFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
-        _playlist_ON = true;
-
-        // Call a method in the ArticleFragment to update its content
-//   	 downloadDialogMode.updateArticleView(position);
-    }
+			if (mapLayer != null)
+					mainLayer.removeView(mapLayer);
+			 
+			PlaylistFragment newFragment = new PlaylistFragment();
+	                     
+	        android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+	
+	        toolbar.setVisibility(View.GONE);
+	        
+	        // Replace whatever is in the fragment_container view with this fragment,
+	        // and add the transaction to the back stack so the user can navigate back
+	        transaction.replace(R.id.main_fragment, newFragment);
+	        transaction.addToBackStack(null);
+	
+	        // Commit the transaction
+	        transaction.commit();
+	        _playlist_ON = true;
+	
+	        // Call a method in the ArticleFragment to update its content
+	//   	 downloadDialogMode.updateArticleView(position);
+   	 	}
 	}
 	// Provo a scaricare una nuova versione del file,
 	// se non ci riesco allora cerco di usare una versione già presente in locale
@@ -1341,9 +1371,7 @@ private void addTrail() {
 	  @Override
 	  public void onBackPressed(){
 		  
-		  toolbar.setVisibility(View.VISIBLE);
-		  
-		    
+		  toolbar.setVisibility(View.VISIBLE);		  		   
 		  
 		    if (_thumbnail_ON) 
 		    {
@@ -1358,7 +1386,11 @@ private void addTrail() {
 		    }else if(_playlist_ON)
 			    {
 			    	hidePlaylistFragment();
-			    }else
+			    }else if(_trailList_ON)
+			    {
+			    	hideTrailListFragment();
+			    }
+		    else
 				    {
 				    	new AlertDialog.Builder(this)
 				        .setTitle(R.string.mapnavigation_exit_title)
@@ -1381,6 +1413,12 @@ private void addTrail() {
 		
 		mainLayer.addView(mapLayer);
 	}
+	private void hideTrailListFragment() {
+		_trailList_ON = false;	
+		getFragmentManager().popBackStack();
+		
+		mainLayer.addView(mapLayer);
+	}
 
 	@Override
 	public void onPlayListSelection(int selectedAudio) {
@@ -1391,5 +1429,13 @@ private void addTrail() {
     		currentSongIndex =selectedAudio;
     		playSong(currentSongIndex);
     	}
+	}
+
+	@Override
+	public void onTrailListSelection(int selectedTrail) {
+		hideTrailListFragment();
+		_selectedTrail = selectedTrail;
+		toolbar.setVisibility(View.VISIBLE);
+		initializeMap();
 	}
 }

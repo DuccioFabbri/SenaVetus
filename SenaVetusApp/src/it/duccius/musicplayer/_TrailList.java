@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class TrailList extends Activity implements
+public class _TrailList extends Activity implements
 OnClickListener{
 
     ListView _listView;
@@ -49,7 +49,7 @@ OnClickListener{
 	}
 
 	private void setupListView() {
-		_listView = (ListView) findViewById(R.id.trail_list);
+		_listView = (ListView) findViewById(R.id.list);
 		
 			TrailListAdapter adapter = new TrailListAdapter(this, _trails);
 	        _listView.setAdapter(adapter);
