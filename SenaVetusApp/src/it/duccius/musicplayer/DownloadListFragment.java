@@ -140,20 +140,6 @@ public class DownloadListFragment extends ListFragment implements
             @Override
             public void onDownloadFinished(List<RowItem> rowItems) {
             	callback.onDownloadListEnded(true);
-//            	Intent intent = new Intent();
-//            	try{		       		    	
-//     	        // http://stackoverflow.com/questions/2497205/how-to-return-a-result-startactivityforresult-from-a-tabhost-activity            	
-//                if (getParent() == null) {
-//                    setResult(Activity.RESULT_OK, intent);
-//                } else {
-//                    getParent().setResult(Activity.RESULT_OK, intent);
-//                }
-//               }
-//            	catch(Exception e)
-//            	{getParent().setResult(Activity.RESULT_CANCELED, intent);}
-//            	finally{
-//            		finish();
-//            	}
             }
         });
  		//---------------

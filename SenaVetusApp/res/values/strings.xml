@@ -5,10 +5,15 @@
     <string name="mapnavigation_exit_yesbutton">Sì</string>
     <string name="mapnavigation_exit_nobutton">No</string>
     
+    
+    
     <string name="mapnavigation_download_title">Aggiornamento audioguide</string>
-    <string name="mapnavigation_download_message">Vuoi scaricare tutte le audioguide adesso? Download di circa 50 MB.</string>
-    <string name="mapnavigation_download_yesbutton">Sì, scarica tutto subito e non ci pensiamo più.</string>
-    <string name="mapnavigation_download_nobutton">No, scelgo io quando e cosa scaricare.</string>
+    <string name="mapnavigation_download_message">Quando vuoi scaricare le audioguide?</string>
+    <string name="mapnavigation_download_yesbutton">Subito</string>
+    <string name="mapnavigation_download_yesmessage">Tutte le guide verranno scaricate in una unica volta e potrai usarle anche se non avrai più a disposizione una connessione internet.</string>
+    <string name="mapnavigation_download_nobutton">Dopo</string>
+    <string name="mapnavigation_download_nomessage">Se questo non è il momento adatto per scaricare una grande mole di dati, potrai scegliere in seguito quali singole audioguide scaricare.</string>
+    
     
     <string name="hello">Hello World, AndroidBuildingMusicPlayerActivity!</string>
     <string name="app_name">SenaVetus AudioGuide</string>
@@ -27,18 +32,6 @@
     
     <string name="downloadAudio_description">Seleziona gli audio che intendi scaricare adesso e poi fai tap sul pulsante "Download".</string>
     
-<!-- 
-    <string-array name="sports_array">
-        <item>Shuttle Badminton</item>
-        <item>Tennis</item>
-        <item>Table Tennis</item>
-        <item>Basket Ball</item>
-        <item>Foot Ball</item>
-        <item>Volley Ball</item>
-        <item>Hockey</item>
-        <item>Swimming</item>
-    </string-array>
--->
     <string name="result_activity">ResultActivity</string>
     <string name="submit">Add To Playlist</string>
     <string name="title_activity_main">MainActivity</string>

@@ -2,8 +2,6 @@ package it.duccius.musicplayer;
 
 import android.support.v4.widget.DrawerLayout;
 
-import it.duccius.download._DownloadAudio;
-
 import it.duccius.download.DownloadFile;
 import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
