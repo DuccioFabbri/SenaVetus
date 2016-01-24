@@ -13,12 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
  
-public class CustomListViewAdapter extends BaseAdapter {
+public class _CustomListViewAdapter extends BaseAdapter {
  
     Context context;
     List<RowItem> rowItems;
  
-    public CustomListViewAdapter(Context context, List<RowItem> items) {
+    public _CustomListViewAdapter(Context context, List<RowItem> items) {
         this.context = context;
         this.rowItems = items;
     }

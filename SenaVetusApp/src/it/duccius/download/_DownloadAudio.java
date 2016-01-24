@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-public class DownloadAudio extends Activity implements
+public class _DownloadAudio extends Activity implements
         OnClickListener {
     Button _button;
     ListView _listView;

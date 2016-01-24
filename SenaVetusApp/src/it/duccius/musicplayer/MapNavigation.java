@@ -2,14 +2,16 @@ package it.duccius.musicplayer;
 
 import android.support.v4.widget.DrawerLayout;
 
-import it.duccius.download.DownloadAudio;
+import it.duccius.download._DownloadAudio;
 
 import it.duccius.download.DownloadFile;
 import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
+import it.duccius.musicplayer.DownloadListFragment.OnDownloadListEndedListner;
 import it.duccius.musicplayer.PlaylistFragment.OnPlayListSelectionListner;
 import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
+
 import it.duccius.musicplayer.TrailListFragment.OnTrailListSelectionListner;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
 
@@ -82,7 +84,8 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 														LocationListener,
 														OnDownloadModeSelectionListner,
 														OnPlayListSelectionListner,
-														OnTrailListSelectionListner{
+														OnTrailListSelectionListner,
+														OnDownloadListEndedListner{
 
 	ProgressDialog progressDialog;
 	
@@ -170,6 +173,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
 	int _selectedTrail;
 	boolean _trailList_ON =false;
+	boolean _downList_ON = false;
 	
 	private ArrayList<Polyline> _activePolines = new ArrayList<Polyline>();
     
@@ -507,16 +511,17 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			
 			@Override
 			public void onClick(View arg0) {
-				Intent i = new Intent(getApplicationContext(), DownloadAudio.class);
-				
-		        Bundle b = new Bundle();
-		        b.putSerializable("_playList", _localAudioGuideListLang);
-		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
-		        b.putString("language", _language);		 
-		        // Add the bundle to the intent.
-		        i.putExtras(b);
-				startActivityForResult(i, 3);	
-				//finish();
+//				Intent i = new Intent(getApplicationContext(), _DownloadAudio.class);
+//				
+//		        Bundle b = new Bundle();
+//		        b.putSerializable("_playList", _localAudioGuideListLang);
+//		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
+//		        b.putString("language", _language);		 
+//		        // Add the bundle to the intent.
+//		        i.putExtras(b);
+//				startActivityForResult(i, 3);	
+//				//finish();
+				showDownloadList();
 			}
 		});
 		/*
@@ -569,6 +574,32 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		});
 	}
 
+	private void showDownloadList()
+	{
+   	 	if (findViewById(R.id.main_fragment) != null) {
+		 
+			if (mapLayer != null)
+					mainLayer.removeView(mapLayer);
+			 
+			DownloadListFragment newFragment = new DownloadListFragment();
+	                     
+	        android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
+	
+	        toolbar.setVisibility(View.GONE);
+	        
+	        // Replace whatever is in the fragment_container view with this fragment,
+	        // and add the transaction to the back stack so the user can navigate back
+	        transaction.replace(R.id.main_fragment, newFragment);
+	        transaction.addToBackStack(null);
+	
+	        // Commit the transaction
+	        transaction.commit();
+	        _downList_ON = true;
+	        // Call a method in the ArticleFragment to update its content
+	//   	 downloadDialogMode.updateArticleView(position);
+   	 	}
+	}
+	
 	private void showTraillist()
 	{
    	 	if (findViewById(R.id.main_fragment) != null) {
@@ -983,61 +1014,61 @@ private void addTrail() {
 		//Ritorno dalla pagina della playlist
 	   if (requestCode == 1)
 	   {		  	
-		    try
-		    {		   if(resultCode == RESULT_OK) 	{			
-		    	
-					    	int newPlayListIndex;
-					    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
-					    	if ((newPlayListIndex>-1)){
-					    		currentSongIndex =newPlayListIndex;
-					    		playSong(currentSongIndex);
-					    	}
-		    			}
-		    }
-		    catch(Exception e)
-		    {
-		    	Log.d("zzzz", e.toString());
-		    }
+//		    try
+//		    {		   if(resultCode == RESULT_OK) 	{			
+//		    	
+//					    	int newPlayListIndex;
+//					    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
+//					    	if ((newPlayListIndex>-1)){
+//					    		currentSongIndex =newPlayListIndex;
+//					    		playSong(currentSongIndex);
+//					    	}
+//		    			}
+//		    }
+//		    catch(Exception e)
+//		    {
+//		    	Log.d("zzzz", e.toString());
+//		    }
 	   }
 	   // Ritorno dopo aver selezionato un percorso
 	   if (requestCode == 2)
 	   {		  	
-		    try
-		    {		   
-		    	if(resultCode == RESULT_OK) 	{			
-		    	
-		    	_selectedTrail = intent.getIntExtra("_selectedTrail", 0);	
-		    	}
-		    	initializeMap();
-		    }
-		    catch(Exception e)
-		    {
-		    	Log.d("zzzz", e.toString());
-		    }
+//		    try
+//		    {		   
+//		    	if(resultCode == RESULT_OK) 	{			
+//		    	
+//		    	_selectedTrail = intent.getIntExtra("_selectedTrail", 0);	
+//		    	}
+//		    	initializeMap();
+//		    }
+//		    catch(Exception e)
+//		    {
+//		    	Log.d("zzzz", e.toString());
+//		    }
 	   }
 	// Ritorno dalla pagina di download
 	   if (requestCode == 3)
 	   {		  	
-		   try
-		    {		   
-			   if(resultCode == RESULT_OK) 	{
-			
-////					    	if (mp != null)
-////					    		mp.release();
-//			    	//checkNewAudio();
-//			    	int newPlayListIndex;
-//			    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
-//			    	if ((newPlayListIndex>-1)){
-//			    		currentSongIndex =newPlayListIndex;
-//			    		playSong(currentSongIndex);
-//			    	}
-				   checkForUpdates();
-    			}
-		    }
-		    catch(Exception e)
-		    {
-		    	Log.d("zzzz", e.toString());
-		    }
+//		   try
+//		    {		   
+//			   if(resultCode == RESULT_OK) 	{
+//			
+//////					    	if (mp != null)
+//////					    		mp.release();
+////			    	//checkNewAudio();
+////			    	int newPlayListIndex;
+////			    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
+////			    	if ((newPlayListIndex>-1)){
+////			    		currentSongIndex =newPlayListIndex;
+////			    		playSong(currentSongIndex);
+////			    	}
+//				   checkForUpdates();
+//    			}
+//		    }
+//		    catch(Exception e)
+//		    {
+//		    	Log.d("zzzz", e.toString());
+//		    }
 	   }
 	}
 	private void setupAudioThumbnail(String imgName) {
@@ -1389,8 +1420,10 @@ private void addTrail() {
 			    }else if(_trailList_ON)
 			    {
 			    	hideTrailListFragment();
-			    }
-		    else
+			    }else if(_downList_ON)
+			    {
+			    	hideDownloadlistFragment();
+			    }else
 				    {
 				    	new AlertDialog.Builder(this)
 				        .setTitle(R.string.mapnavigation_exit_title)
@@ -1407,6 +1440,12 @@ private void addTrail() {
 				    }
 		}
 
+  private void hideDownloadlistFragment() {
+	  	_downList_ON = false;	
+		getFragmentManager().popBackStack();
+		
+		mainLayer.addView(mapLayer);
+	}
 	private void hidePlaylistFragment() {
 		_playlist_ON = false;	
 		getFragmentManager().popBackStack();
@@ -1437,5 +1476,12 @@ private void addTrail() {
 		_selectedTrail = selectedTrail;
 		toolbar.setVisibility(View.VISIBLE);
 		initializeMap();
+	}
+
+	@Override
+	public void onDownloadListEnded(boolean result) {
+		toolbar.setVisibility(View.VISIBLE);
+		checkForUpdates();
+		hideDownloadlistFragment();
 	}
 }
