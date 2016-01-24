@@ -3,19 +3,25 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
     
- 	<Spinner
- 	    android:id="@+id/spnLanguage"
- 	    android:layout_width="fill_parent"
- 	    android:layout_height="wrap_content" 
- 	    android:spinnerMode="dropdown"
- 	   />
+ 	    <TextView
+        android:id="@+id/downloadAudio_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20sp"
+        android:text="@string/downloadAudio_description" />
+ 	    
  	<TextView
         android:id="@+id/TextView01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/spnLanguage"
+        android:layout_below="@+id/downloadAudio_description"
         android:text=" " />
 		
     <Button
@@ -24,7 +30,7 @@
         android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-		 android:layout_below="@+id/TextView01"        
+		 android:layout_below="@+id/downloadAudio_description"        
         android:text="@string/download" />
  
     <ListView
