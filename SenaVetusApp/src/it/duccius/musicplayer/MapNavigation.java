@@ -101,7 +101,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	private ImageButton btnPOIinfo;
 	private ImageButton btnTrails;
 	
-	private ImageView btnThumbnail;
+	//private ImageView btnThumbnail;
 	private ImageView imgThumbnail;
 	
 	private ImageButton songThumbnail;
@@ -112,7 +112,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	private TextView songTotalDurationLabel;
 	
 	private LinearLayout  footer;
-	private LinearLayout  toolbar;
+	LinearLayout  toolbar;
 	private LinearLayout timerDisplay;
 	
 	/*
@@ -173,6 +173,8 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	boolean _trailList_ON =false;
 	boolean _downList_ON = false;
 	
+	LinearLayout linlaHeaderProgress;
+	
 	private ArrayList<Polyline> _activePolines = new ArrayList<Polyline>();
     
 	public boolean isOnline() {
@@ -194,8 +196,9 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			// Scarico il file downloads.xml
             //______________________________________________________________
 			ArrayList<String> arL = new ArrayList<String>();			
-			arL.add(_urlDownloads);			
-			starDownload(arL,_filePath,new MyCallbackInterface() {
+			arL.add(_urlDownloads);	
+			
+			starDownload2(arL,_filePath,new MyCallbackInterface() {
             //______________________________________________________________
 				
 	            @Override
@@ -204,10 +207,10 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	            	 * Scaricato il file con l'elenco degli audio e dei percorsi
 	            	 * preparo tutto per la applicazione
 	            	 * poi confronto cosa manca dei file elencati nel file downloads.       	 
-	            	 */	            		
+	            	 */	        
+	            	
 	            	leggiFileDownloads();
-	            	initializeMap();
-	            	setupMediaPlayer();
+	            	
 	            	
 	            	checkForUpdates();
 	            	
@@ -217,32 +220,17 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	    			{
 	            		//askForFileDownload();
 	            		showEditDialog();
+	            		// esecuzione continua in onDownloadModeSelection
+	            		return;
 	    			}
 	            	//===========================================================	            	
-            	 
-	            }
-
-	            
-//			private void askForFileDownload() {
-//				new AlertDialog.Builder(MapNavigation.this)
-//				.setTitle(R.string.mapnavigation_download_title)
-//				.setMessage(R.string.mapnavigation_download_message)
-//				.setNegativeButton(R.string.mapnavigation_download_nobutton, null)
-//				.setPositiveButton(R.string.mapnavigation_download_yesbutton, new DialogInterface.OnClickListener()  {
-//
-//				    public void onClick(DialogInterface arg0, int arg1) {
-//				    	  ArrayList<String> arL = new ArrayList<String>();
-//				    	  arL = Utilities.getUrlsToDownload(_audioToDownloadLang);
-////				    	  starDownload(arL,Utilities.getDestSDFldLang(_language),new MyCallbackInterface() { 			            		  
-////				    	   @Override
-//////					            public void onDownloadFinished(List<RowItem> rowItems) {
-//////				    		   // Questo metodo serve ad aggiornare i dati dopo il download di nuovi file
-//////				    		   		checkForUpdates();
-//////					            }
-////					        });	
-//				    }
-//				}).create().show();
-//			}
+	            	// se non devo scaricare nulla e quindi non passo dalla dialog..
+	            	linlaHeaderProgress.setVisibility(View.GONE);
+	        		toolbar.setVisibility(View.VISIBLE);
+	        		btnPOIinfo.setVisibility(View.GONE);
+	            	initializeMap();
+	            	setupMediaPlayer();
+	            }	         
 	        });
 			return true;
 			
@@ -255,33 +243,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
     	android.app.FragmentManager fm = this.getFragmentManager();
     	DownloadDialogMode dialogFragment = new DownloadDialogMode ();
     	dialogFragment.show(fm, "Sample Fragment");
-    	
-    	
-/*
- * Il seguente pezzo di codice puo essere utile nel sostituire una Activity con un una propria view con un fragment
- * In questo caso basta aprire una semplice dialog, quindi uso il codice precedente.
- *     	
- */
-//    	 if (false && findViewById(R.id.main_fragment) != null) {
-//    		 
-//    		 if (mapLayer != null)
-//    				mainLayer.removeView(mapLayer);
-//    		 
-//    		 DownloadDialogMode newFragment = new DownloadDialogMode();
-//                          
-//             android.app.FragmentTransaction transaction = this.getFragmentManager().beginTransaction();
-//
-//             // Replace whatever is in the fragment_container view with this fragment,
-//             // and add the transaction to the back stack so the user can navigate back
-//             transaction.replace(R.id.main_fragment, newFragment);
-//             transaction.addToBackStack(null);
-//
-//             // Commit the transaction
-//             transaction.commit();
-//
-//             // Call a method in the ArticleFragment to update its content
-////        	 downloadDialogMode.updateArticleView(position);
-//         }
+    	    	
     }
     // https://gist.github.com/Joev-/5695813
     // Metodo chiamato sulla chiusura del DialogFragment che chiede come si intende scaricare le audioguide
@@ -304,20 +266,10 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
     	default:
     		break;
     	}
+    	initializeMap();
+    	setupMediaPlayer();
+    	//linlaHeaderProgress.setVisibility(View.GONE);
     }
-
-//	public void checkNewAudio()
-//	{
-//		//leggiFileDownloads();
-//		// il metodo checkForUpdates() aggiorna:
-//		// - _localAudioGuideListLang:	elenco di audioguide presenti nella scheda SD per una determinata lingua
-//		// - _audioGuideListLang:		elenco di audioguide disponibili sul server per una determinata lingua
-//		// - _audioToDownloadLang:		elenco di audioguide presenti sul server ma non presenti su SD per una determinata lingua
-//		checkForUpdates();
-//		
-//		//initializeMap();
-//		//setupMediaPlayer();
-//	}
 
 	private void leggiFileDownloads() {
 		File f = new File(_downloadsSDPath);
@@ -348,11 +300,15 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setTitle("PROVA");		
+		getActionBar().setTitle("SenaVetus");		
 
 		//setContentView(R.layout.sena);	
 		setContentView(R.layout.sena_fragments);
-						
+				
+		// CAST THE LINEARLAYOUT HOLDING THE MAIN PROGRESS (SPINNER)
+		linlaHeaderProgress = (LinearLayout)findViewById(R.id.linlaProgress);
+		linlaHeaderProgress.setVisibility(View.VISIBLE);
+		
 		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
 	    songManager = new SongsManager(_language);		
@@ -509,16 +465,6 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			
 			@Override
 			public void onClick(View arg0) {
-//				Intent i = new Intent(getApplicationContext(), _DownloadAudio.class);
-//				
-//		        Bundle b = new Bundle();
-//		        b.putSerializable("_playList", _localAudioGuideListLang);
-//		        b.putSerializable("_audioToDownloadLang", _audioToDownloadLang.getAudioGuides());		        
-//		        b.putString("language", _language);		 
-//		        // Add the bundle to the intent.
-//		        i.putExtras(b);
-//				startActivityForResult(i, 3);	
-//				//finish();
 				showDownloadList();
 			}
 		});
@@ -529,16 +475,6 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		{			
 			@Override
 			public void onClick(View arg0) {
-//				Intent i = new Intent(getApplicationContext(), TrailList.class);
-//				
-//		        Bundle b = new Bundle();
-//		        b.putSerializable("_trails", _trails);		        	
-//		        // Add the bundle to the intent.
-//		        i.putExtras(b);
-//				startActivityForResult(i, 2);	
-//				
-//				
-//				//finish();
 				showTraillist();
 			}
 		});
@@ -547,29 +483,10 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			
 			@Override
 			public void onClick(View arg0) {
-//				Intent i = new Intent(getApplicationContext(), PlayListAudio.class);
-//							
-//		        Bundle b = new Bundle();
-//		        b.putSerializable("_playList", _localAudioGuideListLang);
-//		        b.putInt("currentSongIndex", currentSongIndex);
-//		        b.putSerializable("_localAudioGuideListLang", _localAudioGuideListLang);		        
-//		        b.putString("language", _language);		 
-//		        // Add the bundle to the intent.
-//		        i.putExtras(b);
-//				startActivityForResult(i, 1);	
-//				//finish();
 				showPlaylist();
 			}
 		});
 		
-		btnThumbnail.setOnClickListener(new View.OnClickListener() 
-		{
-			
-			@Override
-			public void onClick(View arg0) {				
-				btnThumbnail.setVisibility(View.GONE);				
-			}
-		});
 	}
 
 	private void showDownloadList()
@@ -677,6 +594,8 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 //######################################################################
 	
 	private void initializeMap() {
+		
+		
 		//Location currentLocation = getCurrentLocation();
 		Location currentLocation = _location;
 		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
@@ -870,6 +789,7 @@ private void addTrail() {
 				}					
 			}				
 		}
+		// Chiamata quando clicco su singolo POI
 		private void starDownload(ArrayList<String> arL, MyCallbackInterface callback) {
 			ProgressDialog progressDialog = new ProgressDialog((this));
 			progressDialog.setTitle("In progress...");
@@ -883,6 +803,7 @@ private void addTrail() {
 			DownloadFile df = new DownloadFile(this,_language,progressDialog, callback);
 			df.execute(arL);
 		}
+		// Chiamato quando scarico download.xml e quando scarico tutti gli audio insieme
 		private void starDownload(ArrayList<String> arL, String destPath,MyCallbackInterface callback) {
 			ProgressDialog progressDialog = new ProgressDialog((this));
 			progressDialog.setTitle("In progress...");
@@ -893,7 +814,25 @@ private void addTrail() {
 			progressDialog.setIcon(R.drawable.arrow_stop_down);
 			progressDialog.setCancelable(true);
 			progressDialog.show();
+			
 			DownloadFile df = new DownloadFile(this,_language,destPath,progressDialog,callback);
+			df.execute(arL);
+		}	
+		private void starDownload2(ArrayList<String> arL, String destPath,MyCallbackInterface callback) {
+//			ProgressDialog progressDialog = new ProgressDialog((this));
+//			progressDialog.setTitle("In progress...");
+//			progressDialog.setMessage("Loading...");
+//			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//			progressDialog.setIndeterminate(false);
+//			progressDialog.setMax(100);
+//			progressDialog.setIcon(R.drawable.arrow_stop_down);
+//			progressDialog.setCancelable(true);
+			//progressDialog.show();
+			ProgressDialog pd = new ProgressDialog(this,R.style.MyTheme);
+			pd.setCancelable(false);
+			pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+			pd.show();
+			DownloadFile df = new DownloadFile(this,_language,destPath,pd,callback);
 			df.execute(arL);
 		}		
 	/*
@@ -1028,46 +967,7 @@ private void addTrail() {
 //		    	Log.d("zzzz", e.toString());
 //		    }
 	   }
-	   // Ritorno dopo aver selezionato un percorso
-	   if (requestCode == 2)
-	   {		  	
-//		    try
-//		    {		   
-//		    	if(resultCode == RESULT_OK) 	{			
-//		    	
-//		    	_selectedTrail = intent.getIntExtra("_selectedTrail", 0);	
-//		    	}
-//		    	initializeMap();
-//		    }
-//		    catch(Exception e)
-//		    {
-//		    	Log.d("zzzz", e.toString());
-//		    }
-	   }
-	// Ritorno dalla pagina di download
-	   if (requestCode == 3)
-	   {		  	
-//		   try
-//		    {		   
-//			   if(resultCode == RESULT_OK) 	{
-//			
-//////					    	if (mp != null)
-//////					    		mp.release();
-////			    	//checkNewAudio();
-////			    	int newPlayListIndex;
-////			    	newPlayListIndex = intent.getExtras().getInt("currentSongIndex", -1);
-////			    	if ((newPlayListIndex>-1)){
-////			    		currentSongIndex =newPlayListIndex;
-////			    		playSong(currentSongIndex);
-////			    	}
-//				   checkForUpdates();
-//    			}
-//		    }
-//		    catch(Exception e)
-//		    {
-//		    	Log.d("zzzz", e.toString());
-//		    }
-	   }
+
 	}
 	private void setupAudioThumbnail(String imgName) {
 //		imgName = imgName.substring(4);
@@ -1111,10 +1011,10 @@ private void addTrail() {
 			if (!_audioToDownloadLang.getAudioGuides().isEmpty())
 			{
 				btnPOIinfo.setVisibility(View.VISIBLE);
-				Toast.makeText(getApplicationContext(), "Sono disponibili nuove audiogide\n. Accedi alla sezione 'Aggiornamenti' e clicca su 'Download'.", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(getApplicationContext(), "Sono disponibili nuove audiogide\n. Accedi alla sezione 'Aggiornamenti' e clicca su 'Download'.", Toast.LENGTH_SHORT).show();
 			}
 			else
-				btnPOIinfo.setVisibility(View.INVISIBLE);
+				btnPOIinfo.setVisibility(View.GONE);
 			res = true;
 		}
 		return res;
@@ -1154,7 +1054,7 @@ private void addTrail() {
 		//btnPOIplay  = (ImageButton) findViewById(R.id.btnPOIplay);
 		btnPOIinfo  = (ImageButton) findViewById(R.id.btnPOIinfo);		
 		btnTrails = (ImageButton) findViewById(R.id.btnTrails);
-		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
+//		btnThumbnail  = (ImageButton) findViewById(R.id.thumbnail);
 				
 		songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
 		songTitleLabel = (TextView) findViewById(R.id.songTitle);

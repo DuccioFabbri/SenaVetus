@@ -35,6 +35,12 @@ C:\GitHub\SenaVetus\SenaVetusApp\bin\SenaVetusApp.apk
 
 
 - Icone usate: http://www.icons4android.com/icon/596
+https://pixabay.com/en/street-blank-sign-ad-banner-990315/
+http://www.freeimages.com/photo/city-tour-1538853
+
+http://www.freeimages.com/photo/arrow-1170792
+http://www.freeimages.com/photo/exit-2-light-1170947
+http://www.freeimages.com/photo/lost-in-old-palace-1207576
 
 - Attivare modo debug su S4: https://www.youtube.com/watch?v=lFg0tJ52Hhs
 L'applicazione è composta da 2 progetti:

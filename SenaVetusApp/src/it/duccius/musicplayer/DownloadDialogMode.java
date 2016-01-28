@@ -49,7 +49,9 @@ public class DownloadDialogMode extends DialogFragment  {
 
             @Override
             public void onClick(View v) {
-            	callback.onDownloadModeSelection(DownloadMode.ALL);
+            	callback.onDownloadModeSelection(DownloadMode.ALL);   
+            	((MapNavigation)getActivity()).linlaHeaderProgress.setVisibility(View.GONE);
+            	((MapNavigation)getActivity()).toolbar.setVisibility(View.VISIBLE);
                   dismiss();
             }
         });
@@ -60,6 +62,8 @@ public class DownloadDialogMode extends DialogFragment  {
             public void onClick(View v) {
             	
                 	callback.onDownloadModeSelection(DownloadMode.SINGLE);
+                	((MapNavigation)getActivity()).linlaHeaderProgress.setVisibility(View.GONE);
+                	((MapNavigation)getActivity()).toolbar.setVisibility(View.VISIBLE);
                       dismiss();               
             }
         });
