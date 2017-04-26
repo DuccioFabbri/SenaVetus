@@ -14,18 +14,12 @@
     <string name="mapnavigation_download_nobutton">Scarica Dopo</string>
     <string name="mapnavigation_download_nomessage">Se adesso non è il momento di scaricare megabyte, meglio rimandare a dopo, puoi scegliere tu cosa e quando mettere in download.</string>  
     
-   <string name="app_name">SenaVetus AudioGuide</string>
+   <string name="app_name">Siena</string>
+   <string name="app_title">Visit In Siena - ITA</string>
     <string name="button_download">Download</string>
     <string name="button_play">Play</string>
-    <string name="my_first_test">Inserisci del testo</string>
-    <string name="edit_message">http://localhost:8080/audio/vienna01.mp3</string>
-    <string name="edit_message_0">http://localhost:8080/audio/vienna01.mp3</string>
-    <string name="edit_message_1">http://localhost:8080/audio/vienna02.mp3</string>
-    <string name="edit_message_2">http://localhost:8080/audio/vienna01.mp3</string>
-    <string name="edit_message_3">http://localhost:8080/audio/vienna02.mp3</string>
     <string name="title_activity_webview">WebviewActivity</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_geo">GeoActivity</string>
     <string name="downloadAudio_description">Seleziona gli audio che intendi scaricare adesso e poi fai tap sul pulsante "Download".</string>
     

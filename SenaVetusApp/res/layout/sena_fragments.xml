@@ -14,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone" 
-        android:background="@drawable/citytour1538853">
+        android:background="@drawable/spash_screen">
 
         <ProgressBar
             android:id="@+id/progressBar"

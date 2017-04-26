@@ -24,7 +24,7 @@ https://github.com/
 
 user: DuccioFabbri
 psw: socinus65
-
+ 
 Repository: C:\GitHub
 Repository locale: C:\GitHub\SenaVetus\SenaVetusApp
 C:\Program Files (x86)\Java\jre7\bin>
