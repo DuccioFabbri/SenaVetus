@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+  <name>Sena Vetus</name>
+  <description><![CDATA[]]></description>
+  <vers>002</vers>  
+    <!--
+	<audio lang ="ITA" name="AntiportoCamollia" title="01 - Antiporto di Camollia" ext=".mp3" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" />                      
+	-->
+	<audio lang ="ITA" name="02_PortaCamollia" title="02 - Porta Camollia" ext=".mp3" coordinates="11.325371,43.327671,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>                            
+	<audio lang ="ITA" name="03_186Paracadutisti" title="03 - Caserma Bandini" ext=".mp3" coordinates="11.321425,43.327480,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>                                    
+	<audio lang ="ITA" name="04_ColonnaPioII" title="04 - Colonna Pio II" ext=".mp3" coordinates="11.322149,43.328632,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>                                      
+	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>  
+	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>
+	<audio lang ="ITA" name="Fortezza" title="Fortezza Medicea" ext=".mp3" coordinates="11.323116,43.321969,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>
+	<audio lang ="ITA" name="07_PiazzadelCampo" title="07 - Piazza del Campo" ext=".mp3" coordinates="11.331600,43.318516,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	</audio>
+	<audio lang ="ITA" name="Duomo" title="15 - Duomo" ext=".mp3" coordinates="11.328575,43.317415,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+	<audio lang ="ITA" name="Facciatone" title="16 - Facciatone e Duomo Nuovo" ext=".mp3" coordinates="11.329849,43.317334,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+	<audio lang ="ITA" name="Salimbeni" title="Palazzo Salimbeni" ext=".mp3" coordinates="11.330599,43.321104,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+	<audio lang ="ITA" name="SanDomenico" title="Basilica di San Domenico" ext=".mp3" coordinates="11.326453,43.320171,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+<audio lang ="ITA" name="Intronati" title="Biblioteca degli Intronati" ext=".mp3" coordinates="11.329414,43.320626,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+	<audio lang ="ITA" name="SantaMaria" title="Santa Maria della Scala" ext=".mp3" coordinates="11.328448,43.317130,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	</audio>
+	<trail name="Esplora" description="Esplora liberamente la città" time="" >		
+	</trail>
+	<trail name="Tour 01" description="Tour rapido. Questo percorso ti guiderà alla visita delle cose veramente imperdibili." time="1h30min" >
+		<trail_coords>11.3303214,43.3191091,0.0 11.3297689,43.3187422,0.0 11.3296884,43.3185119,0.0 11.3297153,43.3183168,0.0 11.3294953,43.3182738,0.0 11.3294524,43.318106,0.0 11.3295758,43.3178562,0.0 11.3293666,43.31754010000001,0.0 11.3289106,43.3170912,0.0 11.3298547,43.3162794,0.0 11.3309062,43.3172278,0.0 11.3307452,43.3179226,0.0 11.3306004,43.3184612,0.0 11.3308096,43.318789,0.0 11.3312173,43.3190856,0.0 11.3313943,43.3194798,0.0 11.3313729,43.3197999,0.0 11.3312173,43.3201277,0.0 11.3305789,43.32108,0.0 11.3304448,43.3211619,0.0 11.3296455,43.3207755,0.0 11.3290554,43.3204477,0.0 11.3289267,43.3203853,0.0 11.3277197,43.3204828,0.0 11.327371000000001,43.3204594,0.0 11.3264376,43.3202175,0.0</trail_coords>
+	</trail>
+	<trail name="Tour 02" description="Tour panoramico. Se hai un po' di tempo a disposizione e sei appassionato di foto o pittura, questo percorso ti condurrà alla scoperta delle viste più immportalate della città." time="2h30min" >
+		<trail_coords>15.08768697562932,37.50182804837193,0 15.08781750092317,37.50235669825221,0 15.08714878154136,37.50259894407201,0 15.08709095840646,37.50295855523974,0 15.08730804560806,37.50216352559089,0 15.08704571447344,37.50217222365298,0 15.08681617021113,37.50182990361351,0 15.08462171875624,37.49932999552549,0 15.08390262922571,37.50256342514263,0 15.08450760884358,37.50278477598896,0 15.08488765811501,37.50287307754209,0 15.08479944569356,37.50383217279372,0 15.08714257389433,37.50365427048464,0 15.0858547485819,37.50751852656306,0 15.08649967685894,37.50759779960113,0 15.08532110496322,37.51084705298629,0 15.09049590359399,37.50440972680312,0 15.09067981636066,37.50247353526791,0</trail_coords>
+	</trail>	
+</Document> 

@@ -14,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone" 
-        android:background="@drawable/spash_screen">
+        android:background="@drawable/spash_screen_catania">
 
         <ProgressBar
             android:id="@+id/progressBar"

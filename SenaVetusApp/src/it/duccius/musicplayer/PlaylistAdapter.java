@@ -1,5 +1,7 @@
 package it.duccius.musicplayer;
 
+import it.duccius.visitin.catania.R;
+
 import java.util.ArrayList;
 
 import android.content.Context;

@@ -7,7 +7,6 @@ import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
 import it.duccius.musicplayer.DownloadListFragment.OnDownloadListEndedListner;
 import it.duccius.musicplayer.PlaylistFragment.OnPlayListSelectionListner;
-import it.duccius.musicplayer.R;
 import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
 
 import it.duccius.musicplayer.TrailListFragment.OnTrailListSelectionListner;
@@ -18,6 +17,7 @@ import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
 import it.duccius.maps.Trail;
 import it.duccius.maps.TrailColor;
+import it.duccius.visitin.catania.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -300,8 +300,9 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActionBar().setTitle("SenaVetus");		
-
+		//getActionBar().setTitle("SenaVetus");
+		getActionBar().setTitle(R.string.app_name);
+		
 		//setContentView(R.layout.sena);	
 		setContentView(R.layout.sena_fragments);
 				
@@ -792,8 +793,10 @@ private void addTrail() {
 		// Chiamata quando clicco su singolo POI
 		private void starDownload(ArrayList<String> arL, MyCallbackInterface callback) {
 			ProgressDialog progressDialog = new ProgressDialog((this));
-			progressDialog.setTitle("In progress...");
-			progressDialog.setMessage("Loading...");
+			//progressDialog.setTitle("In progress...");
+			progressDialog.setTitle(R.string.mapnavigation_progressDialog_title);
+			//progressDialog.setMessage("Loading...");
+			progressDialog.setMessage(getBaseContext().getResources().getString(R.string.mapnavigation_progressDialog_message));
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setIndeterminate(false);
 			progressDialog.setMax(100);
@@ -806,8 +809,11 @@ private void addTrail() {
 		// Chiamato quando scarico download.xml e quando scarico tutti gli audio insieme
 		private void starDownload(ArrayList<String> arL, String destPath,MyCallbackInterface callback) {
 			ProgressDialog progressDialog = new ProgressDialog((this));
-			progressDialog.setTitle("In progress...");
-			progressDialog.setMessage("Loading...");
+			//progressDialog.setTitle("In progress...");
+			progressDialog.setTitle(R.string.mapnavigation_progressDialog_title);
+			//progressDialog.setMessage("Loading...");
+			//http://stackoverflow.com/questions/28836280/android-progressdialog-setmessage-from-string-resources
+			progressDialog.setMessage(getBaseContext().getResources().getString(R.string.mapnavigation_progressDialog_message));
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setIndeterminate(false);
 			progressDialog.setMax(100);

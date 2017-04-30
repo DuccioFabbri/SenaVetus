@@ -24,7 +24,7 @@ import android.util.Log;
 //import it.duccius.download.RetriveAsyncFile;
 
 public class Utilities {
-	private static final String _downloadsFileName = "downloads.xml";
+	private static final String _downloadsFileName = "downloads_catania.xml";
 	// Dropbox	
 	private static String urlDownloads = new String("https://sites.google.com/site/ducciofabbri/home/sv-1/" +_downloadsFileName);
 	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/~img_name~.jpg?attredirects=0&d=1";
@@ -158,10 +158,6 @@ public class Utilities {
 			String destSdImgFld = Environment.getExternalStorageDirectory().toString()+"/"+ ApplicationData.getPicFolder();
 			return destSdImgFld;
 		}
-//	public static String getKMLSDPath() {
-//		String sourcePath = Environment.getExternalStorageDirectory().toString()+File.separator+ ApplicationData.getAppName()+File.separator+"temp"+File.separator+"SenaVetus.kml";
-//		return sourcePath;
-//	}
 	/**
 	 * Function to convert milliseconds time to
 	 * Timer Format

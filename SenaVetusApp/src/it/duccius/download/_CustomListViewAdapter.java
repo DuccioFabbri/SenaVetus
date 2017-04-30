@@ -1,6 +1,6 @@
 package it.duccius.download;
 
-import it.duccius.musicplayer.R;
+import it.duccius.visitin.catania.R;
 
 import java.util.List;
 

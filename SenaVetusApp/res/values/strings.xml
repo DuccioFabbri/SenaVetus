@@ -4,18 +4,18 @@
     <string name="mapnavigation_exit_message">Sicuro di voler uscire?</string>
     <string name="mapnavigation_exit_yesbutton">Sì</string>
     <string name="mapnavigation_exit_nobutton">No</string>
-    
-    
-    
+        
     <string name="mapnavigation_download_title">Aggiornamento audioguide</string>
     <string name="mapnavigation_download_message"></string>
     <string name="mapnavigation_download_yesbutton">Scarica Subito</string>
     <string name="mapnavigation_download_yesmessage">Scaricando tutto adesso, potrai usare le guide anche senza una connessione a internet.</string>
     <string name="mapnavigation_download_nobutton">Scarica Dopo</string>
     <string name="mapnavigation_download_nomessage">Se adesso non è il momento di scaricare megabyte, meglio rimandare a dopo, puoi scegliere tu cosa e quando mettere in download.</string>  
-    
-   <string name="app_name">Siena</string>
-   <string name="app_title">Visit In Siena - ITA</string>
+    <string name="mapnavigation_progressDialog_title">In progress...</string>
+    <string name="mapnavigation_progressDialog_message">Loading...</string>
+                  
+   <string name="app_name">Catania</string>
+   <string name="app_title">Visit In Catania - ITA</string>
     <string name="button_download">Download</string>
     <string name="button_play">Play</string>
     <string name="title_activity_webview">WebviewActivity</string>

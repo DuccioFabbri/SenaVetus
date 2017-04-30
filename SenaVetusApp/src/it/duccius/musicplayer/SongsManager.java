@@ -2,6 +2,7 @@ package it.duccius.musicplayer;
 
 import it.duccius.maps.MapService;
 import it.duccius.maps.Trail;
+import it.duccius.musicplayer.ApplicationData;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -28,8 +29,9 @@ public class SongsManager {
 	// SDCard Path
 	//final String MEDIA_PATH = new String("/sdcard/");
 	//final String MEDIA_PATH = new String("/storage/sdcard0/duccius/");    
-	String _mediaPath;
-	String _language="ITA";
+	//String _mediaPath;
+	//String _language="ITA";
+	String _language = ApplicationData.getCurrentLanguage();
 	String _langMediPath="";
 	
 	
@@ -40,7 +42,7 @@ public class SongsManager {
 	public SongsManager(String lang){
 		_language = lang;
 		String appDir = ApplicationData.getAppName()+"/"+lang;
-		_mediaPath = ApplicationData.getAppName();
+		//_mediaPath = ApplicationData.getAppName();
 		File path = Environment.getExternalStoragePublicDirectory(appDir);
 		_langMediPath = path.toString();
 	}

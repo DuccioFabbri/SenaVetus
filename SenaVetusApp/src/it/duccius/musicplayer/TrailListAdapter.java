@@ -1,6 +1,7 @@
 package it.duccius.musicplayer;
 
 import it.duccius.maps.Trail;
+import it.duccius.visitin.catania.R;
 
 import java.util.ArrayList;
 
