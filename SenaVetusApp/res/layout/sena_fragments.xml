@@ -15,6 +15,12 @@
         android:orientation="vertical"
         android:visibility="gone" 
         android:background="@drawable/spash_screen_catania">
+        
+<TextView
+    android:id="@+id/hrefCredits"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/txtCredits"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -26,6 +32,7 @@
             android:visibility="gone"
             android:indeterminateDrawable="@drawable/progress" >
         </ProgressBar>
+        
     </LinearLayout>
 	
     <LinearLayout

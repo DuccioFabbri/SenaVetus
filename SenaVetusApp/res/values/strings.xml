@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+	<string name="txtCredits">Credits</string>
+	<string name="hrefCredits"><a href="http://www.google.com">Google</a></string>
+	
 	<string name="mapnavigation_exit_title">Chiusura app</string>
     <string name="mapnavigation_exit_message">Sicuro di voler uscire?</string>
     <string name="mapnavigation_exit_yesbutton">Sì</string>

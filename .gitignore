@@ -69,3 +69,10 @@ local.properties
 *.ipr
 *~
 *.swp
+*.class
+*.class
+*.class
+*.class
+*.class
+SenaVetusApp/bin/classes/it/duccius/musicplayer/SongsManager$FileExtensionFilter.class
+*.class

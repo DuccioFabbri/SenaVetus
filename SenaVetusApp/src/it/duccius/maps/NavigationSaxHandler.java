@@ -41,6 +41,7 @@ public class NavigationSaxHandler extends DefaultHandler{
  private String _title;
  private String _description;
  private String _address;
+ private String _type;
  
  private Trail newTrail;
 
@@ -100,7 +101,8 @@ public class NavigationSaxHandler extends DefaultHandler{
           _title = atts.getValue(atts.getIndex("title"));
           _description = atts.getValue(atts.getIndex("name"));
           _coordinates = atts.getValue(atts.getIndex("coordinates"));
-          _address = atts.getValue(atts.getIndex("address"));          
+          _address     = atts.getValue(atts.getIndex("address"));    
+          _type        = atts.getValue(atts.getIndex("type"));    
           this.in_audio = true;                        
       }else if (localName.equals("trail")) { 
           this.in_trail = true;               
@@ -177,6 +179,7 @@ public void characters(char ch[], int start, int length) {
             navigationDataSet.getCurrentPlacemark().setCoordinates(_coordinates);
             navigationDataSet.getCurrentPlacemark().setDescription(_description);
             navigationDataSet.getCurrentPlacemark().setAddress(_address);
+            navigationDataSet.getCurrentPlacemark().setType(_type);
         }
     if (in_trail_coords) {
 		 ArrayList<Placemark> trailPlacemarks = new ArrayList<Placemark>();		 

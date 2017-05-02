@@ -6,31 +6,31 @@
     <!--
 	<audio lang ="ITA" name="AntiportoCamollia" title="01 - Antiporto di Camollia" ext=".mp3" audioBaseUrl="http://2.227.2.94:8080/SenaVetus/audio/ITA/" />                      
 	-->
-	<audio lang ="ITA" name="02_PortaCamollia" title="02 - Porta Camollia" ext=".mp3" coordinates="11.325371,43.327671,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="02_PortaCamollia" title="02 - Porta Camollia" ext=".mp3" coordinates="11.325371,43.327671,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>                            
-	<audio lang ="ITA" name="03_186Paracadutisti" title="03 - Caserma Bandini" ext=".mp3" coordinates="11.321425,43.327480,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ITA" name="03_186Paracadutisti" title="03 - Caserma Bandini" ext=".mp3" coordinates="11.321425,43.327480,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="shop">		
 	</audio>                                    
-	<audio lang ="ITA" name="04_ColonnaPioII" title="04 - Colonna Pio II" ext=".mp3" coordinates="11.322149,43.328632,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ITA" name="04_ColonnaPioII" title="04 - Colonna Pio II" ext=".mp3" coordinates="11.322149,43.328632,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="food">		
 	</audio>                                      
-	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="parking">		
 	</audio>  
-	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
 	</audio>
-	<audio lang ="ITA" name="Fortezza" title="Fortezza Medicea" ext=".mp3" coordinates="11.323116,43.321969,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ITA" name="Fortezza" title="Fortezza Medicea" ext=".mp3" coordinates="11.323116,43.321969,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
 	</audio>
-	<audio lang ="ITA" name="07_PiazzadelCampo" title="07 - Piazza del Campo" ext=".mp3" coordinates="11.331600,43.318516,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >		
+	<audio lang ="ITA" name="07_PiazzadelCampo" title="07 - Piazza del Campo" ext=".mp3" coordinates="11.331600,43.318516,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
 	</audio>
-	<audio lang ="ITA" name="Duomo" title="15 - Duomo" ext=".mp3" coordinates="11.328575,43.317415,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="Duomo" title="15 - Duomo" ext=".mp3" coordinates="11.328575,43.317415,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
-	<audio lang ="ITA" name="Facciatone" title="16 - Facciatone e Duomo Nuovo" ext=".mp3" coordinates="11.329849,43.317334,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="Facciatone" title="16 - Facciatone e Duomo Nuovo" ext=".mp3" coordinates="11.329849,43.317334,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
-	<audio lang ="ITA" name="Salimbeni" title="Palazzo Salimbeni" ext=".mp3" coordinates="11.330599,43.321104,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="Salimbeni" title="Palazzo Salimbeni" ext=".mp3" coordinates="11.330599,43.321104,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
-	<audio lang ="ITA" name="SanDomenico" title="Basilica di San Domenico" ext=".mp3" coordinates="11.326453,43.320171,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="SanDomenico" title="Basilica di San Domenico" ext=".mp3" coordinates="11.326453,43.320171,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
-<audio lang ="ITA" name="Intronati" title="Biblioteca degli Intronati" ext=".mp3" coordinates="11.329414,43.320626,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+<audio lang ="ITA" name="Intronati" title="Biblioteca degli Intronati" ext=".mp3" coordinates="11.329414,43.320626,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
-	<audio lang ="ITA" name="SantaMaria" title="Santa Maria della Scala" ext=".mp3" coordinates="11.328448,43.317130,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" >
+	<audio lang ="ITA" name="SantaMaria" title="Santa Maria della Scala" ext=".mp3" coordinates="11.328448,43.317130,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">
 	</audio>
 	<trail name="Esplora" description="Esplora liberamente la città" time="" >		
 	</trail>

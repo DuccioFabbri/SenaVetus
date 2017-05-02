@@ -733,11 +733,20 @@ private void addTrail() {
 		private MarkerOptions getMarkerForItem(Placemark item) {
 		  LatLng MarkerPos = new LatLng ( item.getLongitude(),item.getLatitude());
 
-		  MarkerOptions mo = new MarkerOptions()
-
-	        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-	        .position(MarkerPos)
-	        .title(item.getTitle());	         
+		  MarkerOptions mo = new MarkerOptions();
+		 // mo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		  		  
+		  if (item.getType().equals("poi"))
+	        mo.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+		  if (item.getType().equals("shop"))
+		    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.ico_shop));
+		  if (item.getType().equals("food"))
+			    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.ico_food));
+		  if (item.getType().equals("parking"))
+			    mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.ico_parking));
+		  
+	        mo.position(MarkerPos);
+	        mo.title(item.getTitle());	         
 			return mo;
 			
 		}
@@ -747,6 +756,9 @@ private void addTrail() {
 			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
 			if (_clickedMarkerIndex>-1)
 			{
+				// devo controllare il tipo di elemento cliccato, se si tratat di un poi tutto come prima
+				// altrimenti apro la pagina web dell´esercente
+				
 				//Se ho l'audio lo trasmetto subito
 				playSong(_clickedMarkerIndex);	
 				res=true;

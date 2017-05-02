@@ -22,7 +22,14 @@ public class AudioGuide implements Serializable, Comparable{
 	private String lat;
 	private String lng;
 	private String h = "0.0";
+	private String type = "poi";
 	
+	public String getType() {
+        return this.type;
+    }
+	public void setType(String type) {
+		this.type = type;
+    }
 	public String getCoordinates() {
         return this.lat.concat(this.lng.concat(this.h));
     }
