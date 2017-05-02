@@ -63,6 +63,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -753,16 +754,17 @@ private void addTrail() {
 		private boolean checkReadyToPlay() {
 			boolean res = false;
 			ArrayList<String> alString = getAdapterSource(_localAudioGuideListLang); 
-			_clickedMarkerIndex = alString.indexOf(_clickedMarker);
-			if (_clickedMarkerIndex>-1)
-			{
-				// devo controllare il tipo di elemento cliccato, se si tratat di un poi tutto come prima
-				// altrimenti apro la pagina web dell´esercente
+			
 				
-				//Se ho l'audio lo trasmetto subito
-				playSong(_clickedMarkerIndex);	
-				res=true;
-			}
+				_clickedMarkerIndex = alString.indexOf(_clickedMarker);
+				if (_clickedMarkerIndex>-1)
+				{				
+					//Se ho l'audio lo trasmetto subito
+					playSong(_clickedMarkerIndex);
+					
+					res=true;
+				}
+			
 			return res;
 		}
 		
@@ -854,7 +856,7 @@ private void addTrail() {
 			df.execute(arL);
 		}		
 	/*
-	 * Metodo ciamato quando si clicca su un POI della mappa.
+	 * Metodo chiamato quando si clicca su un POI della mappa.
 	 * Se abbiamo l'audio viene eseguito, altrimenti si prova a scaricarlo.
 	 */
 	public OnMarkerClickListener getMarkerClickListener()
@@ -871,9 +873,21 @@ private void addTrail() {
 				
 				_clickedMarker = marker.getTitle();								
 				
-				if (!checkReadyToPlay())
-					checkReadyToDownload();
-								
+				// devo controllare il tipo di elemento cliccato, se si tratat di un poi tutto come prima
+				// altrimenti apro la pagina web dell´esercente
+				ArrayList<String> alString = getAdapterSource(_audioGuideListLang); 
+				_clickedMarkerIndex = alString.indexOf(_clickedMarker);
+				AudioGuide ag = (AudioGuide) _audioGuideListLang.get(_clickedMarkerIndex);
+				
+				if (ag.getType().equals("poi")){
+					
+					if (!checkReadyToPlay())
+						checkReadyToDownload();
+				
+				}else{
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+					startActivity(browserIntent);	
+				}			
 				return false;
 			}									
 	    };	    

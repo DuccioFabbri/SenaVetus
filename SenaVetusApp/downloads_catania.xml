@@ -14,7 +14,7 @@
 	</audio>                                      
 	<audio lang ="ITA" name="05_FortinoDelleDonne" title="05 - Fortino delle donne" ext=".mp3" coordinates="11.324731707572937,43.32656621348019,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="parking">		
 	</audio>  
-	<audio lang ="ENG" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
+	<audio lang ="ITA" name="06_AntiportoCamollia" title="06 - Antiporto di Camollia" ext=".mp3" coordinates="11.321624,43.329102,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
 	</audio>
 	<audio lang ="ITA" name="Fortezza" title="Fortezza Medicea" ext=".mp3" coordinates="11.323116,43.321969,0.000000" audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi">		
 	</audio>
