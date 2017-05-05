@@ -226,12 +226,17 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	    			}
 	            	//===========================================================	            	
 	            	// se non devo scaricare nulla e quindi non passo dalla dialog..
+	            	/*
 	            	linlaHeaderProgress.setVisibility(View.GONE);
 	        		toolbar.setVisibility(View.VISIBLE);
 	        		btnPOIinfo.setVisibility(View.GONE);
 	            	initializeMap();
 	            	setupMediaPlayer();
-	            }	         
+	            	*/
+	            	//closeSplash();
+	            }
+
+				         
 	        });
 			return true;
 			
@@ -239,6 +244,13 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			Log.d("downloadMapItemes()", e.getMessage());
 			return false;
 		} 
+	}
+	private void closeSplash() {
+		linlaHeaderProgress.setVisibility(View.GONE);
+		toolbar.setVisibility(View.VISIBLE);
+		btnPOIinfo.setVisibility(View.GONE);
+		initializeMap();
+		setupMediaPlayer();
 	}
     private void showEditDialog() {
     	android.app.FragmentManager fm = this.getFragmentManager();
@@ -333,6 +345,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		getCurrentLocation();		
 	    
 		getViewElwments();
+		closeSplash();
 		/**
 		 * Play button click event
 		 * plays a song and changes button to pause image
@@ -584,6 +597,8 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			if (picFolder.exists())
 			{
 				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Si può comunque procedere con una versione obsoleta dei file.", Toast.LENGTH_LONG).show();
+				leggiFileDownloads();
+				//closeSplash();
 				return true;
 			}
 			else{
