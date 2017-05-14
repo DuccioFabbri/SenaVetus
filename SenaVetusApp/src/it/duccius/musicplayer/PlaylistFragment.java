@@ -87,7 +87,10 @@ public class PlaylistFragment extends ListFragment implements
 	      
 	   }
 	   
-	  
+	  /*
+	   * Preparo i dati per la visualizzazione della lista di audiogiude disponibili.
+	   * Di tutte le audioguide disponibili sulla SD, prendo il titolo.
+	   */
 	   private ArrayList<AudioGuide> getAdapterSource2() {
 			//_sdAudios = getSdAudios();	
 			//SongsManager sm = new SongsManager(_language);

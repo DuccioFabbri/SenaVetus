@@ -74,7 +74,8 @@
             android:layout_weight="1"
             android:background="@null"
             android:contentDescription="@string/poi_download_description"
-            android:src="@drawable/ic_download" />
+            android:src="@drawable/ic_download"
+            android:visibility="visible" />
 
     </LinearLayout>
 

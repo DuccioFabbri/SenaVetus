@@ -97,8 +97,11 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	private ImageButton btnBackward;
 	private ImageButton btnNext;
 	private ImageButton btnPrevious;
+	//Questo é il bottone sulla toolbar che elenca i POI su cui si può fare play
 	private ImageButton btnPlaylist;	
 	//private ImageButton btnPOIplay;
+	// Questo bottone dovrebbe visualizzare l'elenco dei poi da scaricare. Ma ho deciso di non usare questa feature e scaricare gli audio solo 
+	//facendo click sulla mappa.
 	private ImageButton btnPOIinfo;
 	private ImageButton btnTrails;
 	
@@ -323,7 +326,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		linlaHeaderProgress = (LinearLayout)findViewById(R.id.linlaProgress);
 		linlaHeaderProgress.setVisibility(View.VISIBLE);
 		
-		SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
+		//SharedPreferences settings = getSharedPreferences("SenaVetus", 0);  		
 		
 	    songManager = new SongsManager(_language);		
 	  
@@ -336,16 +339,25 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	    // - _nDs
 	    // - _trails
 	    
+	    getCurrentLocation();			    
+		getViewElwments();
+		
 		if (!getAudioGuideList())
 		{
 			Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Verificare la connessione.", Toast.LENGTH_LONG).show();
-			return;
+			// Questo bottone dovrebbe visualizzare l'elenco dei poi da scaricare. Ma ho deciso di non usare questa feature e scaricare gli audio solo 
+			// facendo click sulla mappa.
+			btnPOIinfo.setVisibility(View.INVISIBLE);
+			//Dato che non ho la lista dei POI, non visualizzo i pulsanti relativi all'elenco per il play dei poi 
+			btnPlaylist.setVisibility(View.INVISIBLE);
+			// Non visualizzo neppure i perecorsi
+			btnTrails.setVisibility(View.INVISIBLE);
+			//return;
 		}
 			
-		getCurrentLocation();		
-	    
-		getViewElwments();
+		
 		closeSplash();
+	
 		/**
 		 * Play button click event
 		 * plays a song and changes button to pause image
@@ -872,7 +884,8 @@ private void addTrail() {
 		}		
 	/*
 	 * Metodo chiamato quando si clicca su un POI della mappa.
-	 * Se abbiamo l'audio viene eseguito, altrimenti si prova a scaricarlo.
+	 * Se si tratta di un POI e non pubblicità, si controlla se abbiamo l'audio.
+	 * Se l´audio è stato scaricato viene eseguito, altrimenti si prova a scaricarlo.
 	 */
 	public OnMarkerClickListener getMarkerClickListener()
 	{
