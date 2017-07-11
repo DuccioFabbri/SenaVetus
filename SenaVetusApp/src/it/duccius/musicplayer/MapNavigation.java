@@ -999,6 +999,7 @@ private void addTrail() {
 		// http://android-er.blogspot.it/2012/05/add-and-remove-view-dynamically.html
 		mainLayer = (FrameLayout)findViewById(R.id.main_fragment);
 		LayoutInflater inflater = getLayoutInflater();
+		
 		mapLayer = inflater.inflate(R.layout.map_fragment, null);
 		mainLayer.addView(mapLayer);
 		mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map1))

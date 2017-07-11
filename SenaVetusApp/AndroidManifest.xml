@@ -29,7 +29,9 @@
           -->
           <application
           android:icon="@drawable/catania_ita"
-        android:label="Catania" >    
+        android:label="Catania" 
+        android:hardwareAccelerated="true">    
+        <!--  https://stackoverflow.com/questions/43879299/error-when-try-to-add-google-maps -->
          
         <activity android:name="it.duccius.musicplayer.MapNavigation" 
         android:screenOrientation="portrait">
