@@ -33,6 +33,8 @@ public class NavigationSaxHandlerDownloads extends DefaultHandler{
  private  ArrayList<AudioGuide> _guides = new  ArrayList<AudioGuide>();
  private  ArrayList<Trail> _trails = new  ArrayList<Trail>(); 
  private Trail newTrail;
+ 
+ private String audioBaseUrl = "http://sites.google.com/site/ducciofabbri/audio/";
 
  // =========================================================== 
  // Getter & Setter 
@@ -76,7 +78,9 @@ public class NavigationSaxHandlerDownloads extends DefaultHandler{
 				AudioGuide song = new AudioGuide();
 				song.setTitle(atts.getValue("title") );
 				song.setName(atts.getValue("name") );
-				song.setPath(atts.getValue("audioBaseUrl")+atts.getValue("name")+".mp3");
+				//song.setPath(atts.getValue("audioBaseUrl")+atts.getValue("name")+".mp3");
+				song.setPath(audioBaseUrl +atts.getValue("name")+".mp3");
+				
 				song.setLang(atts.getValue("lang"));
 				song.setCoordinates(atts.getValue("coordinates"));
 				song.setType(atts.getValue("type"));

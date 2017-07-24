@@ -35,7 +35,7 @@
     <string name="download">Download</string>
     <string name="title_activity_main1">MainActivity</string>
     <string name="title_activity_show_map">ShowMap</string>
-     
+         
      
      
     <string-array name="map_type_array">
