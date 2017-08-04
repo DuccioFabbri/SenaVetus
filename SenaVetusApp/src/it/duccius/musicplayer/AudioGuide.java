@@ -23,7 +23,14 @@ public class AudioGuide implements Serializable, Comparable{
 	private String lng;
 	private String h = "0.0";
 	private String type = "poi";
+	private String url;
 	
+	public String getUrl() {
+        return this.url;
+    }
+	public void setUrl(String url) {
+		this.url = url;
+    }
 	public String getType() {
         return this.type;
     }

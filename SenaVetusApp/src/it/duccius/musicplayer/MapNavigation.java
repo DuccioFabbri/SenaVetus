@@ -293,6 +293,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
 			_nDs.sort();
 			
+			checkForUpdates();	
 			_trails =  MapService._trails;
 		}
 	}
@@ -610,6 +611,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			{
 				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Si può comunque procedere con una versione obsoleta dei file.", Toast.LENGTH_LONG).show();
 				leggiFileDownloads();
+				
 				//closeSplash();
 				return true;
 			}
@@ -628,7 +630,9 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		//Location currentLocation = getCurrentLocation();
 		Location currentLocation = _location;
 		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		LatLng from = new LatLng(43.327671,11.325371);
+		//LatLng from = new LatLng(43.327671,11.325371); //Siena
+		LatLng from = new LatLng(37.501685,15.087676);  //Catania
+		
 		LatLng to = from;
 		if(!_nDs.getPlacemarks().isEmpty())
 		{
@@ -913,7 +917,9 @@ private void addTrail() {
 						checkReadyToDownload();
 				
 				}else{
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+					//Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ag.getUrl()));
+					
 					startActivity(browserIntent);	
 				}			
 				return false;

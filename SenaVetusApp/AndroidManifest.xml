@@ -5,8 +5,8 @@
     android:versionName="1.34" >-->
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.duccius.visitin.catania"
-    android:versionCode="05"
-    android:versionName="00.01.05" >
+    android:versionCode="08"
+    android:versionName="00.01.08" >
     
     <uses-feature
         android:glEsVersion="0x00020000"

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+  <name>Sena Vetus</name>
+  <description><![CDATA[]]></description>
+  <vers>002</vers>  
+	<audio 		 lang="ITA" name="01_Porta_Uzeda"                 title="01 Porta Uzeda"	    			coordinates="15.08767617018854,37.50168508280697,0.000000"  type="poi" >
+	</audio>    
+	<audio 		 lang="ITA" name="02_Piazza_Duomo"                title="02 Piazza Duomo"                   coordinates="15.08714407421975,37.50246206007223,0.000000"  type="shop" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="03_Cattedrale_SantAgata"        title="03 Cattedrale Sant'Agata"          coordinates="15.08774908512429,37.50223405021251,0.000000"  type="food" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="04_Museo_Diocesano"             title="04 Museo Diocesano"                coordinates="15.08731326884704,37.50201542293275,0.000000"  type="parking" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="05_Palazzo_degli_Elefanti"      title="05 Palazzo degli Elefanti"         coordinates="15.08708918686123,37.50283198441889,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="06_Fontana_dellAmenano"         title="06 Fontana dell'Amenano"           coordinates="15.08700794517502,37.50202022971413,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="07_La_Pescheria"                title="07 La_Pescheria"                   coordinates="15.08675484836259,37.50163180183827,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="08_Castello_Ursino"             title="08 Castello Ursino"                coordinates="15.08461204728673,37.49922891044440,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="09_Teatro_Romano_Odeon"         title="09 Teatro_Romano e Odeon"          coordinates="15.08390477020841,37.50244566312581,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="10_Via_Crociferi"               title="10 Via Crociferi"                  coordinates="15.08479738427045,37.50345914694618,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="11_Chiesa_San_Francesco"        title="11 Chiesa San Francesco"          	coordinates="15.08480847043765,37.50277604499328,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="12_Museo_Civico_Belliniano"     title="12 Museo Civico Belliniano"        coordinates="15.08449180851953,37.50265531112509,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="13_Chiesa_Monastero_S_Benedetto" title="13 Chiesa e Monastero S.Benedetto" coordinates="15.08478625669203,37.50369831777964,0.000000"  type="poi">
+	</audio>                                              
+	<audio 		lang="ITA" name="14_Chiesa_San_Francesco_Borgia"   title="14 Chiesa San Francesco Borgia"   coordinates="15.08479446454019,37.50394122829658,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="15_Piazza_dellUniversità"         title="15 Piazza dell'Università"        coordinates="15.08712791251502,37.50354604339006,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="16_Piazza_Stesicoro"              title="16 Piazza Stesicoro"              coordinates="15.08583458115229,37.50739577104098,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="17_Villa_Bellini"                 title="17 Villa Bellini"                 coordinates="15.08531132806777,37.51072189709699,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="18_Teatro_Massimo_Bellini"        title="18 Teatro Massimo Bellini"        coordinates="15.09047944447766,37.50429841813562,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="19_Palazzo_Biscari"               title="19 Palazzo Biscari"               coordinates="15.0906637280193,37.5023399114104,0,0.000000"  type="poi">
+	</audio>
+	
+	<trail name="Esplora" description="Esplora liberamente la città" time="" >		
+	</trail>
+	<trail name="Tour 01" description="Tour rapido. Questo percorso ti guiderà alla visita delle cose veramente imperdibili." time="1h30min" >
+		<trail_coords>11.3303214,43.3191091,0.0 11.3297689,43.3187422,0.0 11.3296884,43.3185119,0.0 11.3297153,43.3183168,0.0 11.3294953,43.3182738,0.0 11.3294524,43.318106,0.0 11.3295758,43.3178562,0.0 11.3293666,43.31754010000001,0.0 11.3289106,43.3170912,0.0 11.3298547,43.3162794,0.0 11.3309062,43.3172278,0.0 11.3307452,43.3179226,0.0 11.3306004,43.3184612,0.0 11.3308096,43.318789,0.0 11.3312173,43.3190856,0.0 11.3313943,43.3194798,0.0 11.3313729,43.3197999,0.0 11.3312173,43.3201277,0.0 11.3305789,43.32108,0.0 11.3304448,43.3211619,0.0 11.3296455,43.3207755,0.0 11.3290554,43.3204477,0.0 11.3289267,43.3203853,0.0 11.3277197,43.3204828,0.0 11.327371000000001,43.3204594,0.0 11.3264376,43.3202175,0.0</trail_coords>
+	</trail>
+	<trail name="Tour 02" description="Tour panoramico. Se hai un po' di tempo a disposizione e sei appassionato di foto o pittura, questo percorso ti condurrà alla scoperta delle viste più immportalate della città." time="2h30min" >
+		<trail_coords>15.08768697562932,37.50182804837193,0 15.08781750092317,37.50235669825221,0 15.08714878154136,37.50259894407201,0 15.08709095840646,37.50295855523974,0 15.08730804560806,37.50216352559089,0 15.08704571447344,37.50217222365298,0 15.08681617021113,37.50182990361351,0 15.08462171875624,37.49932999552549,0 15.08390262922571,37.50256342514263,0 15.08450760884358,37.50278477598896,0 15.08488765811501,37.50287307754209,0 15.08479944569356,37.50383217279372,0 15.08714257389433,37.50365427048464,0 15.0858547485819,37.50751852656306,0 15.08649967685894,37.50759779960113,0 15.08532110496322,37.51084705298629,0 15.09049590359399,37.50440972680312,0 15.09067981636066,37.50247353526791,0</trail_coords>
+	</trail>	
+</Document> 
