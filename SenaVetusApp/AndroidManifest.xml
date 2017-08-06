@@ -2,8 +2,8 @@
 
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.duccius.visitin.catania_en"
-    android:versionCode="09"
-    android:versionName="00.01.09" >
+    android:versionCode="10"
+    android:versionName="00.01.10" >
     
     <uses-feature
         android:glEsVersion="0x00020000"

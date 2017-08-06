@@ -254,6 +254,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		btnPOIinfo.setVisibility(View.GONE);
 		initializeMap();
 		setupMediaPlayer();
+		
 	}
     private void showEditDialog() {
     	android.app.FragmentManager fm = this.getFragmentManager();
@@ -626,7 +627,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	
 	private void initializeMap() {
 		
-		
+		addItemsToMap(_nDs);
 		//Location currentLocation = getCurrentLocation();
 		Location currentLocation = _location;
 		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
@@ -949,6 +950,8 @@ private void addTrail() {
 	
 	boolean _thumbnail_ON;
 	boolean _playlist_ON;
+
+	private int _footerVisibility = View.INVISIBLE;
 	
 	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
@@ -1216,7 +1219,8 @@ private void addTrail() {
 		}
 	}
 
-	private void setFooterVisibility(int visibility) {
+	public void setFooterVisibility(int visibility) {
+		_footerVisibility  = visibility;
 		//btnThumbnail.setVisibility(visibility);
 		footer.setVisibility(visibility);
 		timerDisplay.setVisibility(visibility);
@@ -1224,7 +1228,9 @@ private void addTrail() {
 		songProgressBar.setVisibility(visibility);
 		//hidePOIbtns();
 	}
-	
+	public int getFooterVisibility() {
+		return _footerVisibility;
+	}
 	/**
 	 * Update timer on seekbar
 	 * */

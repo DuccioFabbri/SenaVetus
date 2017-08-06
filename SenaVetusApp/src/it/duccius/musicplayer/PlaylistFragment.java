@@ -48,6 +48,7 @@ public class PlaylistFragment extends ListFragment implements
     ArrayList<AudioGuide> _guides;
     ArrayList<AudioGuide> _sdAudios;
     ArrayList<AudioGuide> _playList=  new ArrayList<AudioGuide>();
+	private int _oldFooterVisibility;
 
 	   @Override
 	   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,6 +65,10 @@ public class PlaylistFragment extends ListFragment implements
 	         } catch (Exception e) {
 	             throw new ClassCastException("Calling Fragment must implement OnPlayListSelectionListner"); 
 	         }
+	      // In questa activity non voglio vedere il player audio e lo nascondo, per poi rimetterlo quando chiudo.
+	      _oldFooterVisibility = ((MapNavigation)getActivity()).getFooterVisibility();
+	      ((MapNavigation)getActivity()).setFooterVisibility(View.INVISIBLE);	      
+	      
 	       _guides =  ((MapNavigation)getActivity())._guides;
 	       _sdAudios=  ((MapNavigation)getActivity())._localAudioGuideListLang;
 	       // Per i ListFragment questo elemento deve per forza chiamarsi list ?!
@@ -80,8 +85,8 @@ public class PlaylistFragment extends ListFragment implements
 	    	  @Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 						long arg3) {				
-					
-	    		  		callback.onPlayListSelection(arg2);	}
+	    		  			
+	    		  			callback.onPlayListSelection(arg2);	}
 	       
 	      });
 	      
@@ -116,7 +121,13 @@ public class PlaylistFragment extends ListFragment implements
 			return _sdAudios;
 		}
 
-	
+	   // Sulla chiusura rimetto la barra del player audio alla visibilità che aveva prima
+	   public void onPause(){
+	        super.onPause();
+	        ((MapNavigation)getActivity()).setFooterVisibility(_oldFooterVisibility);
+  	      
+	   }
+
 		
 
 
