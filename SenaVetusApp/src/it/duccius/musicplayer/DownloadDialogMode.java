@@ -3,7 +3,7 @@ package it.duccius.musicplayer;
 
 
 import it.duccius.download.DownloadMode;
-import it.duccius.visitin.catania_en.R;
+import it.duccius.visitin.catania.R;
 import android.os.Bundle;
 
 import android.app.DialogFragment;

@@ -17,7 +17,7 @@ import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
 import it.duccius.maps.Trail;
 import it.duccius.maps.TrailColor;
-import it.duccius.visitin.catania_en.R;
+import it.duccius.visitin.catania.R;
 
 import java.io.File;
 import java.io.IOException;
