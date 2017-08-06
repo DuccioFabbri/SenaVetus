@@ -8,7 +8,7 @@ import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
 import it.duccius.maps.Trail;
 import it.duccius.musicplayer.Utilities.MyCallbackInterface;
-import it.duccius.visitin.catania.R;
+import it.duccius.visitin.catania_en.R;
 
 import java.util.ArrayList;
 import java.util.List;

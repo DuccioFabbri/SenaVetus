@@ -28,7 +28,7 @@ public class Utilities {
 	// Dropbox	
 	private static String urlDownloads = new String("https://sites.google.com/site/ducciofabbri/home/sv-1/" +_downloadsFileName);
 	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/catania/~img_name~.jpg?attredirects=0&d=1";
-	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/catania/ita/~mp3_name~.mp3?attredirects=0&d=1";
+	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/catania/eng/~mp3_name~.mp3?attredirects=0&d=1";
 	
 //	private static int mapType = GoogleMap.MAP_TYPE_HYBRID;
 //	private static int mapType = GoogleMap.MAP_TYPE_SATELLITE;

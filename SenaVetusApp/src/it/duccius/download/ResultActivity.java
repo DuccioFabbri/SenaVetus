@@ -1,7 +1,7 @@
 package it.duccius.download;
 
 
-import it.duccius.visitin.catania.R;
+import it.duccius.visitin.catania_en.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;

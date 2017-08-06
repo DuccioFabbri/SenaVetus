@@ -3,7 +3,7 @@ package it.duccius.musicplayer;
 
 
 import it.duccius.maps.Trail;
-import it.duccius.visitin.catania.R;
+import it.duccius.visitin.catania_en.R;
 
 import java.util.ArrayList;
 

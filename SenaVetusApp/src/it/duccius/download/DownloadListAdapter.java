@@ -1,7 +1,7 @@
 package it.duccius.download;
 
 import it.duccius.musicplayer.AudioGuide;
-import it.duccius.visitin.catania.R;
+import it.duccius.visitin.catania_en.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
