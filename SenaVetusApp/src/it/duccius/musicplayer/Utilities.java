@@ -7,9 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.os.StrictMode;
-import android.util.Log;
+
 
 //import it.duccius.download.RetriveAsyncFile;
 
@@ -252,11 +248,5 @@ public class Utilities {
 	public static String getUrlDownloads() {
 		return urlDownloads;
 	}
-//	public static String getUrlKml() {
-//		return urlKml;
-//	}
-
-	
-	
 	
 }
