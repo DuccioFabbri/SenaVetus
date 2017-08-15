@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="52dp"
+            android:layout_height="match_parent"
+            android:onClick="refresh"
+            android:src="@drawable/btn_repeat" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#000000"            
+            android:text="    " />
+
+        <Spinner
+            android:id="@+id/spnLanguage"
+            android:layout_width="246dp"
+            android:layout_height="57dp" />
+
+      
+
+    </LinearLayout>
+	
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="373dp"
+        android:divider="#242424"
+        android:dividerHeight="1dp"
+        android:listSelector="@drawable/list_selector" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/updateAudio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.87"
+            android:text="Update Audioguides" 
+            android:onClick="updateAudioguides"/>
+    </LinearLayout>
+
+</LinearLayout>

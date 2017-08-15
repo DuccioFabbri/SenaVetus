@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="VisitInCatania" default="help">
+<project name="VisitInSiena" default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -66,7 +66,19 @@
             -post-build
             -pre-clean
     -->
+
     <import file="custom_rules.xml" optional="true" />
+
+<ant antfile="build_SI_IT.xml">
+  <property name="resource.package.file.name"	value="VisitInSiena.apk"/>       
+  <property name="remote.audio.folder"			value="audio/siena/ita"/>    
+  <property name="remote.pics.folder"			value="pics/siena"/>  
+  <property name="app.package.name"     		value="it.duccius.musicplayer"/>
+  <property name="app.label"        			value="VisitIn Siena"/>
+  <property name="app.icon"        				value="siena_ita"/>
+  <property name="app.versioncode" 				value="37"/>
+  <property name="app.versionname" 				value="00.01.37"/>
+</ant>
 
     <!-- Import the actual build file.
 
@@ -86,7 +98,10 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
+	<!-- Necessario per il loop-->
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+
     <!-- version-tag: 1 -->
-    <import file="${sdk.dir}/tools/ant/build.xml" />
+    <import file="${sdk.dir}/tools/ant/build.xml" /> 
 
 </project>

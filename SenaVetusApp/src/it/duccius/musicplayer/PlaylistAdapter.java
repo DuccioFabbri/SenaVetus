@@ -1,6 +1,6 @@
 package it.duccius.musicplayer;
 
-import it.duccius.visitin.catania.R;
+import it.duccius.musicplayer.R;
 
 import java.util.ArrayList;
 

@@ -17,7 +17,7 @@ import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
 import it.duccius.maps.Trail;
 import it.duccius.maps.TrailColor;
-import it.duccius.visitin.catania.R;
+import it.duccius.musicplayer.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -881,6 +881,7 @@ private void addTrail() {
 //			progressDialog.setCancelable(true);
 			//progressDialog.show();
 			ProgressDialog pd = new ProgressDialog(this,R.style.MyTheme);
+		
 			pd.setCancelable(false);
 			pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 			pd.show();
