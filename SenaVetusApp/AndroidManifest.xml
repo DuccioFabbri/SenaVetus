@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.duccius.musicplayer"
-    android:versionCode="35"
-    android:versionName="00.01.35" >
+    package="it.duccius.visitin.catania"
+    android:versionCode="6"
+    android:versionName="00.01.06" >
     
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -21,8 +21,8 @@
     <uses-sdk android:minSdkVersion="11" android:targetSdkVersion="14"/>
 	
           <application
-          android:icon="@drawable/siena_ita"
-        android:label="VisitIn Siena" 
+          android:icon="@drawable/ic_launcher"
+        android:label="VisitIn Catania" 
         android:hardwareAccelerated="true">    
         <!--  https://stackoverflow.com/questions/43879299/error-when-try-to-add-google-maps -->
          

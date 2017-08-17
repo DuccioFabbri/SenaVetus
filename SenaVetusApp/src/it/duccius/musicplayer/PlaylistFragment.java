@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import it.duccius.download.DownloadMode;
 import it.duccius.musicplayer.DownloadDialogMode.OnDownloadModeSelectionListner;
-import it.duccius.musicplayer.R;
+import it.duccius.visitin.catania.R;
 import android.os.Bundle;
 
 import android.app.DialogFragment;

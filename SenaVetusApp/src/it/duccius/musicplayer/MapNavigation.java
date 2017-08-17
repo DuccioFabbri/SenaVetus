@@ -17,7 +17,7 @@ import it.duccius.maps.NavigationDataSet;
 import it.duccius.maps.Placemark;
 import it.duccius.maps.Trail;
 import it.duccius.maps.TrailColor;
-import it.duccius.musicplayer.R;
+import it.duccius.visitin.catania.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -627,11 +627,11 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	
 	private void initializeMap() {
 		
-		addItemsToMap(_nDs);
+		addItemsToMap(_nDs); 
 		//Location currentLocation = getCurrentLocation();
-		Location currentLocation = _location;
-		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		//LatLng from = new LatLng(43.327671,11.325371); //Siena
+		Location currentLocation = _location;		 
+		//LatLng from=new LatLng(43.327671,11.325371); //Siena
+		// ATTENZIONE: NON MODIFICAR LA SEGUENTE RIGA; NON TOCCARE SPAZI O SIMILI, ANT FA UNA SOSTITUZIONE CON REGEXP SU DI ESSA.
 		LatLng from = new LatLng(37.501685,15.087676);  //Catania
 		
 		LatLng to = from;

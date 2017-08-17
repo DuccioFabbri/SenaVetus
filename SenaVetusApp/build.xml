@@ -68,16 +68,36 @@
     -->
 
     <import file="custom_rules.xml" optional="true" />
-
-<ant antfile="build_SI_IT.xml">
+<target name="release" >
+<ant antfile="build_version.xml" target ="release" inheritall="true">
   <property name="resource.package.file.name"	value="VisitInSiena.apk"/>       
-  <property name="remote.audio.folder"			value="audio/siena/ita"/>    
-  <property name="remote.pics.folder"			value="pics/siena"/>  
+  <property name="remote.audio.folder"			value="siena/ita"/>    
+  <property name="remote.pics.folder"			value="siena"/>
+<property name="remote.download.file"			value="downloads.xml"/>  
+  
   <property name="app.package.name"     		value="it.duccius.musicplayer"/>
   <property name="app.label"        			value="VisitIn Siena"/>
   <property name="app.icon"        				value="siena_ita"/>
   <property name="app.versioncode" 				value="37"/>
   <property name="app.versionname" 				value="00.01.37"/>
+  <property name="map.centre.point"			value="43.327671,11.325371"/>  
+  <property name="resource.src.dir"			value="Archivio\Siena\ITA\res"/>  
+  
+</ant>
+<echo level="info">============================================================================================================================</echo>
+<ant antfile="build_version.xml" target ="release" inheritall="true">
+	<property name="resource.package.file.name"	value="VisitInCatania_ita.apk"/> 
+	<property name="app.package.name"     		value="it.duccius.visitin.catania"/> 
+	<property name="app.versioncode" 				value="6"/>
+	<property name="app.versionname" 				value="00.01.06"/>
+	<property name="app.icon"        				value="ic_launcher"/>
+	<property name="app.label"        			value="VisitIn Catania"/>
+	<property name="remote.audio.folder"			value="catania/ita"/>    
+	<property name="remote.pics.folder"			value="catania"/>  
+<property name="remote.download.file"			value="downloads_catania.xml"/>
+	<property name="map.centre.point"	        value="37.501685,15.087676"/>
+<property name="resource.src.dir"			value="Archivio\Catania\ITA\res"/>  	
+	
 </ant>
 
     <!-- Import the actual build file.
@@ -98,10 +118,12 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
+</target>	
 	<!-- Necessario per il loop-->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
 
-    <!-- version-tag: 1 -->
+    <!-- version-tag: 1 
     <import file="${sdk.dir}/tools/ant/build.xml" /> 
+	-->
 
 </project>
