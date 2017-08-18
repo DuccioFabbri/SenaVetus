@@ -5,6 +5,19 @@
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK/google-play-services_lib"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+<<<<<<< HEAD
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+=======
+	<classpathentry kind="src" path="/google-play-services_lib"/>
+	<classpathentry kind="lib" path="C:/eclipse-ADT/adt-bundle-windows-x86_64-20140702/sdk/platforms/android-25/android.jar" sourcepath="C:/eclipse-ADT/adt-bundle-windows-x86_64-20140702/sdk/sources/android-25">
+		<attributes>
+			<attribute name="javadoc_location" value="http://developer.android.com/reference/"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="nonaccessible" pattern="com/android/internal/**"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/GitHub/google-play-services_lib/bin/google-play-services_lib.jar"/>
+>>>>>>> origin/Catania
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

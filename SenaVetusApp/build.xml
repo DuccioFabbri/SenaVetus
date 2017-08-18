@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <project name="VisitInSiena" default="help">
+=======
+<project name="MapNavigation" default="help">
+>>>>>>> origin/Catania
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -66,6 +70,7 @@
             -post-build
             -pre-clean
     -->
+<<<<<<< HEAD
 
     <import file="custom_rules.xml" optional="true" />
 <target name="release" >
@@ -99,6 +104,9 @@
 <property name="resource.src.dir"			value="Archivio\Catania\ITA\res"/>  	
 	
 </ant>
+=======
+    <import file="custom_rules.xml" optional="true" />
+>>>>>>> origin/Catania
 
     <!-- Import the actual build file.
 
@@ -118,6 +126,7 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
+<<<<<<< HEAD
 </target>	
 	<!-- Necessario per il loop-->
 	<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
@@ -125,5 +134,9 @@
     <!-- version-tag: 1 
     <import file="${sdk.dir}/tools/ant/build.xml" /> 
 	-->
+=======
+    <!-- version-tag: 1 -->
+    <import file="${sdk.dir}/tools/ant/build.xml" />
+>>>>>>> origin/Catania
 
 </project>
