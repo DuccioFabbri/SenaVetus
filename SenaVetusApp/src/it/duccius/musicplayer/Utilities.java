@@ -7,9 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +15,7 @@ import com.google.android.gms.maps.GoogleMap;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.os.StrictMode;
-import android.util.Log;
+
 
 //import it.duccius.download.RetriveAsyncFile;
 
@@ -27,8 +23,8 @@ public class Utilities {
 	private static final String _downloadsFileName = "downloads_catania.xml";
 	// Dropbox	
 	private static String urlDownloads = new String("https://sites.google.com/site/ducciofabbri/home/sv-1/" +_downloadsFileName);
-	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/~img_name~.jpg?attredirects=0&d=1";
-	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/ita/~mp3_name~.mp3?attredirects=0&d=1";
+	private static String baseUrlImg = "https://sites.google.com/site/ducciofabbri/pics/catania/~img_name~.jpg?attredirects=0&d=1";
+	private static String baseUrlMp3 = "https://sites.google.com/site/ducciofabbri/audio/catania/ita/~mp3_name~.mp3?attredirects=0&d=1";
 	
 //	private static int mapType = GoogleMap.MAP_TYPE_HYBRID;
 //	private static int mapType = GoogleMap.MAP_TYPE_SATELLITE;
@@ -252,11 +248,5 @@ public class Utilities {
 	public static String getUrlDownloads() {
 		return urlDownloads;
 	}
-//	public static String getUrlKml() {
-//		return urlKml;
-//	}
-
-	
-	
 	
 }

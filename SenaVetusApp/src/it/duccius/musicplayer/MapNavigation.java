@@ -254,6 +254,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		btnPOIinfo.setVisibility(View.GONE);
 		initializeMap();
 		setupMediaPlayer();
+		
 	}
     private void showEditDialog() {
     	android.app.FragmentManager fm = this.getFragmentManager();
@@ -293,6 +294,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			_nDs = MapService.getNavigationDataSet("file://"+_downloadsSDPath);
 			_nDs.sort();
 			
+			checkForUpdates();	
 			_trails =  MapService._trails;
 		}
 	}
@@ -317,7 +319,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//getActionBar().setTitle("SenaVetus");
-		getActionBar().setTitle(R.string.app_name);
+		getActionBar().setTitle(R.string.app_title);
 		
 		//setContentView(R.layout.sena);	
 		setContentView(R.layout.sena_fragments);
@@ -610,6 +612,7 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 			{
 				Toast.makeText(getApplicationContext(), "Impossibile connettersi al server. Si può comunque procedere con una versione obsoleta dei file.", Toast.LENGTH_LONG).show();
 				leggiFileDownloads();
+				
 				//closeSplash();
 				return true;
 			}
@@ -624,11 +627,13 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 	
 	private void initializeMap() {
 		
-		
+		addItemsToMap(_nDs); 
 		//Location currentLocation = getCurrentLocation();
-		Location currentLocation = _location;
-		//LatLng from = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());		 
-		LatLng from = new LatLng(43.327671,11.325371);
+		Location currentLocation = _location;		 
+		//LatLng from=new LatLng(43.327671,11.325371); //Siena
+		// ATTENZIONE: NON MODIFICAR LA SEGUENTE RIGA; NON TOCCARE SPAZI O SIMILI, ANT FA UNA SOSTITUZIONE CON REGEXP SU DI ESSA.
+		LatLng from = new LatLng(37.501685,15.087676);  //Catania
+		
 		LatLng to = from;
 		if(!_nDs.getPlacemarks().isEmpty())
 		{
@@ -876,6 +881,7 @@ private void addTrail() {
 //			progressDialog.setCancelable(true);
 			//progressDialog.show();
 			ProgressDialog pd = new ProgressDialog(this,R.style.MyTheme);
+		
 			pd.setCancelable(false);
 			pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
 			pd.show();
@@ -913,7 +919,9 @@ private void addTrail() {
 						checkReadyToDownload();
 				
 				}else{
-					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+					//Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+					Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(ag.getUrl()));
+					
 					startActivity(browserIntent);	
 				}			
 				return false;
@@ -943,6 +951,8 @@ private void addTrail() {
 	
 	boolean _thumbnail_ON;
 	boolean _playlist_ON;
+
+	private int _footerVisibility = View.INVISIBLE;
 	
 	
 	private ArrayList<String> getAdapterSource(ArrayList<AudioGuide> sourceList) {
@@ -1210,7 +1220,8 @@ private void addTrail() {
 		}
 	}
 
-	private void setFooterVisibility(int visibility) {
+	public void setFooterVisibility(int visibility) {
+		_footerVisibility  = visibility;
 		//btnThumbnail.setVisibility(visibility);
 		footer.setVisibility(visibility);
 		timerDisplay.setVisibility(visibility);
@@ -1218,7 +1229,9 @@ private void addTrail() {
 		songProgressBar.setVisibility(visibility);
 		//hidePOIbtns();
 	}
-	
+	public int getFooterVisibility() {
+		return _footerVisibility;
+	}
 	/**
 	 * Update timer on seekbar
 	 * */

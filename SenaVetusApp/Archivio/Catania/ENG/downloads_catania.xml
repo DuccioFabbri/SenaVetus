@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document>
+  <name>Sena Vetus</name>
+  <description><![CDATA[]]></description>
+  <vers>002</vers>  
+  	
+	<audio 		 lang ="ITA" name="01_Porta_Uzeda" title="Porta Uzeda"  ext=".mp3"		coordinates="15.087676,37.501685,0.000000"  audioBaseUrl="http://sites.google.com/site/ducciofabbri/audio/" type="poi" >
+	</audio>    
+	<audio 		 lang="ITA" name="02_Piazza_Duomo"                title="Piazza Duomo"                   coordinates="15.08714407421975,37.50246206007223,0.000000"  type="poi" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="03_Cattedrale_SantAgata"        title="Cattedrale Sant'Agata"          coordinates="15.08774908512429,37.50223405021251,0.000000"  type="poi" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="04_Museo_Diocesano"             title="Museo Diocesano"                coordinates="15.08731326884704,37.50201542293275,0.000000"  type="poi" 	url="http://www.google.com">		
+	</audio>    
+	<audio 		 lang="ITA" name="05_Palazzo_degli_Elefanti"      title="Palazzo degli Elefanti"         coordinates="15.08708918686123,37.50283198441889,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="06_Fontana_dellAmenano"         title="Fontana dell'Amenano"           coordinates="15.08700794517502,37.50202022971413,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="07_La_Pescheria"                title="La_Pescheria"                   coordinates="15.08675484836259,37.50163180183827,0.000000"  type="poi">		
+	</audio>    
+	<audio 		 lang="ITA" name="08_Castello_Ursino"             title="Castello Ursino"                coordinates="15.08461204728673,37.49922891044440,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="09_Teatro_Romano_Odeon"         title="Teatro_Romano e Odeon"          coordinates="15.08390477020841,37.50244566312581,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="10_Via_Crociferi"               title="Via Crociferi"                  coordinates="15.08479738427045,37.50345914694618,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="11_Chiesa_San_Francesco"        title="Chiesa San Francesco"          	coordinates="15.08480847043765,37.50277604499328,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="12_Museo_Civico_Belliniano"     title="Museo Civico Belliniano"        coordinates="15.08449180851953,37.50265531112509,0.000000"  type="poi">
+	</audio>    
+	<audio 		 lang="ITA" name="13_Chiesa_Monastero_S_Benedetto" title="Chiesa e Monastero S.Benedetto" coordinates="15.08478625669203,37.50369831777964,0.000000"  type="poi">
+	</audio>                                              
+	<audio 		lang="ITA" name="14_Chiesa_San_Francesco_Borgia"   title="Chiesa San Francesco Borgia"   coordinates="15.08479446454019,37.50394122829658,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="15_Piazza_Universita"         title="Piazza dell'Università"        coordinates="15.08712791251502,37.50354604339006,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="16_Piazza_Stesicoro"              title="Piazza Stesicoro"              coordinates="15.08583458115229,37.50739577104098,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="17_Villa_Bellini"                 title="Villa Bellini"                 coordinates="15.08531132806777,37.51072189709699,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="18_Teatro_Massimo_Bellini"        title="Teatro Massimo Bellini"        coordinates="15.09047944447766,37.50429841813562,0.000000"  type="poi">
+	</audio>																					
+	<audio 		lang="ITA" name="19_Palazzo_Biscari"               title="Palazzo Biscari"               coordinates="15.0906637280193,37.5023399114104,0,0.000000"  type="poi">
+	</audio>
+	<trail name="Esplora" description="Esplora liberamente la città" time="" >		
+	</trail>
+	<trail name="A spasso per il salotto di Catania" description="Questo percorso ti guiderà lungo via Etnea, in passato definita il salotto di Catania." time="1h30min">
+		<trail_coords>15.08761795004903,37.50180877260942,0 15.08749323031147,37.50226325958708,0 15.08724969266033,37.50222623368023,0 15.08701231570983,37.50217906504942,0 15.08728192271041,37.50250146073837,0 15.08712646876916,37.50273472927769,0 15.08737315201039,37.50277458955058,0 15.08716959529095,37.50360198497697,0 15.08700931016943,37.50426069337581,0 15.08655471431823,37.50614721598569,0 15.08628048300707,37.5072040372823,0 15.08588011189998,37.50742632548472,0 15.08643222476901,37.5074760927909,0 15.0854345323042,37.51077323012972,0</trail_coords>
+	</trail>
+	<trail name="In giro per la città" description="Lungo il percorso saranno descritti i luoghi più suggestivi della città, vedrai siti di interesse storico, culturale nonchè naturalistico della città di Catania." time="2h30min">
+		<trail_coords>15.08768860570396,37.50165889715388,0 15.08751368663097,37.50226290299953,0 15.08728103366668,37.50249985472819,0 15.08712581588419,37.50272626752187,0 15.08725558999455,37.50221477012175,0 15.08700927286907,37.50208859620891,0 15.08706372226328,37.50197926681607,0 15.08702353059773,37.50181945223927,0 15.08674352067928,37.50166301062279,0 15.08625555251822,37.5014761126692,0 15.08628024428401,37.50118774331204,0 15.08618324164533,37.50108026352186,0 15.08574560229503,37.50070044382898,0 15.08528486110451,37.50062837837358,0 15.08532998609224,37.50045597772904,0 15.08517387312151,37.50019962485982,0 15.0847363105936,37.50025696647213,0 15.08462390973825,37.49978099632055,0 15.08444378331503,37.49940443045452,0 15.08400795332366,37.49983291428809,0 15.08349736520471,37.50149611471148,0 15.08491601880778,37.50178783792372,0 15.0847295253141,37.50247699550514,0 15.08391054144084,37.50242564962328,0 15.08461115535162,37.5025003937777,0 15.08459459610197,37.50264343020294,0 15.08478595175807,37.50269556688654,0 15.08478566478745,37.50328048986282,0 15.08481024155802,37.50371751201283,0 15.08482148107163,37.50393896352373,0 15.08484146136566,37.50489197902656,0 15.08678905325063,37.50501902053819,0 15.08654565255105,37.50611747405495,0 15.08625900463953,37.50722698298867,0 15.08587372335031,37.50741107883558,0 15.08649197993738,37.50746125532118,0 15.08616810028692,37.50764260675816,0 15.08590166840299,37.50874383995469,0 15.08549152247213,37.51067593797302,0 15.08531523849006,37.51072137636822,0 15.08554161959975,37.5108138521029,0 15.08562090823137,37.50993482158403,0 15.0858144129314,37.50908633798093,0 15.08617713225987,37.50754760609641,0 15.08622507730257,37.50735317219544,0 15.08631394874857,37.50710490253864,0 15.08687309307023,37.50500647704879,0 15.09015857225187,37.50505183765559,0 15.09057249731599,37.50433421713842,0 15.09046376723705,37.50415331726708,0 15.08996120460596,37.50393709912448,0 15.09002707966027,37.50369151742375,0 15.08889951574182,37.50357423873218,0 15.0888582965267,37.50377010720206,0 15.08867217256809,37.50398228797369,0 15.08858892844572,37.50408947667795,0 15.08852902604296,37.50411169823369,0 15.08808040027672,37.50403390899729,0 15.08760540184911,37.50397270019764,0 15.08743436457163,37.50394941361277,0 15.08714325012366,37.50363954034272,0 15.08735409066746,37.50290518383491,0 15.08744648144439,37.50249580656208,0 </trail_coords>
+	</trail>
+	</Document> 
