@@ -1,7 +1,11 @@
 package it.duccius.musicplayer;
 
-import android.support.v4.widget.DrawerLayout;
 
+import android.support.v4.widget.DrawerLayout;
+import it.duccius.billing.util.IabHelper;
+import it.duccius.billing.util.IabHelper.IabAsyncInProgressException;
+import it.duccius.billing.util.IabResult;
+import it.duccius.billing.util.Purchase;
 import it.duccius.download.DownloadFile;
 import it.duccius.download.DownloadMode;
 import it.duccius.download.RowItem;
@@ -314,9 +318,28 @@ public class MapNavigation extends Activity  implements OnCompletionListener,
 		mp.setOnCompletionListener(this); // Important						
 					
 	}
+	
+	IabHelper mHelper;
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		// Necessario per inappBilling.
+		// https://developer.android.com/training/in-app-billing/preparing-iab-app.html#Connect
+		//-----------------------------------------------------------------
+		   String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl8Mkb0YMDy8c79uJH2vHYHVSwlGkpcHv5iZ1KWnHd5xQPhvA3xkKQiAqVvuD+odUK6EybOommO7EvglXd+iPez0Lw5Dz4X3jFN9GLMtwuE69RpPf3g/mE8vmXD177xlukZHmnx/SU0g6/NrNRlqM2eQUxquw9MQi3l2+lU0+3boTiuVgzlADZSzzL/PtHjyve3dwl4Sr3G/TE/WjcBUrOFijxXY4QEE4ET0V7pFPHbQO0AckPMKtiQFf0zR7Izu7CGfx3uuUYwNyN2HK/FG0lSTEkEaRJL5Rc05yw3bXzCLqOWUXtYxhkkaILrMa+T2jR7Gdhd72TEPrWcDrfwiPHwIDAQAB";
+
+		   // compute your public key and store it in base64EncodedPublicKey
+		   mHelper = new IabHelper(this, base64EncodedPublicKey);
+		   mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+			   public void onIabSetupFinished(IabResult result) {
+			      if (!result.isSuccess()) {
+			         // Oh no, there was a problem.
+			         Log.d("TAG", "Problem setting up In-app Billing: " + result);
+			      }
+			         // Hooray, IAB is fully set up!
+			   }
+			});
+		//------------------------------------------------------------------
 		super.onCreate(savedInstanceState);
 		//getActionBar().setTitle("SenaVetus");
 		getActionBar().setTitle(R.string.app_title);
@@ -800,39 +823,79 @@ private void addTrail() {
 			return res;
 		}
 		
-		private void checkReadyToDownload() {
+		
+		
+		
+		// Callback for when a purchase is finished
+	    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+	        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+	            Log.d("TAG", "Purchase finished: " + result + ", purchase: " + purchase);
+	            if (result.isFailure()) {
+	                Log.d("TAG", "Error purchasing: " + result);
+	                return;
+	             }
+	             else if (purchase.getSku().equals("poi.test")) {
+	                // consume the gas and update the UI
+	            	 _activeMarker.setSnippet("BINGO!!!" );
+	             }
+	             else if (purchase.getSku().equals("SKU_PREMIUM")) {
+	                // give user access to premium content and update the UI
+	             }
+	        }
+	    };
+	        
+	        
+		private void checkReadyToDownload() throws IabAsyncInProgressException {
 			ArrayList<String> alString = getAdapterSource(_audioToDownloadLang); 
 			int clickedMarkerIndex = alString.indexOf(_clickedMarker);
 			if (clickedMarkerIndex>-1)
 			{
 				if (_previousMarker != null && _activeMarker != null &&_previousMarker.getTitle().equals(_activeMarker.getTitle()))
 				{
-					if(_audioToDownloadLang != null && _audioToDownloadLang.getAudioGuides().size()>0 )
-					{					
+					//--------------------------------- BILLING
+					if (_activeMarker.getTitle()=="02_PortaCamollia"){
+						mHelper.launchPurchaseFlow(this, "poi.test", 10001,
+								   mPurchaseFinishedListener, "bGoa+V7g/yqDXvKRqq+JTFn4uQZbPiQJo4pf9RzJ");
 						
-						//playSong(_clickedMarkerIndex);
 						
-						ArrayList<String> arL = new ArrayList<String>();
-						AudioGuide ag = _audioToDownloadLang.getFromPosition(clickedMarkerIndex);
-						//String str = ag.getPath();
-						String str = Utilities.getMp3UrlFromName(ag.getName());
-						arL.add(str);					
-						
-						starDownload(arL,new MyCallbackInterface() {
-
-				            @Override
-				            public void onDownloadFinished(List<RowItem> rowItems) {				                
-				            	checkForUpdates();
-				            	_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-				            	_activeMarker.setSnippet("Click and play" );
-				            }
-				        });
-					}							
+					}
+					
+					else{
+						if(_audioToDownloadLang != null && _audioToDownloadLang.getAudioGuides().size()>0 )
+						{					
+							
+							//playSong(_clickedMarkerIndex);
+							
+							ArrayList<String> arL = new ArrayList<String>();
+							AudioGuide ag = _audioToDownloadLang.getFromPosition(clickedMarkerIndex);
+							//String str = ag.getPath();
+							String str = Utilities.getMp3UrlFromName(ag.getName());
+							arL.add(str);					
+							
+							starDownload(arL,new MyCallbackInterface() {
+	
+					            @Override
+					            public void onDownloadFinished(List<RowItem> rowItems) {				                
+					            	checkForUpdates();
+					            	_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+					            	_activeMarker.setSnippet("Click and play" );
+					            }
+					        });
+						}		
+					}
 				}
 				else
 				{
-					_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));	
-					_activeMarker.setSnippet("Click and Download" );
+					
+					//--------------------------------- BILLING
+					if (_activeMarker.getTitle()=="02_PortaCamollia"){
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));	
+						_activeMarker.setSnippet("Click and buy it!" );}
+					//---------------------------------
+					else{					
+						_activeMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));	
+						_activeMarker.setSnippet("Click and Download" );
+					}
 				}					
 			}				
 		}
@@ -905,7 +968,8 @@ private void addTrail() {
 				_activeMarker = marker;
 				//----------
 				
-				_clickedMarker = marker.getTitle();								
+				_clickedMarker = marker.getTitle();	
+
 				
 				// devo controllare il tipo di elemento cliccato, se si tratat di un poi tutto come prima
 				// altrimenti apro la pagina web dell´esercente
@@ -1325,6 +1389,16 @@ private void addTrail() {
 	    mp.release();
 	    // http://stackoverflow.com/questions/13854196/application-force-closed-when-exited-android
 	    mHandler.removeCallbacks(mUpdateTimeTask);
+	    //https://developer.android.com/training/in-app-billing/preparing-iab-app.html#Connect
+	    super.onDestroy();
+	    if (mHelper != null)
+			try {
+				mHelper.dispose();
+			} catch (IabAsyncInProgressException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    mHelper = null;
 	 }
 
 	/**
